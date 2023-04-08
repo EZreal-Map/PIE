@@ -1,0 +1,1396 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>位移监测</title>
+		<link rel="stylesheet" href="css/style_weiyi.css" />
+		<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<!--<script src="layuiadmin/layui/layui.js"></script>-->
+		<!--<link rel="stylesheet" href="layuiadmin/layui/css/layui.css" media="all">-->
+	</head>
+
+	<style type="text/css">
+		@font-face {
+			font-family: 'yejing';
+			src: url('font/yejing5.ttf') format('truetype');
+		}
+		
+		select.sty1 {
+			/*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+			border: solid 0px #000;
+			border: none;
+			color: #00F6FF;
+			font-size: 16pt;
+			height: 38px;
+			line-height: 38px;
+			/*很关键：将默认的select选择框样式清除*/
+			appearance: none;
+			-moz-appearance: none;
+			-webkit-appearance: none;
+			/*在选择框的最右侧中间显示小箭头图片*/
+			background: no-repeat scroll right center transparent;
+		}
+		
+		.selectoptionbg {
+			background-color: #0E1C3B;
+			color: #00F6FF;
+		}
+		/*.ol-overlaycontainer-stopevent
+		{
+			display:none;
+		} */
+		/*横条样式*/
+		
+		input[type=range] {
+			-webkit-appearance: none;
+			/*清除系统默认样式*/
+			width: 100%;
+			background: -webkit-linear-gradient(#0087ED, #0087ED) no-repeat, #ddd;
+			/*设置左边颜色为#61bd12，右边颜色为#ddd*/
+			background-size: 100% 100%;
+			/*设置左右宽度比例*/
+			/*height: 3px;/*横条的高度*/
+			*/
+		}
+		/*拖动块的样式*/
+		
+		input[type=range]::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			/*清除系统默认样式*/
+			height: 15px;
+			/*拖动块高度*/
+			width: 15px;
+			/*拖动块宽度*/
+			background: #fff;
+			/*拖动块背景*/
+			border-radius: 50%;
+			/*外观设置为圆形*/
+			border: solid 5px #ddd;
+			/*设置边框*/
+		}
+		
+		.swal-modal {
+			background-color: #00FCFF;
+		}
+		
+		.ol-control {
+			display: none;
+		}
+		/**地图提示框*/
+		
+		.ol-popup {
+			position: absolute;
+			background-color: rgba(0, 0, 0, .3);
+			-webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+			filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+			/*padding: 5px 7px;*/
+			border-radius: 5px;
+			border: 1px solid #cccccc;
+			/*border: none;*/
+			padding: 10px;
+			color: white;
+			bottom: 12px;
+			left: -50px;
+			min-width: 220px;
+		}
+		
+		.ol-popup:after,
+		.ol-popup:before {
+			top: 100%;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+		}
+		
+		.ol-popup:after {
+			border-top-color: white;
+			border-width: 10px;
+			left: 48px;
+			margin-left: -10px;
+		}
+		
+		.ol-popup:before {
+			border-top-color: #cccccc;
+			border-width: 11px;
+			left: 48px;
+			margin-left: -11px;
+		}
+		
+		.ol-popup-closer {
+			text-decoration: none;
+			position: absolute;
+			top: 2px;
+			right: 8px;
+		}
+		
+		.ol-popup-closer:after {
+			content: "✖";
+			color: #00FCFF;
+		}
+		/*************************************/
+		
+		#shuiwei_biao {
+			width: 400px;
+			height: 298px;
+			margin-left: -28px;
+			margin-top: 20px;
+			float: left;
+			position: absolute;
+			z-index: -99;
+			/*background-color: red;*/
+		}
+		
+		.zhedan_dandanyige_tu {
+			width: 385px;
+			height: 255px;
+			margin-left: 0px;
+			margin-top: 60px;
+			float: left;
+			position: absolute;
+			z-index: -9;
+			background-image: url(images/zhedan_beijing.png);
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		
+		.danqian_shuiwei {
+			width: 300px;
+			height: 30px;
+			position: absolute;
+			z-index: 10;
+			/*background-color: red;*/
+			margin-top: 259px;
+			margin-left: 95px;
+		}
+		
+		.shuiwei_baozhen {
+			width: 350px;
+			height: 20px;
+			position: absolute;
+			z-index: -10;
+			/*background-color: red;*/
+			margin-top: 88px;
+			/*margin-top: 86px;*/
+			margin-left: 0px;
+		}
+		
+		.baozhen_xian {
+			width: 340px;
+			height: 2px;
+			background-color: red;
+		}
+		
+		.baozhen_zi {
+			z-index: 100;
+			margin-left: 120px;
+			margin-top: -22px;
+			font-size: 1em;
+			color: red;
+		}
+		
+		.shuiwei_jingjie {
+			width: 350px;
+			height: 10px;
+			position: absolute;
+			z-index: -10;
+			/*background-color: red;*/
+			margin-top: 107px;
+			/*margin-top: 107px;*/
+			margin-left: 0px;
+		}
+		
+		.jingjie_xian {
+			width: 340px;
+			height: 2px;
+			background-color: yellow;
+		}
+		
+		.jingjie_zi {
+			z-index: 100;
+			margin-left: 120px;
+			margin-top: -22px;
+			font-size: 1em;
+			color: yellow;
+		}
+		
+		#sectionSlID {
+			font-size: 1em;
+		}
+		
+		.shuiqin_jianbao {
+			/*width: 170px;
+			height: 80px;
+			/*background-color: red;
+			background-image: url(images/anniu.png);
+			margin-top: -109px;
+			margin-left:200px;
+			float: left;
+			text-align: center;
+			line-height: 75px;
+			background-repeat: no-repeat;
+			background-size: cover;
+			font-size: 1em;*/
+		}
+		
+		.shuiqin_dianjitanchu {
+			width: 1280px;
+			height: 920px;
+			background-image: url(images/a_tanchuan.png);
+			position: absolute;
+			margin-top: -100px;
+			margin-left: -1200px;
+			z-index: 99999;
+			display: none;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		
+		.shuiqin_dianjitanchu h4 {
+			color: white;
+			text-align: center;
+			padding-top: 30px;
+			font-size: 2.5em;
+			padding-bottom: 50px;
+			margin-left: 450px;
+			float: left;
+			text-shadow: 5px 2px 6px #000;
+		}
+		
+		.shuiqin_riqi {
+			color: white;
+			text-align: center;
+			padding-left: 550px;
+			font-size: 1.5em;
+			padding-bottom: 0px;
+			position: absolute;
+			margin-top: 140px;
+			/*background-color: wheat;*/
+			float: left;
+			text-shadow: 5px 2px 6px #000;
+		}
+		
+		.shuiqin_qianzi1 {
+			text-indent: 2em;
+		}
+		
+		.shuiqin_qianzi {
+			text-indent: 1.5em;
+		}
+		
+		.shuiqin_dianjitanchu li {
+			color: white;
+			padding-left: 100px;
+			font-size: 1.5em;
+			width: 1100px;
+			list-style-type: none;
+			float: left;
+			text-shadow: 5px 2px 6px #000;
+			font-family: "宋体";
+		}
+		
+		.shuiiqn_logo {
+			width: 75px;
+			height: 50px;
+			/*background-color: black;*/
+			margin-left: 160px;
+			margin-top: 85px;
+			z-index: 999;
+			position: absolute;
+			background-image: url(images/a_logo.png);
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		
+		.sszxgs_xiabiao {
+			position: absolute;
+			/*width: 100px;
+			height: 100px;
+			background-color: red;*/
+			top: 700px;
+			right: 200px;
+			font-size: 2em;
+			font-family: "宋体";
+			text-shadow: 5px 2px 6px #000;
+		}
+		/******************新增***************************/
+		
+		.center_top {
+			height: 540px;
+		}
+		
+		
+			.layui-table {
+		background-color: rgba(0, 0, 0, 0) !important;
+		color: #FFFFFF;
+	}
+
+	.layui-table thead tr {
+		background-color: rgba(0, 0, 0, 0) !important;
+		background: rgba(0, 0, 0, 0) !important;
+		color: #00f6ff;
+	}
+
+	.layui-table,
+	.layui-table-view {
+		margin: 0px 0;
+	}
+
+	.layui-table-view,
+	.layui-table-box {
+		height: 100%;
+		width: 98%;
+		margin-top: 15px;
+		margin-left: 5px;
+	}
+
+	.layui-table-body {
+		height: 100%;
+		overflow-y: scroll;
+	}
+
+	.layui-table-view,
+	.layui-table th,
+	.layui-table td {
+		border: 0px solid #20558b;
+		text-align: center;
+	}
+
+	.layui-table-header {
+		border-bottom: 1px solid #20558b;
+	}
+
+	.layui-table-body::-webkit-scrollbar {
+		width: 0px;
+	}
+
+	.layui-form-radio {
+		margin: 0;
+		margin-left: 20px;
+	}
+
+	.layui-table-page {
+		display: none;
+	}
+	.bottomPanel{
+		overflow:hidden
+	}
+	.yuo_xia{
+		overflow:hidden
+	}
+	table,td,tr{
+		border: none;
+	}
+	
+	
+	/***********************日历**********/
+	.xuanzhe_riqi{
+		width: 50px;
+		height: 50px;
+		margin-left: 320px;
+		margin-top: -15px;
+		position: absolute;
+		/*background-color: navy;*/
+	}
+	.rili_tubiao{
+		width: 50px;
+		height: 50px;
+		/*background-color: yellow;*/
+		float: left;
+		background-image: url(images/rili.png);
+			background-repeat: no-repeat;
+			background-size: cover;
+	}
+	.xuanzhe_jutiriqi{
+		width: 50px;
+		/*height: 50px;*/
+		 /*background-color: red;*/ 
+		 border: none;
+		float: left;
+		margin-top: -50px;
+	}
+	</style>
+
+	<body>
+		<header>
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 50px; top:-5px;width:600px;height: 50px; display:inline;">
+				<img src="images/pie.png" style="width: 100px; height: 50px;" />
+			</div>
+			<div class="masked1" style="font-weight: bold;">位 移 预 警</div>
+
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;z-index: 9999;">
+				<ul class="menu">
+					<li>
+						<a href="page_home.html">管控大屏</a>
+					</li>
+					<li>
+						<a style="color:#00FCFF" href="#">水务预警</a>
+						<ul class="submenu">
+							<li><a href="page_shuiqing.html">水情预警</a></li>
+							<li><a href="page_shuizhi.html">水质预警</a></li>
+							<li><a style="color:#00FCFF" href="page_weiyi.html">工程安全</a></li>
+							<li>
+								<a href="page_videocenter.html">视频预警</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">流域调度</a>
+						<ul class="submenu">
+							<li>
+								<a href="page_waterFloodScheduling.html">防洪调度</a>
+							</li>
+							<li>
+								<a href="page_waterscheduling.html">水质模拟</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="page_guanyang.html">河道管养</a>
+					</li>
+				</ul>
+			</div>
+		</header>
+		<canvas id="canvas" style="position: absolute; left: 680px; top:0px; width: 580px; height: 80px;"></canvas>
+
+		<div id="content">
+			<div class="content_center">
+				<div class="center_top">
+					<div class="centerTabTitle"><img src="images/icon03.png" /> 地图</div>
+					<span id="localtime" style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 60px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<span id="localtime2" style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 165px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="440" height="45" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute; left: 850px; top:140px; z-index: 9990;"></iframe>
+					<div class="xuanzhe_riqi">
+						<div class="rili_tubiao" onclick="showDateSelect();"></div>
+					</div>
+					<div class="center_top_con" id="distribution_map" style="height: 315px;margin-top: 35px;margin-left: 30px;width: 1080px;">
+					</div>
+					<div id="popup" class="ol-popup">
+						<a href="#" id="popup-closer" class="ol-popup-closer"></a>
+						<div id="popup-content"></div>
+					</div>
+				</div>
+				<div class="center_bot">
+						<div class="" style="font-size: 16pt;">水平位移</div>
+						<div id="echarts_3" class="charts" style="height: 200px; width: 1080px;margin-left: 0px;"></div>
+						
+					<div class="" style="font-size: 16pt;">垂直位移</div>
+					<div id="echarts4" class="charts" style="height: 200px; width: 1080px;margin-left: 0px;"></div>
+				</div>
+			</div>
+			<div class="content_right">
+				<div class="topPanel" style="padding-left: 00px;">
+
+					<div class="title">
+						<div style="display:float;margin: 10px;line-height: 38px;font-size: 14pt;margin-left: 150px;">
+							<strong>站点：
+							<input type="radio" name="stationRadio" value="1" checked/> 横沥口
+							<input type="radio" name="stationRadio" value="2" /> 横沥口边坡
+							<input type="radio" name="stationRadio" value="3" /> 彩虹桥
+							</strong>
+						</div>
+						
+						
+					</div>
+					<div id="echarts5" class="charts" style="height: 220px; width: 700px;margin-left: -40px;"></div>
+
+				</div>
+
+				<div class="bottomPanel">
+					<div id="weiyi_chuizhi" style="float: top;margin: 20px;margin-top: 30px !important;height: 250px;width: 100%;">
+					</div>
+				</div>
+
+				<div class="yuo_xia">
+					<div id="weiyi_shuipin" style="float: top;margin: 20px;margin-top: 30px !important;height: 250px;width: 100%;">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--遮罩层-->
+		<div class="bgPop3"></div>
+		<!--弹出框-->
+		<div class="pop3">
+		    <div class="pop-top">
+		        选择日期
+		        <span class="pop-close">Ｘ</span>
+		    </div>
+		    <div class="pop-content">
+		    	<div style="text-align: center;font-size: 40pt;height: 100%;vertical-align: middle;padding-top:60px;">
+		    		<select id="dateYearSelectID" class="sty1" style="font-size: 40pt;">
+						<option class="selectoptionbg" value="2019">2019</option>
+						<option class="selectoptionbg" value="2">2018</option>
+					</select>
+					<label>年</label>
+					<select id="dateMonthSelectID" class="sty1" style="font-size: 40pt;">
+						<option class="selectoptionbg" value="1">01</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>月</label>
+					<select id="dateDaySelectID" class="sty1" style="font-size: 40pt;">
+						<option class="selectoptionbg" value="1">01</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>日</label>
+		    	</div>		        
+		    </div>
+		    <div class="pop-foot">
+		        <input id="dataSelectID" type="button" value="确定" class="pop-cancel pop-close">
+		    </div>
+		</div>
+		<script>						
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop3,.pop3').hide();
+		        });
+		        $('.click_pop3').click(function () {
+		            $('.bgPop3,.pop3').show();		            
+		        });
+		        
+		        $("#dateYearSelectID").empty();
+		        for(var tmpI = 2017; tmpI < 2030; tmpI++)
+		        {
+      				$("#dateYearSelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI+"</option>'");
+		        }
+      			$("#dateMonthSelectID").empty();
+		        for(var tmpI = 1; tmpI < 13; tmpI++)
+		        {
+		        	var tmpI2 = tmpI;
+		        	if(tmpI<10)
+		        		tmpI2 = "0"+tmpI;		        		
+      				$("#dateMonthSelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+		        }
+		        $("#dateDaySelectID").empty();
+		        for(var tmpI = 1; tmpI < 32; tmpI++)
+		        {
+		        	var tmpI2 = tmpI;
+		        	if(tmpI<10)
+		        		tmpI2 = "0"+tmpI;
+      				$("#dateDaySelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+		        }
+		        $('#dataSelectID').click(function () {
+		            var tmpStr = $("#dateYearSelectID").val();
+		            if($("#dateMonthSelectID").val()<10)
+		            	tmpStr += "-0"+$("#dateMonthSelectID").val();
+		            else
+		            	tmpStr += "-"+$("#dateMonthSelectID").val();
+		            if($("#dateDaySelectID").val()<10)
+		            	tmpStr += "-0"+$("#dateDaySelectID").val();	
+		            else
+		            	tmpStr += "-"+$("#dateDaySelectID").val();	
+		            m_CurrentQueryData = tmpStr;
+		            old = m_CurrentQueryData;
+		            refreshDatas();
+		        });		        
+		    })
+		</script>
+		
+		<!--背景动画        -->
+		<script type="text/javascript" src="js/bgannimation.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/echarts.min.js"></script>
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script type="text/javascript" src="js/times.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/CommonJS.js"></script>
+
+		<!--调用op库-->
+		<link rel="stylesheet" href="css/ol.css" type="text/css">
+		<script src="js/ol.js" type="text/javascript" charset="utf-8"></script>
+
+		<link rel="stylesheet" type="text/css" href="overlay/popupoverlay.css" />
+		<script type="text/javascript" src="overlay/popupoverlay.js"></script>
+
+		<script src="js/basicmap.js" type="text/javascript" charset="utf-8"></script>
+		
+		<!-- sweet-alert库 -->
+		<link href="css/sweet-alert.css" rel="stylesheet" type="text/css" />
+		<script src="js/sweet-alert.js"></script>
+
+		<!--<script src="js/echarts.js"></script>-->
+		<script src="js/jquery-2.1.1.min.js"></script>
+		<script src="js/echarts-liquidfill.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="js/map.js" type="text/javascript" charset="utf-8"></script>-->
+		<!--<script src="js/echartsXYZ.js"></script>-->
+		
+		
+		
+<script type="text/javascript">
+	
+	
+	//$(function() {
+
+
+
+function echarts_3(timedata, V) {
+
+	var myChart = echarts.init(document.getElementById('echarts_3'));
+	option = {
+		//			backgroundColor: '#424956',
+		title: {
+			//				text: '请求数',
+			textStyle: {
+				fontWeight: 'normal',
+				fontSize: 16,
+				color: '#FFFFFF'
+			},
+			left: '6%'
+		},
+		tooltip: {
+			trigger: 'axis',
+			axisPointer: {
+				lineStyle: {
+					color: '#FFFFFF'
+				}
+			}
+		},
+		legend: {
+			icon: 'rect',
+			itemWidth: 14,
+			itemHeight: 5,
+			itemGap: 13,
+			data: ['水平位移'],
+			right: '4%',
+			textStyle: {
+				fontSize: 12,
+				color: '#FFFFFF'
+			}
+		},
+		grid: {
+			left: '3%',
+			right: '4%',
+			bottom: '3%',
+			containLabel: true
+		},
+		xAxis: [{
+			type: 'category',
+			boundaryGap: false,
+			axisLine: {
+				lineStyle: {
+					color: '#FFFFFF'
+				}
+			},
+			data: timedata
+		}],
+		yAxis: [{
+			type: 'value',
+			name: '单位（m）',
+			axisTick: {
+				show: false
+			},
+			axisLine: {
+				lineStyle: {
+					color: '#FFFFFF'
+				}
+			},
+			axisLabel: {
+				margin: 10,
+				textStyle: {
+					fontSize: 14
+				}
+			},
+			splitLine: {
+				//show: false,
+				lineStyle: {
+					color: '#233e64'
+				}
+			}
+		}],
+		series: [{
+			name: '水平位移',
+			type: 'line',
+			smooth: true,
+			symbol: 'circle',
+			symbolSize: 5,
+			showSymbol: false,
+			lineStyle: {
+				normal: {
+					width: 3
+				}
+			},
+			areaStyle: {
+				normal: {
+					color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+						offset: 0,
+						color: 'rgba(16,97,204, 0.9)'
+					}, {
+						offset: 0.8,
+						color: 'rgba(17,235,210, 0.2)'
+					}], false),
+					shadowColor: 'rgba(53,142,215, 0.1)',
+					shadowBlur: 20
+				}
+			},
+			itemStyle: {
+				normal: {
+
+					color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+						offset: 0,
+						color: 'rgba(16,97,204,1)'
+					}, {
+						offset: 1,
+						color: 'rgba(17,235,210,1)'
+					}])
+				},
+				emphasis: {
+					color: 'rgb(0,196,132)',
+					borderColor: 'rgba(0,196,132,0.2)',
+					extraCssText: 'box-shadow: 8px 8px 8px rgba(0, 0, 0, 1);',
+					borderWidth: 10
+				}
+			},
+			data: V
+		}]
+	};
+
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+	window.addEventListener("resize", function() {
+		myChart.resize();
+	})
+}
+
+
+function echarts4(timedata, V) {
+
+	var myChart = echarts.init(document.getElementById('echarts4'));
+	option = {
+		//			backgroundColor: '#424956',
+		title: {
+			//				text: '请求数',
+			textStyle: {
+				fontWeight: 'normal',
+				fontSize: 16,
+				color: '#FFFFFF'
+			},
+			left: '6%'
+		},
+		tooltip: {
+			trigger: 'axis',
+			axisPointer: {
+				lineStyle: {
+					color: '#FFFFFF'
+				}
+			}
+		},
+		legend: {
+			icon: 'rect',
+			itemWidth: 14,
+			itemHeight: 5,
+			itemGap: 13,
+			data: ['垂直位移'],
+			right: '4%',
+			textStyle: {
+				fontSize: 12,
+				color: '#FFFFFF'
+			}
+		},
+		grid: {
+			left: '3%',
+			right: '4%',
+			bottom: '3%',
+			containLabel: true
+		},
+		xAxis: [{
+			type: 'category',
+			boundaryGap: false,
+			axisLine: {
+				lineStyle: {
+					color: '#FFFFFF'
+				}
+			},
+			data: timedata
+		}],
+		yAxis: [{
+			type: 'value',
+			name: '单位（m）',
+			axisTick: {
+				show: false
+			},
+			axisLine: {
+				lineStyle: {
+					color: '#FFFFFF'
+				}
+			},
+			axisLabel: {
+				margin: 10,
+				textStyle: {
+					fontSize: 14
+				}
+			},
+			splitLine: {
+				//show: false,
+				lineStyle: {
+					color: '#233e64'
+				}
+			}
+		}],
+		series: [{
+			name: '垂直位移',
+			type: 'line',
+			smooth: true,
+			symbol: 'circle',
+			symbolSize: 5,
+			showSymbol: false,
+			lineStyle: {
+				normal: {
+					width: 3
+				}
+			},
+			areaStyle: {
+				normal: {
+					color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+						offset: 0,
+						color: 'rgba(205,52,42, 0.9)'
+					}, {
+						offset: 0.8,
+						color: 'rgba(235,235,21, 0.2)'
+					}], false),
+					shadowColor: 'rgba(0, 0, 0, 0.1)',
+					shadowBlur: 10
+				},
+			},
+			itemStyle: {
+				normal: {
+
+					color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+						offset: 0,
+						color: 'rgba(205,52,42,1)'
+					}, {
+						offset: 1,
+						color: 'rgba(235,235,21,1)'
+					}])
+				},
+				emphasis: {
+					color: 'rgb(99,250,235)',
+					borderColor: 'rgba(99,250,235,0.2)',
+					extraCssText: 'box-shadow: 8px 8px 8px rgba(0, 0, 0, 1);',
+					borderWidth: 20
+				}
+			},
+			data: V
+		}]
+	};
+
+	// 使用刚指定的配置项和数据显示图表。
+	myChart.setOption(option);
+	window.addEventListener("resize", function() {
+		myChart.resize();
+	})
+}
+
+
+
+	
+	
+	
+function getNow(s) {
+		return s < 10 ? '0' + s : s;
+	}
+
+	var myDate = new Date();
+	var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
+	var oldyear = oldDate.getFullYear(); //获取当前年
+	var year = myDate.getFullYear(); //获取当前年
+	var oldmonth = oldDate.getMonth() + 1; //获取当前月
+	var oldmonth = oldDate.getMonth() + 1; //获取当前月
+	var month = myDate.getMonth() + 1; //获取当前月
+	var date = myDate.getDate(); //获取当前日
+	var olddate = oldDate.getDate(); //获取当前日
+
+	var h = myDate.getHours(); //获取当前小时数(0-23)
+	var m = myDate.getMinutes(); //获取当前分钟数(0-59)
+	var s = myDate.getSeconds();
+
+	var oldh = oldDate.getHours(); //获取当前小时数(0-23)
+	var oldm = oldDate.getMinutes(); //获取当前分钟数(0-59)
+	var olds = oldDate.getSeconds();
+	var old = year + '-' + getNow(oldmonth) + "-" + getNow(olddate) + " " + getNow(oldh) + ':' + getNow(oldm) + ":" + getNow(olds);
+	var now = year + '-' + getNow(month) + "-" + getNow(date) + " " + getNow(h) + ':' + getNow(m) + ":" + getNow(s);
+
+	function loadEchartData(senidX, senidZ, stcdt) {//加载横沥口数据
+		//实时水平位移
+		RunWebServiceJSON(true, "WaterCalcRealtimeData", "/pms/Base", "/doreaddata/getdata", "SENID#starttime#endtime#sortcode", senidX + "#" + old + "#" + now + "#" + "MIN", function (data) {
+			data = $(data).children().text();
+			data = JSON.parse(data);
+			var timedata = [];
+			var V = [];
+			for (var i = data.length - 1; i >= 0; i--) {
+				var AVGV = data[i].AVGV;
+				var time = data[i].TIME;
+				timedata.push(time);
+				V.push(AVGV);
+				if (i + 1 == data.length) {
+					var dataV = data[data.length - 1].AVGV;
+
+				}
+
+			}
+			echarts_3(timedata, V);
+
+		})
+		//实时垂直水位
+		RunWebServiceJSON(true, "WaterCalcRealtimeData", "/pms/Base", "/doreaddata/getdata", "SENID#starttime#endtime#sortcode", senidZ + "#" + old + "#" + now + "#" + "MIN", function (data) {
+			data = $(data).children().text();
+			data = JSON.parse(data);
+			var timedata = [];
+			var V = [];
+			for (var i = data.length - 1; i >= 0; i--) {
+				var AVGV = data[i].AVGV;
+				var time = data[i].TIME;
+				timedata.push(time);
+				V.push(AVGV);
+				if (i + 1 == data.length) {
+					var dataV = data[data.length - 1].AVGV;
+
+				}
+			}
+			echarts4(timedata, V)
+		})
+
+		//var lastlength=0;
+		//分钟数查水平位移
+		RunWebServiceJSON(true, "WaterCalcRealtimeData", "/pms/Base", "/doreaddata/getdata", "SENID#starttime#endtime#sortcode", senidX + "#" + old + "#" + now + "#" + "MIN", function (data) {
+			data = $(data).children().text();
+			data = JSON.parse(data);
+
+			
+				tmpCol3 = "0-0.020";
+				tmpCol4 = ">0.020";
+			
+			var tmpDTUTBHTML = '<tbody>'
+                        	+'<tr class="aaa" align="center">';
+                        //列头
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:250px;background-color:#0b122E;">时间</td>';
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:120px;background-color:#0b122E;">水平位移</td>';
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:120px;background-color:#0b122E;">正常值</td>';
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:120px;background-color:#0b122E;">警戒值</td>';
+                        tmpDTUTBHTML+='</tr>';
+			            var tmpTTTid = 0;
+			            var tmpPlanID = '';
+			            var tmpDefaultBtnID = '';	
+			            
+			            for(var tmpI in data){
+							var tmpitem01 = data[tmpI];
+			            	
+							tmpDTUTBHTML+='<tr class="aaa" style="font-size: 16pt; " align="center" >'
+			            		+'<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpitem01.TIME
+			            		+'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpitem01.AVGV
+			            		+'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpCol3
+			            		+'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpCol4
+			            		+'</td></tr>';
+			            	tmpTTTid++;
+			            	if(tmpTTTid >= 7)
+			            		break;
+			            }
+			            $("#weiyi_chuizhi").html(tmpDTUTBHTML);
+
+
+	
+		})
+
+		//分钟数查垂直位移
+		RunWebServiceJSON(true, "WaterCalcRealtimeData", "/pms/Base", "/doreaddata/getdata", "SENID#starttime#endtime#sortcode", senidZ + "#" + old + "#" + now + "#" + "MIN", function (data) {
+			data = $(data).children().text();
+			data = JSON.parse(data);
+
+			tmpCol3 = "0-0.020";
+				tmpCol4 = ">0.020";
+			var tmpDTUTBHTML = '<tbody>'
+                        	+'<tr class="aaa" align="center">';
+                        //列头
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:250px;background-color:#0b122E;">时间</td>';
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:120px;background-color:#0b122E;">垂直位移</td>';
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:120px;background-color:#0b122E;">正常值</td>';
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:120px;background-color:#0b122E;">警戒值</td>';
+                        tmpDTUTBHTML+='</tr>';
+			            var tmpTTTid = 0;
+			            var tmpPlanID = '';
+			            var tmpDefaultBtnID = '';	
+			            
+			            for(var tmpI in data){
+							var tmpitem01 = data[tmpI];
+			            	
+							tmpDTUTBHTML+='<tr class="aaa" style="font-size: 16pt; " align="center" >'
+			            		+'<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpitem01.TIME
+			            		+'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpitem01.AVGV
+			            		+'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpCol3
+			            		+'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpCol4
+			            		+'</td></tr>';
+			            	tmpTTTid++;
+			            	if(tmpTTTid >= 7)
+			            		break;
+			            }
+			            $("#weiyi_shuipin").html(tmpDTUTBHTML);
+
+
+
+		})
+
+
+
+		RunWebServiceJSON(true, "getdisplacementlast", "/pms/Base", "/doreaddata/getdata", "stcdt", stcdt, function (data) {
+			data = $(data).children().text();
+			data = JSON.parse(data);
+			if (data.length > 0) {
+				var dataV2 = [];
+				dataV2.push(data[0].DiffX);
+				dataV2.push(data[0].DiffZ);
+				//				echarts5(dataV2);
+				var myChart = echarts.init(document.getElementById('echarts5'));
+				/*---------------------数据----------------------------*/
+				var exemptData = [{
+					value: Number(data[0].DiffX) - Number(data[1].DiffX),
+					name: '水平位移'
+				}, {
+					value: Number(data[0].DiffX) - Number(data[1].DiffX),
+					name: '',
+					labelLine: {
+						normal: {
+							show: false
+						}
+					}
+				}];
+				var examNum = [{
+					value: Number(data[0].DiffZ) - Number(data[1].DiffZ),
+					name: '垂直位移'
+				}, {
+					value: Number(data[0].DiffZ) - Number(data[1].DiffZ),
+					name: '',
+					labelLine: {
+						normal: {
+							show: false
+						}
+					}
+				}];
+				var scale = 1;
+				/*---------------------颜色配置----------------------------*/
+				var exemptcolor = [{
+					type: 'linear',
+					x: 0,
+					y: 0,
+					x2: 0,
+					y2: 1,
+					colorStops: [{
+						offset: 0.2,
+						color: 'rgba(235,41,125,0.1)' // 0% 处的颜色
+					}, {
+						offset: 1,
+						color: 'rgba(235,41,125,0.8)' // 100% 处的颜色
+					}],
+					globalCoord: false // 缺省为 false
+				}, 'none'];
+
+				var examNumcolor = [{
+					type: 'linear',
+					x: 0,
+					y: 0,
+					x2: 0,
+					y2: 1,
+					colorStops: [{
+						offset: 0.3,
+						color: 'rgba(63,218,255,0.1)' // 0% 处的颜色
+					}, {
+						offset: 1,
+						color: 'rgba(63,218,255,0.8)' // 100% 处的颜色
+					}],
+					globalCoord: false // 缺省为 false
+				}, 'none'];
+				/*---------------------富文本----------------------------*/
+				var rich = {
+					exemptname: {
+						color: '#115b70',
+						fontSize: 14 * scale,
+						padding: [0, 0]
+					},
+					examptdata: {
+						color: '#eb297d',
+						fontSize: 30 * scale,
+						padding: [0, 0],
+						fontWeight: 'bold'
+					},
+					exemname: {
+						color: '#115b70',
+						fontSize: 14 * scale,
+						padding: [0, 0]
+					},
+					examdata: {
+						color: '#3fdaff',
+						fontSize: 30 * scale,
+						padding: [0, 0],
+						fontWeight: 'bold'
+					},
+					rectblue: {
+						width: 14,
+						height: 14,
+						borderRadius: 3,
+						backgroundColor: "#3fdaff",
+					},
+					rectred: {
+						width: 14,
+						height: 14,
+						borderRadius: 3,
+						backgroundColor: '#eb297d'
+					},
+					space: {
+						padding: [0, 10, 0, 0]
+					}
+				}
+
+
+				option = {
+
+					title: [{
+						text: '整体位移情况',
+						x: 'center',
+						y: 'top',
+						textStyle: {
+							color: '#fff',
+							textAlign: 'center',
+							fontSize: 20 * scale,
+							fontWeight: 'bold'
+						},
+					}],
+					legend: {
+						itemGap: 12,
+						right: 10,
+						bottom: 10,
+						icon: 'none',
+						align: 'left',
+						orient: 'vertical',
+						textStyle: {
+							color: '#115b70',
+							fontSize: 14 * scale,
+							rich: rich
+						},
+						data: ['水平位移', '垂直位移'],
+						formatter: function (name) {
+							if (name === '水平位移') {
+								return '{rectblue|}' + '{space|}' + name
+							} else {
+								return '{rectred|}' + '{space|}' + name
+							}
+						}
+					},
+					series: [
+						//内圈圆环
+						{
+							name: '内边框',
+							type: 'pie',
+							startAngle: 260,
+							clockWise: false, //顺时加载
+							hoverAnimation: false, //鼠标移入变大
+							center: ['50%', '55%'],
+							radius: ['40%', '40%'],
+							label: {
+								normal: {
+									show: false
+								}
+							},
+							data: [{
+								value: 10,
+								name: '',
+								itemStyle: {
+									normal: {
+										borderWidth: 2,
+										borderColor: '#0b5263'
+									}
+								}
+							}, {
+								value: 2,
+								name: '',
+								itemStyle: {
+									normal: {
+										borderWidth: 0,
+										borderColor: 'none'
+									}
+								}
+							}]
+						},
+						//免考人数圆环
+						{
+							name: '垂直位移',
+							type: 'pie',
+							clockWise: false, //顺时加载
+							hoverAnimation: false, //鼠标移入变大
+							startAngle: 270,
+							center: ['50%', '55%'],
+							radius: ['60%', '50%'],
+							color: exemptcolor,
+							label: {
+								normal: {
+									formatter: function (params) {
+										if (params.dataIndex === 0) {
+											return '{examptdata|' + parseFloat(params.value).toFixed(3) + '}\n{exemptname|' + parseFloat(params.value).toFixed(3) + '}';
+										}
+									},
+									rich: rich
+								}
+							},
+							labelLine: {
+								normal: {
+									length: 90,
+									length2: 20,
+									lineStyle: {
+										color: '#eb297d',
+									}
+								}
+							},
+							data: exemptData,
+						},
+						//正常考试人数圆环
+						{
+							name: '水平位移',
+							type: 'pie',
+							clockWise: false, //顺时加载
+							hoverAnimation: false, //鼠标移入变大
+							center: ['50%', '55%'],
+							radius: ['75%', '65%'],
+							color: examNumcolor,
+							label: {
+								normal: {
+									formatter: function (params) {
+										if (params.dataIndex === 0) {
+											return '{examdata|' + parseFloat(params.value).toFixed(3) + '}\n{exemname|' + parseFloat(params.value).toFixed(3) + '}';
+										}
+									},
+									rich: rich
+								}
+							},
+							labelLine: {
+								normal: {
+									length: 70,
+									length2: 20,
+									lineStyle: {
+										color: '#3fdaff',
+									}
+								}
+							},
+							data: examNum,
+						},
+						//内圈圆环
+						{
+							name: '外边框',
+							type: 'pie',
+							// startAngle: 260,
+							clockWise: false, //顺时加载
+							hoverAnimation: false, //鼠标移入变大
+							center: ['50%', '55%'],
+							radius: ['85%', '85%'],
+							label: {
+								normal: {
+									show: false
+								}
+							},
+							data: [{
+								value: 9,
+								name: '',
+								itemStyle: {
+									normal: {
+										borderWidth: 2,
+										borderColor: '#0b5263'
+									}
+								}
+							}, {
+								value: 2,
+								name: '',
+								itemStyle: {
+									normal: {
+										borderWidth: 0,
+										borderColor: 'none'
+									}
+								}
+							}]
+						},
+					]
+				};
+
+				// 使用刚指定的配置项和数据显示图表。
+				myChart.setOption(option);
+				window.addEventListener("resize", function () {
+					myChart.resize();
+				})
+			}
+
+
+		})
+
+	}
+
+
+var m_StationX = "10223000", m_StationY = "10223002",m_StationZ = "12023000";
+	
+    $("input:radio[name='stationRadio']").change(function (){
+       		var opt=$("input:radio[name='stationRadio']:checked").val();
+       		if(opt == 1)
+       		{
+       			m_StationX = "10223000";
+       			m_StationY = "10223002";
+       			m_StationZ = "12023000";
+       			loadEchartData(m_StationX, m_StationY,m_StationZ);
+       		}
+       		else if(opt == 2){
+       			m_StationX = "10223003";
+       			m_StationY = "10223005";
+       			m_StationZ = "12023010";
+       			loadEchartData(m_StationX, m_StationY,m_StationZ);
+       		}
+       		else if(opt == 3){
+       			m_StationX = "10223006";
+       			m_StationY = "10223008";
+       			m_StationZ = "12023020";
+       			loadEchartData(m_StationX, m_StationY,m_StationZ);
+       		}
+    });
+
+
+
+
+//	loadEchartData("10223000", "10223002", "12023000");
+
+	
+	function showDateSelect()
+		{
+			var tmpStrs = m_CurrentQueryData.split('-');
+			$("#dateYearSelectID").val(parseInt(tmpStrs[0]));
+			$("#dateMonthSelectID").val(parseInt(tmpStrs[1]));
+			$("#dateDaySelectID").val(parseInt(tmpStrs[2]));
+			$('.bgPop3,.pop3').show();			
+		}
+		
+		function dateToString(date){ 
+		  var year = date.getFullYear(); 
+		  var month =(date.getMonth() + 1).toString(); 
+		  var day = (date.getDate()).toString();  
+		  if (month.length == 1) { 
+		      month = "0" + month; 
+		  } 
+		  if (day.length == 1) { 
+		      day = "0" + day; 
+		  }
+		  var dateTime = year + "-" + month + "-" + day;
+		  return dateTime; 
+		}
+				
+    function refreshDatas()
+    {
+    	loadEchartData(m_StationX, m_StationY,m_StationZ);
+    }
+
+	/**查询的日期*/
+	var m_CurrentQueryData = old;//dateToString(new Date());
+	
+	//1分钟刷新接口
+	refreshDatas();
+	setInterval(refreshDatas, 60000);
+	
+</script>
+
+	</body>
+
+</html>

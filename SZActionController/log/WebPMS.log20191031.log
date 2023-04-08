@@ -1,0 +1,192 @@
+﻿[Header]
+[Header]
+2019-10-31 09:50:44 [cn.ctgu.webgis.WebService.ActionControllerWebService.Run(d:\SZProject\SZActionController\ActionContrllerWebService.asmx:201)] ERROR cn.ctgu.webgis.WebService.ActionControllerWebService [] <> - 在ActionControllerWebService中捕获到异常
+Exception: System.IO.FileNotFoundException
+Message: 未能找到文件“D:\SZProject\SZActionController\Config\HydroCompu.xml”。
+Source: mscorlib
+   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   在 System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   在 System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   在 System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   在 System.Xml.XmlTextReaderImpl.OpenUrlDelegate(Object xmlResolver)
+   在 System.Threading.CompressedStack.runTryCode(Object userData)
+   在 System.Runtime.CompilerServices.RuntimeHelpers.ExecuteCodeWithGuaranteedCleanup(TryCode code, CleanupCode backoutCode, Object userData)
+   在 System.Threading.CompressedStack.Run(CompressedStack compressedStack, ContextCallback callback, Object state)
+   在 System.Xml.XmlTextReaderImpl.OpenUrl()
+   在 System.Xml.XmlTextReaderImpl.Read()
+   在 System.Xml.XmlLoader.Load(XmlDocument doc, XmlReader reader, Boolean preserveWhitespace)
+   在 System.Xml.XmlDocument.Load(XmlReader reader)
+   在 System.Xml.XmlDocument.Load(String filename)
+   在 cn.ctgu.webgis.Modellib.Optimal.AntAlgorithmForLevel.Execute() 位置 D:\SZProject\algo\Modellib\AntColony\Ant_Algorithm.cs:行号 1808
+   在 cn.ctgu.webgis.OptimalDispatch.HydroDispatch.Execute(DynamicForm form) 位置 C:\software\WXJProject\Component\algo\HydroDispatch\HydroDispatch\HydroDispatch\Optim\HydroDispatch.cs:行号 91
+   在 cn.ctgu.webgis.OptimalDispatch.Task.ExecuteTask(DynamicForm form) 位置 C:\software\WXJProject\Component\algo\HydroDispatch\HydroDispatch\HydroDispatch\Optim\Task.cs:行号 108
+   在 cn.ctgu.webgis.OptimalDispatch.Task.Execute(DynamicForm form) 位置 C:\software\WXJProject\Component\algo\HydroDispatch\HydroDispatch\HydroDispatch\Optim\Task.cs:行号 82
+   在 cn.ctgu.webgis.Utils.ProcessBase.Execute(MethodInfo method, DynamicForm form)
+   在 cn.ctgu.webgis.Action.ProcessAction.excute(DispatchConfig dispatch, DynamicForm form)
+   在 cn.ctgu.webgis.Action.Controller.ActionController.excute(DispatchConfig dispatch, DynamicForm form)
+   在 cn.ctgu.webgis.WebService.ActionControllerWebService.Run(String language, String[] names, String[] values) 位置 d:\SZProject\SZActionController\ActionContrllerWebService.asmx:行号 162
+
+2019-10-31 09:51:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2019/10/31 9:51:00
+Exception: System.Data.SqlClient.SqlException
+Message: 在 sys.servers 中找不到服务器 'hns'。请验证指定的服务器名称是否正确。如果需要，请执行存储过程 sp_addlinkedserver 以将服务器添加到 sys.servers。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+[Header]
+2019-10-31 09:57:21 [cn.ctgu.webgis.WebService.ActionControllerWebService.Run(d:\SZProject\SZActionController\ActionContrllerWebService.asmx:201)] ERROR cn.ctgu.webgis.WebService.ActionControllerWebService [] <> - 在ActionControllerWebService中捕获到异常
+Exception: System.IO.FileNotFoundException
+Message: 未能找到文件“D:\SZProject\SZActionController\Config\HydroCompu.xml”。
+Source: mscorlib
+   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   在 System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   在 System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   在 System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   在 System.Xml.XmlTextReaderImpl.OpenUrlDelegate(Object xmlResolver)
+   在 System.Threading.CompressedStack.runTryCode(Object userData)
+   在 System.Runtime.CompilerServices.RuntimeHelpers.ExecuteCodeWithGuaranteedCleanup(TryCode code, CleanupCode backoutCode, Object userData)
+   在 System.Threading.CompressedStack.Run(CompressedStack compressedStack, ContextCallback callback, Object state)
+   在 System.Xml.XmlTextReaderImpl.OpenUrl()
+   在 System.Xml.XmlTextReaderImpl.Read()
+   在 System.Xml.XmlLoader.Load(XmlDocument doc, XmlReader reader, Boolean preserveWhitespace)
+   在 System.Xml.XmlDocument.Load(XmlReader reader)
+   在 System.Xml.XmlDocument.Load(String filename)
+   在 cn.ctgu.webgis.Modellib.Optimal.AntAlgorithmForLevel.Execute() 位置 D:\SZProject\algo\Modellib\AntColony\Ant_Algorithm.cs:行号 1808
+   在 cn.ctgu.webgis.OptimalDispatch.HydroDispatch.Execute(DynamicForm form) 位置 C:\software\WXJProject\Component\algo\HydroDispatch\HydroDispatch\HydroDispatch\Optim\HydroDispatch.cs:行号 91
+   在 cn.ctgu.webgis.OptimalDispatch.Task.ExecuteTask(DynamicForm form) 位置 C:\software\WXJProject\Component\algo\HydroDispatch\HydroDispatch\HydroDispatch\Optim\Task.cs:行号 108
+   在 cn.ctgu.webgis.OptimalDispatch.Task.Execute(DynamicForm form) 位置 C:\software\WXJProject\Component\algo\HydroDispatch\HydroDispatch\HydroDispatch\Optim\Task.cs:行号 82
+   在 cn.ctgu.webgis.Utils.ProcessBase.Execute(MethodInfo method, DynamicForm form)
+   在 cn.ctgu.webgis.Action.ProcessAction.excute(DispatchConfig dispatch, DynamicForm form)
+   在 cn.ctgu.webgis.Action.Controller.ActionController.excute(DispatchConfig dispatch, DynamicForm form)
+   在 cn.ctgu.webgis.WebService.ActionControllerWebService.Run(String language, String[] names, String[] values) 位置 d:\SZProject\SZActionController\ActionContrllerWebService.asmx:行号 162
+
+2019-10-31 09:57:52 [cn.ctgu.webgis.WebService.ActionControllerWebService.Run(d:\SZProject\SZActionController\ActionContrllerWebService.asmx:201)] ERROR cn.ctgu.webgis.WebService.ActionControllerWebService [] <> - 在ActionControllerWebService中捕获到异常
+Exception: System.IO.FileNotFoundException
+Message: 未能找到文件“D:\SZProject\SZActionController\Config\HydroCompu.xml”。
+Source: mscorlib
+   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   在 System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   在 System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   在 System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   在 System.Xml.XmlTextReaderImpl.OpenUrlDelegate(Object xmlResolver)
+   在 System.Threading.CompressedStack.runTryCode(Object userData)
+   在 System.Runtime.CompilerServices.RuntimeHelpers.ExecuteCodeWithGuaranteedCleanup(TryCode code, CleanupCode backoutCode, Object userData)
+   在 System.Threading.CompressedStack.Run(CompressedStack compressedStack, ContextCallback callback, Object state)
+   在 System.Xml.XmlTextReaderImpl.OpenUrl()
+   在 System.Xml.XmlTextReaderImpl.Read()
+   在 System.Xml.XmlLoader.Load(XmlDocument doc, XmlReader reader, Boolean preserveWhitespace)
+   在 System.Xml.XmlDocument.Load(XmlReader reader)
+   在 System.Xml.XmlDocument.Load(String filename)
+   在 cn.ctgu.webgis.Modellib.Optimal.AntAlgorithmForLevel.Execute() 位置 D:\SZProject\algo\Modellib\AntColony\Ant_Algorithm.cs:行号 1808
+   在 cn.ctgu.webgis.OptimalDispatch.HydroDispatch.Execute(DynamicForm form) 位置 C:\software\WXJProject\Component\algo\HydroDispatch\HydroDispatch\HydroDispatch\Optim\HydroDispatch.cs:行号 91
+   在 cn.ctgu.webgis.OptimalDispatch.Task.ExecuteTask(DynamicForm form) 位置 C:\software\WXJProject\Component\algo\HydroDispatch\HydroDispatch\HydroDispatch\Optim\Task.cs:行号 108
+   在 cn.ctgu.webgis.OptimalDispatch.Task.Execute(DynamicForm form) 位置 C:\software\WXJProject\Component\algo\HydroDispatch\HydroDispatch\HydroDispatch\Optim\Task.cs:行号 82
+   在 cn.ctgu.webgis.Utils.ProcessBase.Execute(MethodInfo method, DynamicForm form)
+   在 cn.ctgu.webgis.Action.ProcessAction.excute(DispatchConfig dispatch, DynamicForm form)
+   在 cn.ctgu.webgis.Action.Controller.ActionController.excute(DispatchConfig dispatch, DynamicForm form)
+   在 cn.ctgu.webgis.WebService.ActionControllerWebService.Run(String language, String[] names, String[] values) 位置 d:\SZProject\SZActionController\ActionContrllerWebService.asmx:行号 162
+
+2019-10-31 10:01:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2019/10/31 10:01:00
+Exception: System.Data.SqlClient.SqlException
+Message: 在 sys.servers 中找不到服务器 'hns'。请验证指定的服务器名称是否正确。如果需要，请执行存储过程 sp_addlinkedserver 以将服务器添加到 sys.servers。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2019-10-31 10:03:11 [cn.ctgu.webgis.WaterCalc.WaterCalcHourReportJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\WaterCalcHourReportJob.cs:75)] INFO  HourReport [] <> - 水务小时计算数据导入完毕#执行时间：2019/10/31 10:03:11
+2019-10-31 10:03:12 [cn.ctgu.webgis.WaterCalc.WaterCalcHourReportJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\WaterCalcHourReportJob.cs:87)] ERROR HourReport [] <> - 在水务小时计算数据导入中捕获到异常#执行时间：2019/10/31 10:03:12
+Exception: System.NullReferenceException
+Message: 未将对象引用设置到对象的实例。
+Source: cn.ctgu.webgis.WaterCalc
+   在 cn.ctgu.webgis.WaterCalc.WaterCalcHourReportJob.queryWaterHourData(DateTime startTime, DateTime endTime) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\WaterCalcHourReportJob.cs:行号 126
+   在 cn.ctgu.webgis.WaterCalc.WaterCalcHourReportJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\WaterCalcHourReportJob.cs:行号 78
+
+2019-10-31 10:03:53 [cn.ctgu.webgis.WebService.ActionControllerWebService.Run(d:\SZProject\SZActionController\ActionContrllerWebService.asmx:201)] ERROR cn.ctgu.webgis.WebService.ActionControllerWebService [] <> - 在ActionControllerWebService中捕获到异常
+Exception: System.IO.FileNotFoundException
+Message: 未能找到文件“D:\SZProject\SZActionController\Config\HydroCompu.xml”。
+Source: mscorlib
+   在 System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   在 System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   在 System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize)
+   在 System.Xml.XmlDownloadManager.GetStream(Uri uri, ICredentials credentials, IWebProxy proxy, RequestCachePolicy cachePolicy)
+   在 System.Xml.XmlUrlResolver.GetEntity(Uri absoluteUri, String role, Type ofObjectToReturn)
+   在 System.Xml.XmlTextReaderImpl.OpenUrlDelegate(Object xmlResolver)
+   在 System.Threading.CompressedStack.runTryCode(Object userData)
+   在 System.Runtime.CompilerServices.RuntimeHelpers.ExecuteCodeWithGuaranteedCleanup(TryCode code, CleanupCode backoutCode, Object userData)
+   在 System.Threading.CompressedStack.Run(CompressedStack compressedStack, ContextCallback callback, Object state)
+   在 System.Xml.XmlTextReaderImpl.OpenUrl()
+   在 System.Xml.XmlTextReaderImpl.Read()
+   在 System.Xml.XmlLoader.Load(XmlDocument doc, XmlReader reader, Boolean preserveWhitespace)
+   在 System.Xml.XmlDocument.Load(XmlReader reader)
+   在 System.Xml.XmlDocument.Load(String filename)
+   在 cn.ctgu.webgis.Modellib.Optimal.AntAlgorithmForLevel.Execute() 位置 D:\SZProject\algo\Modellib\AntColony\Ant_Algorithm.cs:行号 1808
+   在 cn.ctgu.webgis.OptimalDispatch.HydroDispatch.Execute(DynamicForm form) 位置 C:\software\WXJProject\Component\algo\HydroDispatch\HydroDispatch\HydroDispatch\Optim\HydroDispatch.cs:行号 91
+   在 cn.ctgu.webgis.OptimalDispatch.Task.ExecuteTask(DynamicForm form) 位置 C:\software\WXJProject\Component\algo\HydroDispatch\HydroDispatch\HydroDispatch\Optim\Task.cs:行号 108
+   在 cn.ctgu.webgis.OptimalDispatch.Task.Execute(DynamicForm form) 位置 C:\software\WXJProject\Component\algo\HydroDispatch\HydroDispatch\HydroDispatch\Optim\Task.cs:行号 82
+   在 cn.ctgu.webgis.Utils.ProcessBase.Execute(MethodInfo method, DynamicForm form)
+   在 cn.ctgu.webgis.Action.ProcessAction.excute(DispatchConfig dispatch, DynamicForm form)
+   在 cn.ctgu.webgis.Action.Controller.ActionController.excute(DispatchConfig dispatch, DynamicForm form)
+   在 cn.ctgu.webgis.WebService.ActionControllerWebService.Run(String language, String[] names, String[] values) 位置 d:\SZProject\SZActionController\ActionContrllerWebService.asmx:行号 162
+
+2019-10-31 10:06:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2019/10/31 10:06:00
+Exception: System.Data.SqlClient.SqlException
+Message: 在 sys.servers 中找不到服务器 'hns'。请验证指定的服务器名称是否正确。如果需要，请执行存储过程 sp_addlinkedserver 以将服务器添加到 sys.servers。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+[Header]
+2019-10-31 15:41:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2019/10/31 15:41:00
+Exception: System.Data.SqlClient.SqlException
+Message: 在 sys.servers 中找不到服务器 'hns'。请验证指定的服务器名称是否正确。如果需要，请执行存储过程 sp_addlinkedserver 以将服务器添加到 sys.servers。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2019-10-31 15:46:22 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2019/10/31 15:46:22
+Exception: System.InvalidOperationException
+Message: ExecuteReader 要求已打开且可用的 Connection。连接的当前状态为已关闭。
+Source: cn.ctgu.webgis.Data
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getSENID(Int32 SenType) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 188
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 76
+
+2019-10-31 15:51:14 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2019/10/31 15:51:14
+Exception: System.InvalidOperationException
+Message: ExecuteReader 要求已打开且可用的 Connection。连接的当前状态为已关闭。
+Source: cn.ctgu.webgis.Data
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getSENID(Int32 SenType) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 188
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 76
+
+2019-10-31 15:56:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2019/10/31 15:56:00
+Exception: System.InvalidOperationException
+Message: ExecuteReader 要求已打开且可用的 Connection。连接的当前状态为已关闭。
+Source: cn.ctgu.webgis.Data
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getSENID(Int32 SenType) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 188
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 76
+
+2019-10-31 16:01:14 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2019/10/31 16:01:14
+Exception: System.InvalidOperationException
+Message: ExecuteReader 要求已打开且可用的 Connection。连接的当前状态为已关闭。
+Source: cn.ctgu.webgis.Data
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getSENID(Int32 SenType) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 188
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 76
+

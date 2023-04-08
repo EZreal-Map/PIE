@@ -1,0 +1,224 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Data;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+namespace SZRiverSys.Model
+{
+    /// <summary>
+    /// 项目类
+    /// </summary>
+    public class ProjectInfoClass
+    {
+
+        public string ProjectID;
+
+        public string ProjectName;
+        
+        public string ProjectManager;
+
+        public DateTime StartTime;
+
+        public DateTime EndTime;
+
+        public string UsersList;
+        /// <summary>
+        /// 管理人员用户名
+        /// </summary>
+        public string ManagerUserList = "";
+        
+        static Dictionary<string, ProjectInfoClass> m_CacheProjectInfoDict = new Dictionary<string, ProjectInfoClass>();
+
+        private Dictionary<string, string> m_SectionDict = new Dictionary<string, string>();
+
+        public ProjectInfoClass(string projectID)
+        {
+            this.ProjectID = projectID;
+        }
+
+        public bool RefreshProjectInfo()
+        {
+            string tmpSql = "Select ProjectID,ProjectName,ProjectManager,StartTime,EndTime,UsersList From X_ProjectInfo Where ProjectID='" + this.ProjectID + "'";
+            DataTable table = DBHelper.DBHelperMsSql.ExecuteDataTable(tmpSql);
+            if (table != null && table.Rows.Count > 0)
+            {
+                DataRow tmpRow = table.Rows[0];
+                this.ProjectID = tmpRow.ItemArray[0].ToString();
+                this.ProjectName = tmpRow.ItemArray[1].ToString();
+                this.ProjectManager = tmpRow.ItemArray[2].ToString();
+                this.StartTime = DateTime.Parse(tmpRow.ItemArray[3].ToString());
+                this.EndTime = DateTime.Parse(tmpRow.ItemArray[4].ToString());
+                this.UsersList = tmpRow.ItemArray[5].ToString();
+                try
+                {
+                    if (this.UsersList.Length > 0)
+                    {
+                        JArray tmpJArray = (JArray)JsonConvert.DeserializeObject(this.UsersList);
+                        if (tmpJArray != null && tmpJArray.Count > 0)
+                        {
+                            string tmpMainID = "";
+                            foreach (JObject tmpObj in tmpJArray)
+                            {
+                                if (tmpObj["parentid"].ToString() == "-")
+                                {
+                                    tmpMainID = tmpObj["userclass"].ToString();
+                                    break;
+                                }
+                            }
+                            if (tmpMainID != "")
+                            {
+                                this.ManagerUserList = ",";
+                                foreach (JObject tmpObj in tmpJArray)
+                                {
+                                    if (tmpObj["parentid"].ToString() == tmpMainID)
+                                    {
+                                        string tmpUser01 = tmpObj["username"].ToString();
+                                        this.ManagerUserList += tmpUser01 + ",";
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }
+                catch
+                {
+
+                }                         
+                this.RefreshSectionInfo();
+                return true;
+            }
+            return false;
+        }
+
+        public bool RefreshSectionInfo()
+        {
+            m_SectionDict = new Dictionary<string, string>();
+            string tmpSql = "Select SectionID,SectionName From X_ProjectSectionInfo Where SectionID like '" + this.ProjectID + "%'";
+            DataTable table = DBHelper.DBHelperMsSql.ExecuteDataTable(tmpSql);
+            if (table != null && table.Rows.Count > 0)
+            {
+                foreach(DataRow tmpRow in table.Rows)
+                {
+                    string tmpKey = tmpRow.ItemArray[0].ToString();
+                    if(!m_SectionDict.ContainsKey(tmpKey))
+                        m_SectionDict.Add(tmpKey, tmpRow.ItemArray[1].ToString());
+                }
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 根据项目编号获取项目信息
+        /// </summary>
+        /// <param name="projectID"></param>
+        /// <returns></returns>
+        public static ProjectInfoClass GetProjectInfo(string projectID)
+        {
+            if (m_CacheProjectInfoDict.ContainsKey(projectID))
+                return m_CacheProjectInfoDict[projectID];
+            ProjectInfoClass tmpPrjInfo = new ProjectInfoClass(projectID);
+            if(tmpPrjInfo.RefreshProjectInfo())
+            {
+                if (m_CacheProjectInfoDict.ContainsKey(projectID))
+                    m_CacheProjectInfoDict.Remove(projectID);
+                m_CacheProjectInfoDict.Add(projectID, tmpPrjInfo);
+                return tmpPrjInfo;
+            }
+            return null;
+        }
+
+        public static ProjectInfoClass GetProjectInfoCache(string projectID)
+        {
+            if (m_CacheProjectInfoDict.ContainsKey(projectID))
+                return m_CacheProjectInfoDict[projectID];
+            return null;
+        }
+
+        public static void RemoveProjectInfo(string projectID)
+        {
+            if (m_CacheProjectInfoDict.ContainsKey(projectID))
+                m_CacheProjectInfoDict.Remove(projectID);
+        }
+
+        public void ConvertTableColumnWithSection(DataTable table, string sectionColumnName)
+        {
+            int tmpI = table.Columns.IndexOf(sectionColumnName);
+            if (tmpI > -1 && m_SectionDict.Count > 0)
+            {
+                string tmpDefault = "项目范围";
+                foreach (DataRow tmpRow in table.Rows)
+                {
+                    string tmpStr = tmpRow.ItemArray[tmpI].ToString();
+                    if (m_SectionDict.ContainsKey(tmpStr))
+                    {
+                        string tmpValue = m_SectionDict[tmpStr];
+                        tmpRow[tmpI] = tmpValue;
+                    }
+                    else
+                        tmpRow[tmpI] = tmpDefault;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 河道分段类
+    /// </summary>
+    public class SectionClass
+    {
+
+        public string SectionID;
+
+        public string SectionName;
+
+        public double XMin, XMax, YMin, YMax;
+
+        public string Boundary;
+
+        public SectionClass(string sectionID)
+        {
+            this.SectionID = sectionID;
+        }
+
+        public bool RefreshInfo()
+        {
+            string tmpSql = "Select SectionID,SectionName,XMin,XMax,YMin,YMax,Boundary From X_ProjectSectionInfo Where SectionID='" + this.SectionID + "'";
+            DataTable table = DBHelper.DBHelperMsSql.ExecuteDataTable(tmpSql);
+            if (table != null && table.Rows.Count > 0)
+            {
+                DataRow tmpRow = table.Rows[0];
+                this.SectionID = tmpRow.ItemArray[0].ToString();
+                this.SectionName = tmpRow.ItemArray[1].ToString();
+                this.XMin = Convert.ToDouble(tmpRow.ItemArray[2].ToString());
+                this.XMax = Convert.ToDouble(tmpRow.ItemArray[3].ToString());
+                this.YMin = Convert.ToDouble(tmpRow.ItemArray[4].ToString());
+                this.YMax = Convert.ToDouble(tmpRow.ItemArray[5].ToString());
+                this.Boundary = tmpRow.ItemArray[6].ToString();
+                return true;
+            }
+            return false;
+        }
+
+        static Dictionary<string, SectionClass> m_CacheSectionDict = new Dictionary<string, SectionClass>();
+
+        public static SectionClass GetSection(string sectionID)
+        {
+            if (m_CacheSectionDict.ContainsKey(sectionID))
+                return m_CacheSectionDict[sectionID];
+            SectionClass tmpPrjInfo = new SectionClass(sectionID);
+            if (tmpPrjInfo.RefreshInfo())
+            {
+                m_CacheSectionDict.Add(sectionID, tmpPrjInfo);
+                return tmpPrjInfo;
+            }
+            return null;
+        }
+    }
+
+
+}

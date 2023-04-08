@@ -1,0 +1,233 @@
+﻿[Header]
+2023-03-27 09:16:01 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 9:16:01
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 09:21:01 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 9:21:01
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 09:26:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 9:26:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 09:31:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 9:31:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 09:36:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 9:36:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 09:41:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 9:41:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 09:46:02 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 9:46:02
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 09:51:01 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 9:51:01
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 09:56:01 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 9:56:01
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 10:01:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 10:01:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 10:03:30 [cn.ctgu.webgis.WaterCalc.WaterCalcHourReportJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\WaterCalcHourReportJob.cs:87)] ERROR HourReport [] <> - 在水务小时计算数据导入中捕获到异常#执行时间：2023/3/27 10:03:30
+Exception: System.Data.SqlClient.SqlException
+Message: Execution Timeout Expired.  The timeout period elapsed prior to completion of the operation or the server is not responding.
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteNonQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteNonQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.WaterCalcHourReportJob.insertHourDBData(DateTime startTime, DateTime endTime) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\WaterCalcHourReportJob.cs:行号 99
+   在 cn.ctgu.webgis.WaterCalc.WaterCalcHourReportJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\WaterCalcHourReportJob.cs:行号 68
+
+Nested Exception
+
+Exception: System.ComponentModel.Win32Exception
+Message: 等待的操作过时。
+
+
+2023-03-27 10:06:01 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 10:06:01
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 10:11:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 10:11:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 10:16:03 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 10:16:03
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 10:21:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 10:21:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 10:26:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 10:26:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 10:31:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 10:31:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 10:36:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 10:36:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 10:41:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 10:41:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 10:46:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 10:46:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 10:51:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 10:51:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+[Header]
+2023-03-27 16:36:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 16:36:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 16:41:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 16:41:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 16:46:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 16:46:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+
+2023-03-27 16:51:00 [cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:176)] ERROR ImportPIData [] <> - 在水位雨量数据导入中捕获到异常#执行时间：2023/3/27 16:51:00
+Exception: System.Data.SqlClient.SqlException
+Message: 找不到存储过程 'WaterCalc_getOracleRTRUNInfo'。
+Source: .Net SqlClient Data Provider
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, DatabaseParameter[] cmdParams)
+   在 cn.ctgu.webgis.Data.SQLUtils.ExecuteQuery(String datasource, String cmdString, Hashtable cmdParams)
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.getNariHydro(DateTime startTime, DateTime endTime, String stcdt, String tp) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 201
+   在 cn.ctgu.webgis.WaterCalc.ImportPIDataJob.Quartz.IJob.Execute(IJobExecutionContext context) 位置 C:\software\SZProject\Component\WaterCalc\WaterCalcJob\ImportPIDataJob.cs:行号 82
+

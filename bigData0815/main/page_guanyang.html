@@ -1,0 +1,1239 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>河道管养</title>
+		<link rel="stylesheet" href="css/style_guanyang.css" />
+		<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+    	<script type="text/javascript" src="js/common.js"></script>		
+	</head>
+		
+	<style type="text/css">	
+		@font-face{
+	     font-family: 'yejing'; 
+	     src:
+	         url('font/yejing5.ttf') format('truetype');
+		}
+
+		select.sty1 {
+          /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+          border: solid 0px #000;
+          border:none;
+          color:#00F6FF;
+          font-size: 16pt;
+          /*height: 38px; 
+          line-height: 38px;*/
+          /*很关键：将默认的select选择框样式清除*/
+          appearance:none;
+          -moz-appearance:none;
+          -webkit-appearance:none;        
+          /*在选择框的最右侧中间显示小箭头图片*/
+          background: no-repeat scroll right center transparent;          
+        }
+        
+         .selectoptionbg{
+		  background-color:#0E1C3B;
+		  color:#00F6FF;
+		  }
+        	
+		/*.ol-overlaycontainer-stopevent
+		{
+			display:none;
+		} */
+		
+		/*横条样式*/
+		input[type=range] {
+		  -webkit-appearance: none;/*清除系统默认样式*/
+		  width: 100%;
+		  background: -webkit-linear-gradient(#0087ED, #0087ED) no-repeat, #ddd;/*设置左边颜色为#61bd12，右边颜色为#ddd*/
+		  background-size: 100% 100%;/*设置左右宽度比例*/
+		  /*height: 3px;/*横条的高度*/*/
+		}
+		/*拖动块的样式*/
+		input[type=range]::-webkit-slider-thumb {
+		  -webkit-appearance: none;/*清除系统默认样式*/
+		  height: 15px;/*拖动块高度*/
+		  width: 15px;/*拖动块宽度*/
+		  background: #fff;/*拖动块背景*/
+		  border-radius: 50%; /*外观设置为圆形*/
+		  border: solid 5px #ddd; /*设置边框*/
+		}
+		
+		.swal-modal{
+			background-color: #00FCFF;
+		}
+		
+		.ol-control{
+			display: none;
+		}
+		     /**地图提示框*/
+     .ol-popup {
+				position: absolute;
+				background-color: rgba(0, 0, 0, .3);
+				-webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+				filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+				/*padding: 5px 7px;*/
+				border-radius: 5px;
+				border: 1px solid #cccccc;
+				/*border: none;*/
+				padding: 10px;
+				color: white;
+				bottom: 12px;
+				left: -50px;
+				min-width: 220px;
+			}
+      .ol-popup:after, .ol-popup:before {
+        top: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+      }
+      .ol-popup:after {
+        border-top-color: white;
+        border-width: 10px;
+        left: 48px;
+        margin-left: -10px;
+      }
+      .ol-popup:before {
+        border-top-color: #cccccc;
+        border-width: 11px;
+        left: 48px;
+        margin-left: -11px;
+      }
+      .ol-popup-closer {
+        text-decoration: none;
+        position: absolute;
+        top: 2px;
+        right: 8px;
+      }
+      .ol-popup-closer:after {
+        content: "✖";
+        color: #00FCFF;
+      }
+                  
+	</style>
+	
+	<body>
+		<header>		
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 50px; top:-5px;width:600px;height: 50px; display:inline;">
+				<img src="images/pie.png" style="width: 100px; height: 50px;"/>				
+			</div>
+			<div class="masked1" style="font-weight: bold;">河 道 管 养</div>
+					
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;">
+				<ul class="menu">
+					<li><a href="page_home.html">管控大屏</a></li>
+					<li><a href="#">水务预警</a>
+						<ul class="submenu">
+							<li><a href="page_shuiqing.html">水情预警</a></li>
+							<li><a href="page_shuizhi.html">水质预警</a></li>
+							<li><a href="page_weiyi.html">工程安全</a></li>
+							<li><a href="page_videocenter.html">视频预警</a></li>
+						</ul>
+					</li>
+					<li><a href="#">流域调度</a>
+						<ul class="submenu">
+							<li><a href="page_waterFloodScheduling.html">防洪调度</a></li>
+							<li><a href="page_waterscheduling.html">水质模拟</a></li>
+						</ul>
+					</li>
+					<li><a href="#" style="color:#00FCFF">河道管养</a></li>
+				</ul>
+			</div>
+		</header>
+					
+		<canvas id="canvas" style="position: absolute; left: 680px; top:0px; width: 580px; height: 80px;"></canvas>
+		
+		<div id="content">
+			<div class="content_center">
+				<div class="center_top">
+					<div class="title"><img id="switchMapZoomID" src="images/icon03.png" /> 地图</div>					
+					<span id="localtime" style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 100px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<span id="localtime2" style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 220px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="440" height="45" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute; left: 1120px; top:140px; z-index: 9990;"></iframe>
+					
+					<div class="center_top_con" id="distribution_map">
+					</div>
+						<div id="popup" class="ol-popup">
+				        <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+				        <div id="popup-content"></div>
+				    </div>
+				</div>
+				
+				<div class="t_mbox t_userbox" style="text-align: center;position: absolute; left: 80px; top:220px; width：100px;z-index: 9990;">
+		                    <i></i>
+		                    <span>人员信息</span>
+		                    <h2 id="gy_Label03">-/-</h2>
+                		</div>  
+								
+				<div class="center_bot">
+					<div class="title"><img src="images/icon04.png" /> 管养工单</div>
+					<div class="leftPanel">
+						<div id="centerBotDiv" class="leftPanel"></div>
+					</div>
+					<div id="centerBotDiv2" class="left2Panel">
+					</div>
+					<div class="rightPanel" style="background-color: #FF;">
+						<div style="height: 130px; position: relative;" >						
+							<div id="workflowListDiv" class="workflowList">
+	                            <ul class="clearfix">
+	                                <li class="clearfix"><label class="lableRC_Yellow">重要</label> 安全隐患|隐患巡查工单 2019/4/30 0:00:00</li>
+	                                <li class="clearfix"><label class="lableRC_Red">紧急</label> 违法违规|隐患巡查工单 2019/4/30 0:00:00</li>
+	                                <li class="clearfix"><label class="lableRC_Blue">重要</label> 涉河工程|隐患巡查工单 2019/4/30 0:00:00</li>
+	                                <li class="clearfix"><label class="lableRC_Green">重要</label> 安全隐患|隐患巡查工单 2019/4/30 0:00:00</li>
+	                                <li class="clearfix"><label class="lableRC_Yellow">重要</label> 安全隐患|隐患巡查工单 2019/4/30 0:00:00</li>
+	                                <li class="clearfix"><label class="lableRC_Yellow">重要</label> 安全隐患|隐患巡查工单 2019/4/30 0:00:00</li>
+	                            </ul>
+	                        </div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+			<div class="content_right">
+				<div class="news_report">
+					<div class="title"><img src="images/data_select.png"/> 管养人员</div><!--<img src="images/icon05.png" />-->
+					<div id="guangyangUserDiv" class="news_list">
+						<table id="planTable" class="panel-table" border="1">	                        
+	                    </table>
+					</div>
+				</div>
+								
+				<div class="bottomPanel">
+					<div class="title"><img src="images/icon02.png" /> 管养事件</div>
+					<div class="topBox" id="containerEventChartDiv">						
+					</div>
+					<div class="bottomBox">
+						<div style="height: 130px; position: relative;" >						
+							<div id="eventPanelListDiv" class="eventPanelList">
+	                            <ul class="clearfix">
+	                                <li class="clearfix"><label class="lableRC_Yellow">重要</label> 安全隐患|隐患巡查工单 2019/4/30 0:00:00</li>
+	                                <li class="clearfix"><label class="lableRC_Red">紧急</label> 违法违规|隐患巡查工单 2019/4/30 0:00:00</li>
+	                                <li class="clearfix"><label class="lableRC_Blue">重要</label> 涉河工程|隐患巡查工单 2019/4/30 0:00:00</li>
+	                                <li class="clearfix"><label class="lableRC_Green">重要</label> 安全隐患|隐患巡查工单 2019/4/30 0:00:00</li>
+	                                <li class="clearfix"><label class="lableRC_Yellow">重要</label> 安全隐患|隐患巡查工单 2019/4/30 0:00:00</li>
+	                                <li class="clearfix"><label class="lableRC_Yellow">重要</label> 安全隐患|隐患巡查工单 2019/4/30 0:00:00</li>
+	                            </ul>
+	                        </div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+				
+		<!--遮罩层-->
+		<div class="bgPop"></div>
+		
+		<script>
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop,.pop').hide();
+		        });
+		        $('.click_pop').click(function () {
+		            $('.bgPop,.pop').show();
+		        });
+		    })
+		
+		</script>
+		<!--遮罩层-->
+		<div class="bgPop2"></div>
+		<!--弹出框-->
+		<div class="pop2">
+		    <div class="pop-top">
+		        方案信息
+		    </div>
+		    <div class="pop-content">
+		        <table id="pop2_tableID" class="panel-table" bordercolor="#deefff" border="1">
+                    <tbody>
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    </tbody>
+                </table>
+		    </div>
+		    <div class="pop-foot">
+		        <input type="button" value="确定" class="pop-cancel pop-close">
+		    </div>
+		</div>
+		<script>
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop2,.pop2').hide();
+		        });
+		        $('.click_pop2').click(function () {
+		            $('.bgPop2,.pop2').show();
+		        });
+		    })
+		</script>
+			
+		<!--遮罩层-->
+		<div class="bgPop3"></div>
+		<!--弹出框-->
+		<div class="pop3">
+		    <div class="pop-top">
+		        选择日期
+		        <span class="pop-close">Ｘ</span>
+		    </div>
+		    <div class="pop-content">
+		    	<div style="text-align: center;font-size: 40pt;height: 100%;vertical-align: middle;padding-top:60px;">
+		    		<select id="dateYearSelectID" class="sty1" style="font-size: 40pt;">
+						<option class="selectoptionbg" value="2019">2019</option>
+						<option class="selectoptionbg" value="2">2018</option>
+					</select>
+					<label>年</label>
+					<select id="dateMonthSelectID" class="sty1" style="font-size: 40pt;">
+						<option class="selectoptionbg" value="1">01</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>月</label>
+					<select id="dateDaySelectID" class="sty1" style="font-size: 40pt;">
+						<option class="selectoptionbg" value="1">01</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>日</label>
+		    	</div>		        
+		    </div>
+		    <div class="pop-foot">
+		        <input id="dataSelectID" type="button" value="确定" class="pop-cancel pop-close">
+		    </div>
+		</div>
+		<script>						
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop3,.pop3').hide();
+		        });
+		        $('.click_pop3').click(function () {
+		            $('.bgPop3,.pop3').show();		            
+		        });
+		        
+		        $("#dateYearSelectID").empty();
+		        for(var tmpI = 2017; tmpI < 2030; tmpI++)
+		        {
+      				$("#dateYearSelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI+"</option>'");
+		        }
+      			$("#dateMonthSelectID").empty();
+		        for(var tmpI = 1; tmpI < 13; tmpI++)
+		        {
+		        	var tmpI2 = tmpI;
+		        	if(tmpI<10)
+		        		tmpI2 = "0"+tmpI;		        		
+      				$("#dateMonthSelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+		        }
+		        $("#dateDaySelectID").empty();
+		        for(var tmpI = 1; tmpI < 32; tmpI++)
+		        {
+		        	var tmpI2 = tmpI;
+		        	if(tmpI<10)
+		        		tmpI2 = "0"+tmpI;
+      				$("#dateDaySelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+		        }
+		        $('#dataSelectID').click(function () {
+		            var tmpStr = $("#dateYearSelectID").val();
+		            if($("#dateMonthSelectID").val()<10)
+		            	tmpStr += "-0"+$("#dateMonthSelectID").val();
+		            else
+		            	tmpStr += "-"+$("#dateMonthSelectID").val();
+		            if($("#dateDaySelectID").val()<10)
+		            	tmpStr += "-0"+$("#dateDaySelectID").val();	
+		            else
+		            	tmpStr += "-"+$("#dateDaySelectID").val();	
+		            m_CurrentQueryData = tmpStr;
+		            refreshSchedulingPlan(m_CurrentQueryData);
+		        });		        
+		    })
+		</script>
+		
+		<!--背景动画        -->
+		<script type="text/javascript" src="js/bgannimation.js" ></script>	
+		<script type="text/javascript" src="js/jquery.min.js"></script>		
+		<script type="text/javascript" src="js/echarts.min.js"></script>
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script type="text/javascript" src="js/times.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+		
+		<script type="text/javascript" src="js/CommonJS.js"></script>
+		
+		<!--调用op库-->	
+		<link rel="stylesheet" href="css/ol.css" type="text/css">
+		<script src="js/ol.js" type="text/javascript" charset="utf-8"></script>
+		
+		<link rel="stylesheet" type="text/css" href="overlay/popupoverlay.css" />
+		<script type="text/javascript" src="overlay/popupoverlay.js"></script>
+		<!--
+        	作者：xwebsite@163.com
+        	时间：2019-05-07
+        	描述：地图相关操作
+        -->
+		<script src="js/basicmap_guanyang.js" type="text/javascript" charset="utf-8"></script>
+		
+		<!-- sweet-alert库 -->
+		<link href="css/sweet-alert.css" rel="stylesheet" type="text/css" />	
+		<script src="js/sweet-alert.js"></script>
+		
+		<script>
+			
+		var m_UsersInfoList = [];
+		
+		$("#guangyangUserDiv").on("mouseover",function(){
+			m_UsersAnimationEnable = false;
+		})
+		$("#guangyangUserDiv").on("mouseout",function(){
+			m_UsersAnimationEnable = true;
+		})
+		
+		/**
+		 * 刷新用户定位信息
+		 */
+		function refreshUserGPSInfo() {
+			$.ajax({
+				url: mapServerURL + "ServiceHandler/BigDataHandler.ashx?method=getuserfinalgps&projectid="+CurrentProjectID,
+				type: "GET",
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {
+						var tmpObjs = joResult.data;
+						if(UserGPSLayerVectorSource == null) {
+							UserGPSLayerVectorSource = new ol.source.Vector();
+							UserGPSLayer.setSource(UserGPSLayerVectorSource);
+						} else
+							UserGPSLayerVectorSource.clear(true);
+						m_UsersInfoList = [];
+						var tmpTotalUsersCount = tmpObjs.length;
+						var tmpOnlineUsersCount = 0;
+						var tmpTid001 = 0;
+						var dateNow = new Date();
+						for(var i in tmpObjs) {
+							var tmpObj = tmpObjs[i];
+							var tmpX = parseFloat(tmpObj.longitude),
+								tmpY = parseFloat(tmpObj.latitude);
+							if(tmpX > 1 && tmpY > 1) {							
+								var tmpCoordinate = ol.proj.transform([tmpX, tmpY], 'EPSG:4326', 'EPSG:3857');
+								var tmpNickName = tmpObj.RealName;
+								var tmpPoint = new ol.geom.Point(tmpCoordinate);
+								var tmpFeature = new ol.Feature({
+									name: tmpMsg,
+									geometry: tmpPoint
+								});
+								var tmpSpeed = parseFloat(tmpObj.speed);
+								var tmpaccuracy = parseFloat(tmpObj.accuracy);
+								var tmpMsg = "<div style=\"margin:0 auto;text-align:center;\"><label style=\"font-size:16px;\"><font color=\"#6FFF6F\">【" + tmpNickName + "】</font></label><br/></div>" +
+									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">时间：</font>" + tmpObj.gpsTime + "</label><br/>" +
+									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">经度：</font>" + tmpX + "</label><br/>" +
+									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">纬度：</font>" + tmpY + "</label><br/>" +
+									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">速度：</font>" + tmpSpeed.toFixed(2) + "m/s</label><br/>" +
+									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">精度：</font>" + tmpaccuracy.toFixed(2) + "m</label><br/>" +
+									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">地址：</font>" + tmpObj.address + "</label><br/>" +
+									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">备注：</font>" + tmpObj.remark + "</label><br/>" +
+									"<br/>";
+		
+								var tmpIsOnline = false;
+								var tmpTime01 = Date.parse(tmpObj.gpsTime);
+								if(dateNow - tmpTime01 < 300000) //5分钟之内都表示在线
+								{
+									tmpOnlineUsersCount++;
+									tmpIsOnline = "true";
+									
+									tmpFeature.set("ftype", "usergpslayer", false);
+									tmpFeature.set("nickname", tmpNickName, false);
+									tmpFeature.set("isonline", tmpIsOnline, false);
+									tmpFeature.set("msg", tmpMsg, false);
+			
+									UserGPSLayerVectorSource.addFeature(tmpFeature);
+									
+									var tmpColor = '#2FEDA5';
+									if(tmpIsOnline != "true")
+										tmpColor = "#808080";
+									var tmpAddress = tmpObj.address;
+									if(tmpAddress==null || tmpAddress=="null")
+										tmpAddress = "";
+									else
+									{
+										if(tmpAddress.length>8){
+											tmpAddress = tmpAddress.substring(8);										
+										}
+									}									
+									var tmpRowHTML = '<tr class="aaa" style="font-size: 16px;" align="center" onclick="centerOnMapAndAnim('+tmpX+','+tmpY+');">'
+										+'<td style="color: '+tmpColor+'; font-size: 18px; padding: 5px 0;">'+tmpNickName
+										+'</td><td style="color: '+tmpColor+'; font-size: 18px; padding: 5px 0;">'+tmpObj.gpsTime
+			                        	+'</td><td style="color: '+tmpColor+'; font-size: 18px; padding: 5px 0;">'+tmpAddress
+			                         	+'</td></tr>';
+			                         m_UsersInfoList[tmpTid001] = tmpRowHTML;
+			                         tmpTid001++;
+								}
+							}
+						}
+						$('#gy_Label03').text(tmpOnlineUsersCount + "/" + tmpTotalUsersCount);
+					}
+				}
+			})
+		}
+
+		var m_UsersInfoCurrentIndex = 0;
+		var m_UsersAnimationEnable = true;
+		/**
+		 * 气象预报的列表动画
+		 */
+		function UsersInfoListAnimation()
+		{
+			if(m_UsersAnimationEnable == false)
+			{
+				setTimeout(UsersInfoListAnimation, 3000);
+				return;
+			}	
+			try{
+				var tmpLen = m_UsersInfoList.length;
+				var tmpTotalHTML = '<tbody><tr class="aaa" align="center">';
+	            //列头
+	            tmpTotalHTML += '<td style="color: #00fcff; font-size: 18px; font-weight:bold; padding: 5px 0;">姓名</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">时间</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">地址</td>'
+	                         	+'</tr>';	
+	            if(tmpLen<=5)
+	            {
+	            	for(var i = 0; i < tmpLen; i++)
+		            {        	
+		            	tmpTotalHTML+=m_UsersInfoList[i];
+		            }
+		            $("#planTable").html(tmpTotalHTML);
+	            }
+	            else{
+	            	for(var i = m_UsersInfoCurrentIndex; i < m_UsersInfoCurrentIndex + 5; i++)
+		            {
+		            	var tmpRowHTML = null;
+		            	if(i>=tmpLen)
+		            	{
+		            		tmpRowHTML = m_UsersInfoList[i-tmpLen];
+		            	}
+		            	else{
+		            		tmpRowHTML = m_UsersInfoList[i];
+		            	}            	
+		            	tmpTotalHTML+=tmpRowHTML;
+		            }
+		            m_UsersInfoCurrentIndex++; 
+		            if(m_UsersInfoCurrentIndex >= tmpLen)
+		            	m_UsersInfoCurrentIndex = 0;
+					$("#planTable").html(tmpTotalHTML);
+	            }
+			}catch(e){
+				//TODO handle the exception
+			}
+            setTimeout(UsersInfoListAnimation, 3000);
+		}
+		
+	    function initialGongDanChart(data) {
+	    	if(data== null)
+	    		return;
+	        // 基于准备好的dom，初始化echarts实例
+	        var myChart = echarts.init(document.getElementById('centerBotDiv'));
+//	        var data2 = [70, 34, 60, 78];
+//	        var titlename = ['保洁服务', '绿化管养', '设施维护', '巡查服务'];
+
+	        var myColor = ['#1089E7', '#F57474', '#56D0E3', '#F8B448'];
+	        //var myColor = ['#5A9AD5', '#D8762D', '#99999A', '#E7B005'];
+	        option = {            
+	            //图标位置
+	            grid: {
+	                top: '0%',
+	                left: '25%'
+	            },
+	            xAxis: {
+	                show: false
+	            },
+	            yAxis: [{
+	                show: true,
+	                data: data[0],//data[0],
+	                inverse: true,
+	                axisLine: {
+	                    show: false
+	                },
+	                splitLine: {
+	                    show: false
+	                },
+	                axisTick: {
+	                    show: false
+	                },
+	                axisLabel: {
+	                    color: '#fff',
+	                    fontSize:16,
+	                    formatter: (value, index) => {
+	                        return [
+	                            `{lg|${index+1}}  ` + '{title|' + value + '} '
+	                        ].join('\n')
+	                    },
+	                    rich: {
+	                        lg: {
+	                            backgroundColor: '#339911',
+	                            color: '#fff',
+	                            borderRadius: 15,
+	                            // padding: 5,
+	                            align: 'center',
+	                            width: 15,
+	                            height: 15
+	                        },
+	                    }
+	                },
+	            }, {
+	                show: true,
+	                inverse: true,
+	                data: data[2],//valdata,//
+	                axisLabel: {
+	                    textStyle: {
+	                        fontSize: 14,
+	                        color: '#fff',
+	                    },
+	                },
+	                axisLine: {
+	                    show: false
+	                },
+	                splitLine: {
+	                    show: false
+	                },
+	                axisTick: {
+	                    show: false
+	                },
+	
+	            }],
+	            series: [{
+	                name: '条',
+	                type: 'bar',
+	                yAxisIndex: 0,
+	                data: data[1],//data[0],
+	                barWidth: 20,                
+	                itemStyle: {
+	                    normal: {
+	                        barBorderRadius: 40,
+	                        color: function(params) {
+	                            var num = myColor.length;
+	                            return myColor[params.dataIndex % num]
+	                        },
+	                    }
+	                },
+	                label: {
+	                    normal: {
+	                        show: true,
+	                        position: 'inside',
+	                        formatter: '{c}%'
+	                    }
+	                },
+	            },
+	            {
+	                name: '框',
+	                type: 'bar',
+	                yAxisIndex: 1,
+	                barGap: '-100%',
+	                data: [100, 100, 100, 100],
+	                barWidth: 22,
+	                itemStyle: {
+	                    normal: {
+	                        color: 'none',
+	                        borderColor: '#00c1de',
+	                        borderWidth: 1,
+	                        barBorderRadius: 40,
+	                    }
+	                }
+	            }
+	            ]
+	        };
+	        // 使用刚指定的配置项和数据显示图表。
+	        myChart.setOption(option);
+	    }
+	    
+	    function initialJobListChart(data) {
+	    	if(data== null)
+	    		return;
+	        // 基于准备好的dom，初始化echarts实例
+	        var myChart = echarts.init(document.getElementById('centerBotDiv'));
+	        var myColor = ['#1089E7', '#F57474', '#56D0E3', '#F8B448'];
+	        option = {            
+	            //图标位置
+	            grid: {
+	                top: '0%',
+	                left: '30%',
+	                right:'12%'
+	            },
+	            xAxis: {
+	                show: false
+	            },
+	            yAxis: [{
+	                show: true,
+	                data: data[0],
+	                inverse: true,
+	                axisLine: {
+	                    show: false
+	                },
+	                splitLine: {
+	                    show: false
+	                },
+	                axisTick: {
+	                    show: false
+	                },
+	                axisLabel: {
+	                    color: '#fff',
+	                    fontSize:14,
+	                    formatter: (value, index) => {
+	                        return [
+	                            `{lg|${index+1}}  ` + '{title|' + value + '} '
+	                        ].join('\n')
+	                    },
+	                    rich: {
+	                        lg: {
+	                            backgroundColor: '#339911',
+	                            color: '#fff',
+	                            borderRadius: 15,
+	                            padding: 5,
+	                            align: 'center',
+	                            width: 15,
+	                            height: 15
+	                        },
+	                    }
+	                },
+	            }
+	            , {
+	                show: true,
+	                inverse: true,
+	                data: data[2],//valdata,//
+	                axisLabel: {
+	                    textStyle: {
+	                        fontSize: 14,
+	                        color: '#fff',
+	                    },
+	                },
+	                axisLine: {
+	                    show: false
+	                },
+	                splitLine: {
+	                    show: false
+	                },
+	                axisTick: {
+	                    show: false
+	                },	
+	            }
+	            ],
+	            series: [{
+	                name: '条',
+	                type: 'bar',
+	                yAxisIndex: 0,
+	                data: data[1],
+	                barWidth: 20,                
+	                itemStyle: {
+	                    normal: {
+	                        barBorderRadius: 40,
+	                        color: function(params) {
+	                            var num = myColor.length;
+	                            return myColor[params.dataIndex % num]
+	                        },
+	                    }
+	                },
+	                label: {
+	                    normal: {
+	                        show: true,
+	                        position: 'right',
+	                        //formatter:'{c}'
+	                        formatter: function (params) {
+					            var tar = params[1];
+					            return data[1][params.dataIndex] +'/'+data[2][params.dataIndex];
+					        }
+	                    }
+	                },
+	            }
+	            ,{
+	                name: '框',
+	                type: 'bar',
+	                yAxisIndex: 1,
+	                barGap: '-100%',
+	                data: data[2],
+	                barWidth: 22,
+	                itemStyle: {
+	                    normal: {
+	                        color: 'none',
+	                        borderColor: '#00c1de',
+	                        borderWidth: 1,
+	                        barBorderRadius: 40,
+	                    }
+	                }
+	            }
+	            ]
+	        };
+	        // 使用刚指定的配置项和数据显示图表。
+	        myChart.setOption(option);
+	    }
+	    
+	    /**
+	     * 刷新工单的分类信息
+	     */
+	    function refreshJobGroupInfo()
+	    {
+			var now = new Date();
+			var tmpMonth = now.getMonth()+1;
+			var tmpMonthStr = ""+tmpMonth;
+			if(tmpMonth<10)
+				tmpMonthStr = "0"+tmpMonth;
+			var tmpStartTime = now.getFullYear()+"-"+tmpMonthStr+"-01 00:00:00";
+			tmpMonth++;
+			var tmpEndTime = "";
+			if(tmpMonth>12)
+			{
+				tmpEndTime = (now.getFullYear()+1)+"-01-01 00:00:00";
+			}
+			else{
+				tmpMonthStr = ""+tmpMonth;
+				if(tmpMonth<10)
+					tmpMonthStr = "0"+tmpMonth;
+				tmpEndTime = now.getFullYear()+"-"+tmpMonthStr+"-01 00:00:00";
+			}
+			var dataObj = {
+				method:"getjobscountwithtype",
+				projectid:CurrentProjectID,
+				starttime: tmpStartTime,
+				endtime: tmpEndTime,
+			}
+			$.ajax({
+				type: "post",
+				url: ServerURL + "/ServiceHandler/BigDataHandler.ashx",
+				async: true,
+				data:dataObj,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {						
+						var tmpObjs = joResult.msg;
+						var tmpArray01 = [],tmpArray02 = [],tmpArray03 = [],tmpDataArray=[];
+						for(var i in tmpObjs)
+						{
+							var tmpObj = tmpObjs[i];
+							tmpArray01[i] = tmpObj.name;
+							tmpArray02[i] = tmpObj.totalcount;
+							tmpArray03[i] = tmpObj.undocount;
+							
+							var tmpObj01 = new Object();
+			    			tmpObj01["value"] = tmpObj.totalcount;
+			    			tmpObj01["name"] = tmpObj.name;
+			    			
+			    			tmpDataArray.push(tmpObj01);
+						}
+						
+						initialJobListChart([tmpArray01,tmpArray03,tmpArray02]);
+						initialJobChartCircle(tmpArray01, tmpDataArray);
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					
+				}
+			});	    	
+    	}
+        
+		/**
+		 * 获取最近的工单
+		 */
+		function refreshLastJobsInfo()
+		{
+			var newDate = new Date();
+			var todayTime =(new Date(newDate.getFullYear(),newDate.getMonth(),newDate.getDate()));
+			newDate = new Date(todayTime.getTime() + 24*60*60*1000);//明天凌晨
+			
+			var dataObj = {
+				method:"getlastjobsinfo",				
+				projectid:CurrentProjectID,
+				endtime:newDate.Format("yyyy-MM-dd hh:mm:ss"),
+				count: "10"
+			}
+			$.ajax({
+				type: "post",
+				url: ServerURL + "/ServiceHandler/BigDataHandler.ashx",
+				async: true,
+				data:dataObj,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {						
+						var tmpObjs = joResult.data;
+						var tmpTotalHTML = '<ul class="clearfix">';
+						var dateNow = new Date();
+						for(var tmpI in tmpObjs)
+						{
+							var tmpObj = tmpObjs[tmpI];
+							var tmpLClass = "lableRC_Blue";
+							if(tmpObj.JobType.indexOf("保洁服务")>=0)
+								tmpLClass = "lableRC_Yellow";
+							else if(tmpObj.JobType.indexOf("设施维护")>=0)
+								tmpLClass = "lableRC_Red";
+							else if(tmpObj.JobType.indexOf("绿化管养")>=0)
+								tmpLClass = "lableRC_Green";
+							var tmpTag = '';
+							var tmpProgress = parseInt(tmpObj.CurrentProgress);
+							if(tmpProgress >= 100)
+								tmpTag = '<label class="lableRC_Blue">已完成</label>';
+							else
+							{
+								var tmpTime01 = Date.parse(tmpObj.PlanEndTime);
+								if(dateNow > tmpTime01) //已经超期
+									tmpTag = '<label class="lableRC_Red">已超期</label>';
+								else
+									tmpTag = '<label class="lableRC_Yellow">进行中</label>';
+							}
+							
+							var tmpStr = tmpObj.PlanStartTime + "至" + tmpObj.PlanEndTime
+									+" "+tmpObj.AssignUserName + " "+ tmpObj.Content;
+							if(tmpStr.length > 40)	
+								tmpStr = tmpStr.substring(0,40);
+								
+							tmpTotalHTML+='<li class="clearfix"><label class="'
+								+tmpLClass+'">'+tmpObj.JobType+'</label> '+tmpTag+' '
+								+tmpStr+'</li>';
+						}						
+						tmpTotalHTML+="</ul>";
+						$('#workflowListDiv').html(tmpTotalHTML);
+						workflowListAnimation();
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					
+				}
+			});		
+		}	
+		
+        var m_workflowListInterval = null;
+        var m_workflowListAnimEnable = true;
+		/**
+		 * 河道管养消息列表动画
+		 */
+		function workflowListAnimation()
+		{
+			var html2 = $(".workflowList ul").html();
+			$(".workflowList ul").append(html2);
+			var ls2 = $(".workflowList li").length/2+1;
+			a=0;
+			if(m_workflowListInterval!=null)
+				clearInterval(m_workflowListInterval);
+			m_workflowListAnimEnable = true;
+			m_workflowListInterval = setInterval(function(){
+				if(m_workflowListAnimEnable == false)
+					return;
+				a++;
+				if(a==ls2){
+					a=0;
+					$(".workflowList ul").css({marginTop:0});
+					//$(".workflowList ul").animate({marginTop:-'30'*a+'px'},800);
+					return;
+				}
+		    	$(".workflowList ul").animate({marginTop:-'40'*a+'px'},800);
+			},3000);
+		}
+		
+		$("#workflowListDiv").on("mouseover",function(){
+			m_workflowListAnimEnable = false;
+		})
+		$("#workflowListDiv").on("mouseout",function(){
+			m_workflowListAnimEnable = true;
+		})
+		
+		function initialEventGroupChart(names,values)
+		{
+			var dom = document.getElementById("containerEventChartDiv");
+		    var myChart = echarts.init(dom);
+		    var app = {};
+		    option = null;
+		    option = {		        
+		        legend: {
+		            x : 'center',
+		            y : 'bottom',
+		            itemWidth: 8,
+		            itemHeight: 8,
+		            textStyle:{
+		                color:'#fff',
+		                fontSize:16
+		            },
+		            data:names
+		        },
+		        color:["#2B82ED","#C12E34","#CDA819","#32A487","#FFFF00"],
+		        tooltip : {
+			        trigger: 'item',
+			        formatter: "{a} <br/>{b} : {c} ({d}%)"
+			    },
+		        calculable : true,
+		        series : [
+		            {
+		                name:'水质情况',
+		                type:'pie',
+		                radius : [20, 60],
+		                center : ['50%', '45%'],
+		                label: {
+			                normal: {
+			                    show: true,
+			                    textStyle: {
+						          fontSize: '16'
+			                    }
+			                },
+			                emphasis: {
+			                    show: true
+			                }
+			            },
+		                data:values
+		            }
+		        ]
+		    };
+		    if (option && typeof option === "object") {
+		        myChart.setOption(option, true);
+		    }
+		}
+		
+		function refreshEventGroupChartData()
+		{
+			var now = new Date();
+			var tmpMonth = now.getMonth()+1;
+			var tmpMonthStr = ""+tmpMonth;
+			if(tmpMonth<10)
+				tmpMonthStr = "0"+tmpMonth;
+			var tmpStartTime = now.getFullYear()+"-"+tmpMonthStr+"-01 00:00:00";
+			tmpMonth++;
+			var tmpEndTime = "";
+			if(tmpMonth>12)
+				tmpEndTime = (now.getFullYear()+1)+"-01-01 00:00:00";
+			else{
+				tmpMonthStr = ""+tmpMonth;
+				if(tmpMonth<10)
+					tmpMonthStr = "0"+tmpMonth;
+				tmpEndTime = now.getFullYear()+"-"+tmpMonthStr+"-01 00:00:00";
+			}
+			var dataObj = {
+				method:"geteventscountwithtype",
+				projectid:CurrentProjectID,
+				starttime: tmpStartTime,
+				endtime: tmpEndTime,
+			}
+			$.ajax({
+				type: "post",
+				url: ServerURL + "/ServiceHandler/BigDataHandler.ashx",
+				async: true,
+				data:dataObj,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {						
+						var tmpObjs = joResult.data;
+						var tmpFieldsName = [], tmpDataArray = [];
+						for(var i in tmpObjs)
+						{
+							var tmpObj = tmpObjs[i];
+							var tmpObj01 = new Object();
+			    			tmpObj01["value"] = tmpObj.TotalCount;
+			    			tmpObj01["name"] = tmpObj.EventType;
+			    			tmpFieldsName.push(tmpObj.EventType);
+			    			tmpDataArray.push(tmpObj01);
+						}
+						initialEventGroupChart(tmpFieldsName,tmpDataArray);
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					
+				}
+			});	  	
+		}
+		
+		var m_eventListInterval = null;
+        var m_eventListAnimEnable = true;
+		/**
+		 * 河道事件消息列表动画
+		 */
+		function eventListAnimation()
+		{
+			var html2 = $(".eventPanelList ul").html();
+			$(".eventPanelList ul").append(html2);
+			var eventListals2 = $(".eventPanelList li").length/2+1;
+			eventLista=0;
+			if(m_eventListInterval!=null)
+				clearInterval(m_eventListInterval);
+			m_eventListAnimEnable = true;
+			m_eventListInterval = setInterval(function(){
+				if(m_eventListAnimEnable == false)
+					return;
+				eventLista++;
+				if(eventLista==eventListals2){
+					eventLista=0;
+					$(".eventPanelList ul").css({marginTop:0});
+					//$(".workflowList ul").animate({marginTop:-'30'*a+'px'},800);
+					return;
+				}
+		    	$(".eventPanelList ul").animate({marginTop:-'40'*eventLista+'px'},800);
+			},1000);
+		}
+		
+		$("#eventPanelListDiv").on("mouseover",function(){
+			m_eventListAnimEnable = false;
+		})
+		$("#eventPanelListDiv").on("mouseout",function(){
+			m_eventListAnimEnable = true;
+		})
+		
+		/**
+		 * 获取最近的事件
+		 */
+		function refreshLastEventsInfo()
+		{
+			var dataObj = {
+				method:"geteventslastinfo",
+				projectid:CurrentProjectID,
+				count: "10"
+			}
+			$.ajax({
+				type: "post",
+				url: ServerURL + "/ServiceHandler/BigDataHandler.ashx",
+				async: true,
+				data:dataObj,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {						
+						var tmpObjs = joResult.data;
+						var tmpTotalHTML = '<ul class="clearfix">';
+						for(var tmpI in tmpObjs)
+						{							
+							var tmpObj = tmpObjs[tmpI];
+									var tmpLClass = "lableRC_Blue";
+									if(tmpObj.EmergencyType.indexOf("重要")>=0)
+										tmpLClass = "lableRC_Yellow";
+									else if(tmpObj.EmergencyType.indexOf("十分重要")>=0)
+										tmpLClass = "lableRC_Red";
+									var tmpStr = tmpObj.EventName + " " + tmpObj.UploadTime;
+									if(tmpStr.length > 20)	
+										tmpStr = tmpStr.substring(0,20);							
+									if(tmpObj.X == '')
+										tmpObj.X = '114.1817251111';
+									if(tmpObj.Y == '')
+										tmpObj.Y = '22.5951098889';
+										
+									addGYEventPoint(tmpObj.X, tmpObj.Y, tmpObj);
+									tmpTotalHTML+='<li class="clearfix" onClick="centerOnMapAndAnim('+tmpObj.X+','+tmpObj.Y+');"><label class="'
+										+tmpLClass+'">'+tmpObj.EmergencyType+'</label> '+tmpObj.EventType
+										+'|'+tmpStr+'</li>';
+						}						
+						tmpTotalHTML+="</ul>";
+						$('#eventPanelListDiv').html(tmpTotalHTML);
+						eventListAnimation();
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					
+				}
+			});		
+		}	
+				
+		/**
+		 * 刷新工单饼状图
+		 * @param {Object} values
+		 */
+		function initialJobChartCircle(names, values)
+		{
+			var dom = document.getElementById("centerBotDiv2");
+		    var myChart = echarts.init(dom);
+		    var app = {};
+		    option = null;
+		    option = {		        
+		        legend: {
+		            x : 'center',
+		            y : 'bottom',
+		            itemWidth: 8,
+		            itemHeight: 8,
+		            textStyle:{
+		                color:'#fff',
+		                fontSize:16
+		            },
+		            data:names
+		        },
+		        color:['#1E90FA', '#FFFF00', '#9BCA63', '#FF1010'],
+		        tooltip : {
+			        trigger: 'item',
+			        formatter: "{a} <br/>{b} : {c} ({d}%)"
+			    },
+		        calculable : true,
+		        series : [
+		            {
+		                name:'工单分布',
+		                type:'pie',
+		                radius : [20, 60],
+		                center : ['50%', '45%'],
+		                label: {
+			                normal: {
+			                    show: true,
+			                    textStyle: {
+						          fontSize: '16'
+			                    }
+			                },
+			                emphasis: {
+			                    show: true
+			                }
+			            },
+		                data:values
+		            }
+		        ]
+		    };
+		    if (option && typeof option === "object") {
+		        myChart.setOption(option, true);
+		    }
+		}
+				
+		// 对Date的扩展，将 Date 转化为指定格式的String   
+		// 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，   
+		// 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)   
+		// 例子：   
+		// (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423   
+		// (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18   
+		Date.prototype.Format = function(fmt)   
+		{ //author: meizz  
+			try{
+				var o = {
+				    "M+" : this.getMonth()+1,                 //月份   
+				    "d+" : this.getDate(),                    //日   
+				    "h+" : this.getHours(),                   //小时   
+				    "m+" : this.getMinutes(),                 //分   
+				    "s+" : this.getSeconds(),                 //秒   
+				    "q+" : Math.floor((this.getMonth()+3)/3), //季度   
+				    "S"  : this.getMilliseconds()             //毫秒   
+				  };   
+				  if(/(y+)/.test(fmt))   
+				    fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));   
+				  for(var k in o)   
+				    if(new RegExp("("+ k +")").test(fmt))   
+				  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+				  return fmt;  
+			}catch(e){
+				//TODO handle the exception
+			}
+		    return "";
+		}	
+		
+		refreshLastEventsInfo();//刷新最近的事件信息
+		
+		var data1 = [70, 34, 60, 78];
+	        var titlename1 = ['保洁服务', '绿化管养', '设施维护', '巡查服务'];
+	        var valdata1 = [702, 406, 664, 793];
+		initialGongDanChart([titlename1,data1,valdata1]);
+	
+		UsersInfoListAnimation();
+		refreshUserGPSInfo();//刷新用户信息
+		setInterval(refreshUserGPSInfo, 5000); //刷新用户当前定位信息
+
+		refreshLastJobsInfo();//刷新最近工单信息
+		setInterval(refreshLastJobsInfo, 60000);
+		
+		refreshJobGroupInfo();
+		setInterval(refreshJobGroupInfo, 60000);
+		
+		refreshEventGroupChartData();
+		setInterval(refreshEventGroupChartData, 60000);
+	</script>
+		
+		
+	</body>
+</html>

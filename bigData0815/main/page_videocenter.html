@@ -1,0 +1,975 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>视频智能预警</title>
+		<link rel="stylesheet" href="css/style_videocenter.css" />
+		<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+    	<script type="text/javascript" src="js/common.js"></script>
+	</head>
+	<style>
+		@font-face{
+	     font-family: 'yejing'; 
+	     src:
+	         url('font/yejing5.ttf') format('truetype');
+		}
+		html, body {
+		    padding: 0;
+		    margin: 0;
+		    background-color:rgb(11, 18, 46);
+		}
+		.playWnd {
+		    margin: 20px;
+		    margin-left: 55px;
+		    width: 1300px;
+		    height: 760px;
+		    border: 1px solid red;
+		}
+		.cbInfoDiv {
+		    float: left;
+		    width: 360px;
+		    margin-left: 16px;
+		    border:1px solid #7F9DB9;
+		}
+		.cbInfo {
+		    height: 200px;
+		    padding: 5px;
+		    border: 1px solid #7F9DB9;
+		    overflow: auto;
+		    word-break: break-all;
+		}
+		.operate {
+		    margin-top: 24px;
+		}
+		.operate::after {
+		    content: '';
+		    display: block;
+		    clear: both;
+		}
+		.operate .btns {
+		    height: 32px;
+		}
+		.module {
+		    float: left;
+		    width: 340px;
+		    min-height: 320px;
+		    margin-left: 16px;
+		    padding: 16px 8px;
+		    box-sizing: border-box;
+		    border: 1px solid #e5e5e5;
+		}
+		.module .item {
+		    margin-bottom: 4px;
+		}
+		.module .label {
+		    width: 150px;
+		    display: inline-block;
+		    vertical-align: middle;
+		    margin-right: 8px;
+		    text-align: right;
+		}
+		.module input[type="text"],
+		.module select {
+		    box-sizing: border-box;
+		    display: inline-block;
+		    vertical-align: middle;
+		    margin-left: 0;
+		    width: 150px;
+		    min-height: 20px;
+		}
+		.module .btn {
+		    min-width: 80px;
+		    min-height: 24px;
+		    margin-top: 16px;
+		    margin-left: 158px;
+		}
+		
+		.li_alarm_normal {
+			font-size:12pt;
+			color: #FFFFFF;
+			list-style-type: none;
+			list-style:inside url('images/icon_alarm.png');
+		}
+		
+		.li_alarm_alarm {
+			font-size:12pt;
+			color: #FFFFFF;
+			list-style-type: none;
+			list-style:inside url('images/icon_enter.png');
+		}
+		.div-inline{ display:inline} 
+		
+		select.sty1 {
+          /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+          border: solid 0px #000;
+          border:none;
+          color:#3a65ba;
+          font-size: 14pt;
+          /*很关键：将默认的select选择框样式清除*/
+          appearance:none;
+          -moz-appearance:none;
+          -webkit-appearance:none;        
+          /*在选择框的最右侧中间显示小箭头图片*/
+          background: no-repeat scroll right center transparent;          
+        }
+        select.sty1::-ms-expand { display: none; }
+	</style>
+	<body>
+		<header>				
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 50px; top:-5px;width:600px;height: 50px; display:inline;">
+				<img src="images/pie.png" style="width: 100px; height: 50px;"/>				
+			</div>
+			<div class="masked1" style="font-weight: bold;">视 频 智 能 预 警</div>
+					
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;">
+				<ul class="menu">
+					<li><a href="page_home.html">管控大屏</a></li>
+					<li><a href="#" style="color:#00FCFF">水务预警</a>
+						<ul class="submenu">
+							<li><a href="page_shuiqing.html">水情预警</a></li>
+							<li><a href="page_shuizhi.html">水质预警</a></li>
+							<li><a href="page_weiyi.html">工程安全</a></li>
+							<li><a href="page_videocenter.html" style="color:#00FCFF">视频预警</a></li>
+						</ul>
+					</li>
+					<li><a href="#">流域调度</a>
+						<ul class="submenu">
+							<li><a href="page_waterFloodScheduling.html">防洪调度</a></li>
+							<li><a href="page_waterscheduling.html">水质模拟</a></li>
+						</ul>
+					</li>
+					<li><a href="page_guanyang.html">河道管养</a></li>
+				</ul>
+			</div>
+		</header>
+		<canvas id="canvas" style="position: absolute; left: 680px; top:0px; width: 580px; height: 80px;"></canvas>
+		
+		<div id="content">
+			<div class="content_center">
+				<div class="center_top">
+					<div class="title"><img src="images/icon03.png" /> 监控视频</div>
+					<span id="localtime" style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 120px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<span id="localtime2" style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 240px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="440" height="45" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute; left: 1120px; top:140px; z-index: 9990;"></iframe>
+					
+					<div class="center_top_con" id="distribution_map">
+						<div id="playWnd" class="playWnd" style="left: 100px; top: 50px;"></div>
+						<div style="width:100%;height: 50px; display:inline-block;margin-top: -10px;; background-color: transparent;text-align:center;" align="center">
+							<div class="div-inline">
+								<select id="cameraSelectID" class="sty1" >
+									  <option value="1">Camera1</option>
+									  <option value="2">Camera2</option>
+								</select></div>
+							<div class="div-inline"><img id="control_LeftID" src="images/control_left.png" style="width: 30px;margin-left: 10px;cursor: pointer;" alt="左转"/></div>
+							<div class="div-inline"><img id="control_RightID" src="images/control_right.png" style="width: 30px;margin-left: 10px;cursor: pointer;"/></div>
+							<div class="div-inline"><img id="control_UpID" src="images/control_up.png" style="width: 30px;margin-left: 10px;cursor: pointer;"/></div>
+							<div class="div-inline"><img id="control_DownID" src="images/control_down.png" style="width: 30px;margin-left: 10px;cursor: pointer;"/></div>
+							<div class="div-inline"><img id="control_ZoomInID" src="images/control_zoomin.png" style="width: 30px;margin-left: 10px;cursor: pointer;"/></div>
+							<div class="div-inline"><img id="control_ZoomOutID" src="images/control_zoomout.png" style="width: 30px;margin-left: 10px;cursor: pointer;"/></div>
+							<div class="div-inline"><img id="control_RestoreID" src="images/control_down_restore.png" style="width: 30px;margin-left: 10px;cursor: pointer;"/></div>
+						
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="content_right">
+				<div class="report">
+					<div class="report1">
+						<p>摄像头</p>
+						<small>4/4</small>
+					</div>
+					<div id="report2ID" class="report2">
+						<p>事件</p>
+						<small>0/0</small>
+					</div>
+				</div>
+				<div class="news_report">
+					<div class="title"><img src="images/icon05.png" /> 系统消息</div>
+					<div class="news_list" id="msgListDiv">
+						<ul>
+							<li v-for="item in almMsg.slice(0,6)" class="li02">
+							    {{ item.msg }}
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--遮罩层-->
+		<div class="bgPop"></div>
+		
+		<script>
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop,.pop').hide();
+		        });
+		        $('.click_pop').click(function () {
+		            $('.bgPop,.pop').show();
+		        });
+		    })
+		
+		</script>
+		<!--遮罩层-->
+		<div class="bgPop2"></div>
+		<!--弹出框-->
+		<div class="pop2">
+		    <div class="pop-top">
+		        <label id="camaraTitleID">摄像头</label>
+		        <span class="pop-close">Ｘ</span>
+		    </div>
+		    <div class="pop-content">
+		        <img id="cameraEventImg" src="https://www.baidu.com/img/bd_logo1.png?where=super" style="width: 100%; height: 260px;">
+		    </div>
+		</div>
+		
+		<script>
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop2,.pop2').hide();
+		        });
+		        $('.click_pop2').click(function () {
+		            $('.bgPop2,.pop2').show();
+		        });
+		    })
+		
+		</script>
+		
+		<script type="text/javascript" src="js/jquery.min.js"></script>	
+		<!--背景动画        -->
+		<script type="text/javascript" src="js/bgannimation.js" ></script>	
+		<script type="text/javascript" src="js/times.js"></script>
+		<script src="js/jsencrypt.min.js"></script>
+		<script src="js/jsWebControl-1.0.0.min.js"></script>
+
+		<script>
+			var ServerURL = "http://192.168.1.110/SZRiverSys";//"http://113.108.98.19:8888/SZRiverSys";
+			
+			var m_StartTime = new Date();
+			var m_EndTime = new Date();
+			m_StartTime = new Date(m_EndTime.getTime() - 60*60*1000); //1小时前
+			
+			var m_MsgRecCount = 0, m_MsgRecAlarmCount = 0;
+			
+			function openCameraImg(title, eventID)
+			{
+				$('.bgPop2,.pop2').show();
+				$("#camaraTitleID").text(title);
+				var tmpURL = ServerURL + '/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=geteventfile&eventid='+eventID;
+				$("#cameraEventImg").attr("src",tmpURL);
+			}
+			
+			Date.prototype.format = function(format) {
+			    var date = {
+			       "M+": this.getMonth() + 1,
+			       "d+": this.getDate(),
+			       "h+": this.getHours(),
+			       "m+": this.getMinutes(),
+			       "s+": this.getSeconds(),
+			       "q+": Math.floor((this.getMonth() + 3) / 3),
+			       "S+": this.getMilliseconds()
+			    };
+			    if (/(y+)/i.test(format)) {
+			       format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+			    }
+			    for (var k in date) {
+			       if (new RegExp("(" + k + ")").test(format)) {
+			           format = format.replace(RegExp.$1, RegExp.$1.length == 1
+			              ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+			       }
+			    }
+			    return format;
+			}
+			
+		var m_AllMsgsArray = new Array();
+		
+		function refreshData()
+		{
+			m_EndTime = new Date();
+			var tmpRequestURL = ServerURL + "/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=queryevents&starttime="
+				+m_StartTime.format('yyyy-MM-dd h:m:s')+"&endtime="+m_EndTime.format('yyyy-MM-dd h:m:s');
+			
+			$.ajax({
+				type: "GET",
+				url: tmpRequestURL,
+				async: true,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {
+						var tmpTotalHTML = "";
+						var tmpDatas = joResult.data;
+						var tmpAlarmCount = 0;
+						var tmpTid = 0;
+						for(var tmpI in tmpDatas)
+						{
+							var tmpData = tmpDatas[tmpI];							
+							var tmpEventType = tmpData.eventType;
+							var tmpAlarmLevel = parseInt(tmpData.alarmLevel);
+							var tmpTitle = "摄像头["+tmpData.cameraID+"]"+tmpEventType;
+							var tmpCurrentHTML = "";
+							if(tmpAlarmLevel>1)//预警等级大于1
+							{
+								tmpCurrentHTML = '<li class="li_alarm_alarm" onClick="openCameraImg(\''+tmpTitle+'\',\''+tmpData.ID+'\');"><label style="color:#FF0000">[摄像头'
+								+tmpData.cameraID+'] </label><label style="color:#FF0000">'+tmpData.startTime+" "+tmpEventType+'</label></li2>';
+								tmpAlarmCount++;
+							}
+							else
+							{
+								tmpCurrentHTML = '<li class="li_alarm_normal" onClick="openCameraImg(\''+tmpTitle+'\',\''+tmpData.ID+'\');"><label style="color:#0081FF">[摄像头'
+								+tmpData.cameraID+'] </label><label style="color:#FFFF00">'+tmpData.startTime+" "+tmpEventType+'</label></li2>';
+							}
+							
+							m_AllMsgsArray.splice(0,0,tmpCurrentHTML);
+							
+							tmpTid++;
+							if(tmpTid > 15)
+								break;
+						}
+						
+						var tmpLen = m_AllMsgsArray.length;
+						if(tmpLen>15)
+						{
+							m_AllMsgsArray.splice(16,tmpLen-15);
+						}
+						for(var tmpItem01 in m_AllMsgsArray)
+							tmpTotalHTML = m_AllMsgsArray[tmpItem01] + tmpTotalHTML;
+						
+						m_MsgRecCount+=tmpDatas.length;
+						m_MsgRecAlarmCount+=tmpAlarmCount;
+						var currentDataCount = m_MsgRecAlarmCount + "/" + m_MsgRecCount;
+						$("#report2ID").html("<p>事件</p><small>"+currentDataCount+"</small>");
+						$("#msgListDiv").html("<ul>" + tmpTotalHTML + "</ul>");
+					} else {
+								
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+							//swal("未知错误");
+				}
+			});	
+			
+			m_StartTime = m_EndTime;
+		}
+		
+			
+		refreshData();
+		setInterval(refreshData,3000);///刷新数据
+//		setInterval(refreshSalData,2000);///刷新数据
+		
+		
+		
+		
+		
+		
+		
+		    var oWebControl = null;// 插件对象
+    var bIE = (!!window.ActiveXObject || 'ActiveXObject' in window);// 是否为IE浏览器
+    var pubKey = '';
+
+    var iLastCoverLeft = 0;
+    var iLastCoverTop = 0;
+    var iLastCoverRight = 0;
+    var iLastCoverBottom = 0;
+	var initCount = 0;
+	
+	function UpdateValue()
+	{
+		var sel = document.getElementById("isHttps");
+		var selectedId = sel.selectedIndex;
+		var v = sel.options[selectedId].value;
+		if (0 == v)
+		{
+			document.getElementById("port").value = 80;
+		}
+		else
+		{
+			document.getElementById("port").value = 443;
+		}						
+	}
+	
+	function UpdatePlayTypeValue()
+	{
+		var sel = document.getElementById("PlayType");
+		var selectedId = sel.selectedIndex;
+		var v = sel.options[selectedId].value;
+		if (2 == v)
+		{
+			//获取布局，并显示标签和窗口选择下拉框
+			document.getElementById("PreviewWndId").style.display="";//显示
+			oWebControl.JS_RequestInterface({
+				funcName: "getLayout"
+			}).then(function (oData) {
+				//分析窗口数
+				//{"errorCode":0,"errorModule":0,"responseMsg":{"code":0,"data":"{\n    \"layout\": \"2x2\",\n    \"wndNum\": 4\n}\n"},"sequence":"93298475-03d0-49c9-bc3a-a94ec696f983","uuid":"{c76078b4-4f19-4198-b68d-83df1d3d71a9}"}
+				
+				//"{\n    \"layout\": \"2x2\",\n    \"wndNum\": 4\n}\n"
+				var Data = JSON.stringify(oData.responseMsg.data);
+				//"{    \"layout\": \"2x2\",    \"wndNum\": 4}"
+				Data = Data.replace(/\\n/g, "");
+				//"{    "layout": "2x2",    "wndNum": 4}"
+				Data = Data.replace(/\\/g, "");
+				//{    "layout": "2x2",    "wndNum": 4}"
+				Data = Data.replace(/\"{/g, "{");
+				//{    "layout": "2x2",    "wndNum": 4}"
+				Data = Data.replace(/}\"/g, "}");
+				var DataNum = JSON.parse(Data).wndNum;
+
+				createSelectOption(DataNum);
+			});
+		}
+		else
+		{
+			//隐藏标签和窗口选择下拉框
+			document.getElementById("PreviewWndId").style.display="none";//隐藏
+		}						
+	}
+	
+	function createSelectOption(wndNum){
+		var _html="";
+		//先清空之后再添加
+		$("#playWndId").empty();
+		for(var _i = 0; _i < wndNum; _i++){
+			_html=_html+"<option value='"+(_i+1)+"'>"+ (_i+1) +"</option>";
+		}
+		$("#playWndId").append(_html);
+	}
+	
+	function UpdateSnapTypeValue()
+	{
+		var sel = document.getElementById("SnapType");
+		var selectedId = sel.selectedIndex;
+		var v = sel.options[selectedId].value;
+		if (1 == v)
+		{
+			//获取布局，并显示标签和窗口选择下拉框
+			document.getElementById("SnapShotWndId").style.display="";//显示
+			oWebControl.JS_RequestInterface({
+				funcName: "getLayout"
+			}).then(function (oData) {
+				//分析窗口数
+				var Data = JSON.stringify(oData.responseMsg.data);
+				Data = Data.replace(/\\n/g, "");
+				Data = Data.replace(/\\/g, "");
+				Data = Data.replace(/\"{/g, "{");
+				Data = Data.replace(/}\"/g, "}");
+				var DataNum = JSON.parse(Data).wndNum;
+
+				createSnapSelectOption(DataNum);
+			});
+		}
+		else
+		{
+			//隐藏标签和窗口选择下拉框
+			document.getElementById("SnapShotWndId").style.display="none";//隐藏
+		}						
+	}
+	
+	function createSnapSelectOption(wndNum){
+		var _html="";
+		//先清空之后再添加
+		$("#SnapWndId").empty();
+		for(var _i = 0; _i < wndNum; _i++){
+			_html=_html+"<option value='"+(_i+1)+"'>"+ (_i+1) +"</option>";
+		}
+		$("#SnapWndId").append(_html);
+	}
+	
+	function UpdateSetOSDTypeValue()
+	{
+		var sel = document.getElementById("SetOSDType");
+		var selectedId = sel.selectedIndex;
+		var v = sel.options[selectedId].value;
+		if (1 == v)
+		{
+			//获取布局，并显示标签和窗口选择下拉框
+			document.getElementById("SetOSDWndId").style.display="";//显示
+			oWebControl.JS_RequestInterface({
+				funcName: "getLayout"
+			}).then(function (oData) {
+				//分析窗口数
+				var Data = JSON.stringify(oData.responseMsg.data);
+				Data = Data.replace(/\\n/g, "");
+				Data = Data.replace(/\\/g, "");
+				Data = Data.replace(/\"{/g, "{");
+				Data = Data.replace(/}\"/g, "}");
+				var DataNum = JSON.parse(Data).wndNum;
+
+				createSetOSDSelectOption(DataNum);
+			});
+		}
+		else
+		{
+			//隐藏标签和窗口选择下拉框
+			document.getElementById("SetOSDWndId").style.display="none";//隐藏
+		}						
+	}
+	
+	function createSetOSDSelectOption(wndNum){
+		var _html="";
+		//先清空之后再添加
+		$("#osdWndId").empty();
+		for(var _i = 0; _i < wndNum; _i++){
+			_html=_html+"<option value='"+(_i+1)+"'>"+ (_i+1) +"</option>";
+		}
+		$("#osdWndId").append(_html);
+	}
+
+    // 标签关闭
+    $(window).unload(function () {
+		// 此处请勿调反初始化
+        if (oWebControl != null){
+                oWebControl.JS_Disconnect().then(function(){}, function() {});
+            }
+    });
+
+    // 窗口resize
+    $(window).resize(function () {
+        if (oWebControl != null) {
+            oWebControl.JS_Resize(1300, 760);
+            setWndCover();
+        }
+    });
+
+    // 滚动条scroll
+    $(window).scroll(function () {
+        if (oWebControl != null) {
+            oWebControl.JS_Resize(1300, 760);
+            setWndCover();
+        }
+    });
+
+    // 设置窗口遮挡
+    function setWndCover() {
+        var iWidth = $(window).width();
+        var iHeight = $(window).height();
+        var oDivRect = $("#playWnd").get(0).getBoundingClientRect();
+
+        var iCoverLeft = (oDivRect.left < 0) ? Math.abs(oDivRect.left): 0;
+        var iCoverTop = (oDivRect.top < 0) ? Math.abs(oDivRect.top): 0;
+        var iCoverRight = (oDivRect.right - iWidth > 0) ? Math.round(oDivRect.right - iWidth) : 0;
+        var iCoverBottom = (oDivRect.bottom - iHeight > 0) ? Math.round(oDivRect.bottom - iHeight) : 0;
+
+        iCoverLeft = (iCoverLeft > 1300) ? 1300 : iCoverLeft;
+        iCoverTop = (iCoverTop > 760) ? 760 : iCoverTop;
+        iCoverRight = (iCoverRight > 1300) ? 1300 : iCoverRight;
+        iCoverBottom = (iCoverBottom > 760) ? 760 : iCoverBottom;
+
+        if (iLastCoverLeft != iCoverLeft) {
+            console.log("iCoverLeft: " + iCoverLeft);
+            iLastCoverLeft = iCoverLeft;
+            oWebControl.JS_SetWndCover("left", iCoverLeft);
+        }
+        if (iLastCoverTop != iCoverTop) {
+            console.log("iCoverTop: " + iCoverTop);
+            iLastCoverTop = iCoverTop;
+            oWebControl.JS_SetWndCover("top", iCoverTop);
+        }
+        if (iLastCoverRight != iCoverRight) {
+            console.log("iCoverRight: " + iCoverRight);
+            iLastCoverRight = iCoverRight;
+            oWebControl.JS_SetWndCover("right", iCoverRight);
+        }
+        if (iLastCoverBottom != iCoverBottom) {
+            console.log("iCoverBottom: " + iCoverBottom);
+            iLastCoverBottom = iCoverBottom;
+            oWebControl.JS_SetWndCover("bottom", iCoverBottom);
+        }
+    }
+	
+    // 初始化插件
+	function initPlugin () {
+		oWebControl = new WebControl({
+			szPluginContainer: "playWnd",
+			iServicePortStart: 15900,
+			iServicePortEnd: 15909,
+			cbConnectSuccess: function () {
+				setCallbacks();
+				
+
+				oWebControl.JS_StartService("window", {
+					dllPath: "./VideoPluginConnect.dll"
+					//dllPath: "./DllForTest-Win32.dll"
+				}).then(function () {
+					oWebControl.JS_CreateWnd("playWnd", 1300, 760).then(function () {
+						console.log("JS_CreateWnd success");
+					});
+				}, function () {
+				
+				});
+			},
+			cbConnectError: function () {
+				console.log("cbConnectError");
+				oWebControl = null;
+				$("#playWnd").html("插件未启动，正在尝试启动，请稍候...");
+				WebControl.JS_WakeUp("VideoWebPlugin://");
+				initCount ++;
+				if (initCount < 3) {
+					setTimeout(function () {
+						initPlugin();
+					}, 3000)
+				} else {
+					$("#playWnd").html("插件启动失败，请检查插件是否安装！");
+				}
+			},
+			cbConnectClose: function () {
+				console.log("cbConnectClose");
+				oWebControl = null;
+			}
+		});
+	}
+	
+	initPlugin();
+
+    // 获取公钥
+    function getPubKey (callback) {
+        oWebControl.JS_RequestInterface({
+            funcName: "getRSAPubKey",
+            argument: JSON.stringify({
+                keyLength: 1024
+            })
+        }).then(function (oData) {
+            console.log(oData)
+            if (oData.responseMsg.data) {
+                pubKey = oData.responseMsg.data;
+                callback();
+            }
+        })
+    }
+
+    // 设置窗口控制回调
+    function setCallbacks() {
+        oWebControl.JS_SetWindowControlCallback({
+            cbIntegrationCallBack: cbIntegrationCallBack
+        });
+    }
+
+    // 推送消息
+    function cbIntegrationCallBack(oData) {
+        showCBInfo(JSON.stringify(oData.responseMsg));
+    }
+
+    // RSA加密
+    function setEncrypt (value) {
+        var encrypt = new JSEncrypt();
+        encrypt.setPublicKey(pubKey);
+        return encrypt.encrypt(value);
+    }
+	
+	//抓图
+	$("#SnapPic").click(function (){
+	    var snapName = $("#snapName").val();
+		var wndId = 0; //选中窗口抓图
+		
+		snapName = snapName.replace(/(^\s*)/g, "");
+		snapName = snapName.replace(/(\s*$)/g, "");
+		
+		var sel = document.getElementById("SnapType");
+		var selectedId = sel.selectedIndex;
+		var v = sel.options[selectedId].value;
+		if (1 == v)//指定窗口抓图
+		{
+			wndId = parseInt($("#SnapWndId option:selected").val(), 10);
+		}
+		else if (0 == v) //选中窗口抓图
+		{
+			wndId = 0;
+		}
+		
+		oWebControl.JS_RequestInterface({
+            funcName: "snapShot",
+            argument: JSON.stringify({
+                name : snapName,
+				wndId: wndId
+            })
+        }).then(function (oData) {
+            showCBInfo(JSON.stringify(oData ? oData.responseMsg : ''));
+        });
+	})
+
+	//字符叠加
+	$("#setOSDText").click(function (){
+	    var text = $("#OSDText").val();
+		var x = +$("#Xsite").val();
+		var y = +$("#Ysite").val();
+		var ColorR = parseInt($("#RColor").val());
+		var ColorG = parseInt($("#GColor").val());
+		var ColorB = parseInt($("#BColor").val());
+		var Color = 65536 * ColorB + 256 * ColorG + ColorR;
+		var wndId = 0;
+		
+		var sel = document.getElementById("SetOSDType");
+		var selectedId = sel.selectedIndex;
+		var v = sel.options[selectedId].value;
+		if (1 == v)//指定窗口字符叠加
+		{
+			wndId = parseInt($("#osdWndId option:selected").val(), 10);
+		}
+		else  //空闲窗口字符叠加
+		{
+			wndId = 0;
+		}
+		
+		oWebControl.JS_RequestInterface({
+            funcName: "drawOSD",
+            argument: JSON.stringify({
+                text : text,
+				x: x,
+				y: y,
+				color: Color,
+				wndId: wndId
+            })
+        }).then(function (oData) {
+            showCBInfo(JSON.stringify(oData ? oData.responseMsg : ''));
+        });
+	})
+    
+    // 停止预览
+    $("#stopAllPreview").click(function () {
+        oWebControl.JS_RequestInterface({
+            funcName: "stopAllPreview"
+        }).then(function (oData) {
+            showCBInfo(JSON.stringify(oData ? oData.responseMsg : ''));
+        });
+    })
+
+    // 反初始化
+    function uninit () {
+        oWebControl.JS_RequestInterface({
+            funcName: "uninit"
+        }).then(function (oData) {
+            showCBInfo(JSON.stringify(oData ? oData.responseMsg : ''));
+        });
+    }
+    $("#uninit").click(uninit)
+
+
+    // 显示回调信息
+    function showCBInfo(szInfo, type) {
+        if (type === 'error') {
+            szInfo = "<div style='color: red;'>" + dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss") + " " + szInfo + "</div>";
+        } else {
+            szInfo = "<div>" + dateFormat(new Date(), "yyyy-MM-dd hh:mm:ss") + " " + szInfo + "</div>";
+        }
+        $("#cbInfo").html(szInfo + $("#cbInfo").html());
+    }
+
+    // 格式化时间
+    function dateFormat(oDate, fmt) {
+        var o = {
+            "M+": oDate.getMonth() + 1, //月份
+            "d+": oDate.getDate(), //日
+            "h+": oDate.getHours(), //小时
+            "m+": oDate.getMinutes(), //分
+            "s+": oDate.getSeconds(), //秒
+            "q+": Math.floor((oDate.getMonth() + 3) / 3), //季度
+            "S": oDate.getMilliseconds()//毫秒
+        };
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (oDate.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            }
+        }
+        return fmt;
+    }
+
+	function textbox(obj, min, max){
+		obj.value=obj.value.replace(/[^\d]/g,'');
+		if(parseInt(obj.value)==obj.value && parseInt(obj.value)>=min && parseInt(obj.value)<=max)
+		{}
+		else
+		{
+			if(parseInt(obj.value) < min)
+			{
+				obj.value = min;
+			}
+			if(parseInt(obj.value) > max)
+			{
+				obj.value = max;
+			}
+		}	
+	}
+	
+	$("#control_LeftID").click(function() {
+        var tmpID = $('#cameraSelectID option:selected').val();
+        var tmpRequestURL =  ServerURL + "/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=cameracontrol&cameraid="+tmpID+"&control=left";
+ 			$.ajax({
+				type: "GET",
+				url: tmpRequestURL,
+				async: true,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {
+						
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+				}
+			});	       
+   });
+	
+	$("#control_RightID").click(function() {
+        var tmpID = $('#cameraSelectID option:selected').val();
+        var tmpRequestURL =  ServerURL + "/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=cameracontrol&cameraid="+tmpID+"&control=right";
+ 			$.ajax({
+				type: "GET",
+				url: tmpRequestURL,
+				async: true,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {
+						
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+				}
+			});	       
+   });	
+	
+	$("#control_UpID").click(function() {
+        var tmpID = $('#cameraSelectID option:selected').val();
+        var tmpRequestURL =  ServerURL + "/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=cameracontrol&cameraid="+tmpID+"&control=up";
+ 			$.ajax({
+				type: "GET",
+				url: tmpRequestURL,
+				async: true,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {
+						
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+				}
+			});	       
+   });	
+	
+	$("#control_DownID").click(function() {
+        var tmpID = $('#cameraSelectID option:selected').val();
+        var tmpRequestURL =  ServerURL + "/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=cameracontrol&cameraid="+tmpID+"&control=down";
+ 			$.ajax({
+				type: "GET",
+				url: tmpRequestURL,
+				async: true,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {
+						
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+				}
+			});	       
+   });	
+	
+	$("#control_ZoomInID").click(function() {
+        var tmpID = $('#cameraSelectID option:selected').val();
+        var tmpRequestURL =  ServerURL + "/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=cameracontrol&cameraid="+tmpID+"&control=zoomin";
+ 			$.ajax({
+				type: "GET",
+				url: tmpRequestURL,
+				async: true,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {
+						
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+				}
+			});	       
+   });	
+	
+	$("#control_ZoomOutID").click(function() {
+        var tmpID = $('#cameraSelectID option:selected').val();
+        var tmpRequestURL =  ServerURL + "/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=cameracontrol&cameraid="+tmpID+"&control=zoomout";
+ 			$.ajax({
+				type: "GET",
+				url: tmpRequestURL,
+				async: true,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {
+						
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+				}
+			});	       
+   });	
+	
+	$("#control_RestoreID").click(function() {
+        var tmpID = $('#cameraSelectID option:selected').val();
+        var tmpRequestURL =  ServerURL + "/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=cameracontrol&cameraid="+tmpID+"&control=goto&presetindex=1";
+ 			$.ajax({
+				type: "GET",
+				url: tmpRequestURL,
+				async: true,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {
+						
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+				}
+			});	       
+   });	
+	
+	function initialCameraParams()
+	{
+		getPubKey(function () {
+			var secret = setEncrypt("g4oGgMGvva1j37aKKPG8");
+			secret = secret.replace(/(^\s*)/g, "");
+			secret = secret.replace(/(\s*$)/g, "");
+				
+			oWebControl.JS_RequestInterface({
+                funcName: "init",
+                argument: JSON.stringify({
+                    appkey: "27659911",
+                    secret: secret,
+                    ip: "192.168.1.110",
+                    playMode: 0, // 预览
+                    port: 9016,
+                    snapDir: "D:\SnapDir",
+					videoDir: "D:\SnapDir",
+                    layout: "2x2",
+					enableHTTPS: 0,
+                    encryptedFields: "secret"
+                })
+           }).then(function (oData) {
+                setTimeout(startPreCamera("82ff751e0bce46ee830c4029ed4bc8ce",1), 3000);
+            	setTimeout(startPreCamera("0b2cc1de0f784b9d9e26a592f329d1ea",2), 3000);
+            	setTimeout(startPreCamera("fa5f659659ba429c87e489c42ac85b94",3), 3000);
+            	setTimeout(startPreCamera("c5eadaefe0bf41f0a57a56ab66734352",4), 3000);            
+            });
+            
+		});
+	}
+	
+	///播放视频信息
+	function startPreCamera(cameraCode, camIndex)
+	{
+		oWebControl.JS_RequestInterface({
+            funcName: "startPreview",
+            argument: JSON.stringify({
+                cameraIndexCode :cameraCode,
+                streamMode: 0,
+                transMode: 1,
+                gpuMode: 0,
+				wndId: camIndex
+            })
+        }).then(function (oData) {
+            showCBInfo(JSON.stringify(oData ? oData.responseMsg : ''));            
+        });
+	}
+	
+	//启动视频播放
+	setTimeout(initialCameraParams, 3000);
+	
+	</script>
+		
+		
+	</body>
+</html>

@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AA13B5DB-74E4-457D-AC53-386F7D3A16DA}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ActionController</RootNamespace>
+    <AssemblyName>ActionController</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>40</FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>D:\SZProject\SZActionController\Backup\</UpgradeBackupLocation>
+    <TargetFrameworkProfile />
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="cn.ctgu.webgis.Account, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="cn.ctgu.webgis.Action, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="cn.ctgu.webgis.Base, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="cn.ctgu.webgis.ComponentManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="cn.ctgu.webgis.Config, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="cn.ctgu.webgis.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="cn.ctgu.webgis.Data.SQLServer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="cn.ctgu.webgis.Forecast, Version=1.0.4451.30160, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\cn.ctgu.webgis.Forecast.dll</HintPath>
+    </Reference>
+    <Reference Include="cn.ctgu.webgis.Forecast.Paramter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ComponentBase\cn.ctgu.webgis.Forecast.Paramter.dll</HintPath>
+    </Reference>
+    <Reference Include="cn.ctgu.webgis.OptimalDispatch, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ComponentBase\cn.ctgu.webgis.OptimalDispatch.dll</HintPath>
+    </Reference>
+    <Reference Include="cn.ctgu.webgis.Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="cn.scu.pms.Modellib.Optimal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ComponentBase\cn.scu.pms.Modellib.Optimal.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.0.30714, Culture=neutral" />
+    <Reference Include="Oracle.DataAccess, Version=9.2.0.401, Culture=neutral, PublicKeyToken=89b483f429c47342" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=47d7877cb3620160" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ComponentBase\cn.ctgu.webgis.Account.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.Action.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.Base.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.ComponentManager.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.Config.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.Data.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.Data.SQLServer.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.Forecast.Paramter.XAJ.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.ModelLib.forecast.HQ.LongTerm.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.ModelLib.forecast.HQ.LongTerm.Year.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.ModelLib.forecast.HQ.ShortTerm.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.ModelLib.forecast.Longterm.HQ.ModelBorrow.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.ModelLib.Short.XAJ3_job.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.OptimalDispatch.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.Utils.dll" />
+    <Content Include="ComponentBase\cn.scu.pms.forecast.ModelLib.dll" />
+    <Content Include="ComponentBase\cn.scu.pms.ModelLib.forecast.HQ.Monthfrequence.dll" />
+    <Content Include="ComponentBase\cn.scu.pms.Modellib.Optimal.dll" />
+    <Content Include="ComponentBase\HydroEcological.dll" />
+    <Content Include="ComponentBase\log4net.dll" />
+    <Content Include="ComponentBase\MultiAntLong.dll" />
+    <Content Include="ComponentBase\MultiAntShortForFlow.dll" />
+    <Content Include="ComponentBase\MultiAntShortForPower.dll" />
+    <Content Include="ComponentBase\Oracle.DataAccess.dll" />
+    <Content Include="ComponentBase\XAJ3_JobVB.dll" />
+    <Content Include="ComponentBase\zlib.net.dll" />
+    <Content Include="Config\ACOParameter.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Config\ActionController.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Global.asax" />
+    <Content Include="services\CreatePDF.aspx" />
+    <Content Include="services\DataExport.aspx" />
+    <Content Include="services\ExcelExport.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Code\RightControl.cs" />
+    <Content Include="ActionContrllerWebService.asmx" />
+    <Content Include="ComponentBase\cn.ctgu.pms.ModelLib.forecast.HQ.LongTerm.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.Forecast.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.Forecast.Paramter.dll" />
+    <Content Include="ComponentBase\cn.ctgu.webgis.Modellib.Optimal.dll" />
+    <Content Include="ComponentBase\MultiAntShort.dll" />
+    <Content Include="ComponentBase\MultiAntShortForLoad.dll" />
+    <Content Include="crossdomain.xml" />
+    <Content Include="App_Code\Upload.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Crypt.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="JsonTree.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sql.properties" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\" />
+    <Folder Include="flash\index\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2551</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/SZActionController</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,609 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<pms-config>
+  <init-params>
+    <param name="workDT" value="360" desc="整个系统的工作时段长（单位分钟）"/>
+    <param name="DTUnit" value="Hour" desc="在Web页面上显示的工作时段长单位（Hour:小时；Minute:分钟）" />
+  </init-params>
+  <modules>
+
+    <module name="Base" configFile="Config/ForecastTask.xml" sqlKey="select_basequery_sqlcommands"
+				type="cn.ctgu.webgis.Base#cn.ctgu.webgis.Base.Config.QueryConfig" loadOnStartup="false"/>
+    <module name="Forecast" configFile="Config/ForecastTask.xml" sqlKey="select_forecast_sqlcommands"
+				type="cn.ctgu.webgis.Forecast#cn.ctgu.webgis.Forecast.Config.TasksConfig" loadOnStartup="false"/>
+    <module name="AssiDecision" configFile="Config/ForecastTask.xml" sqlKey="select_assi_sqlcommands"
+   type="cn.ctgu.webgis.OptimalDispatch#cn.ctgu.webgis.OptimalDispatch.Config.TaskConfig" loadOnStartup="false"/>
+
+  </modules>
+  <sql-file file="/sql.properties" />
+  <form-beans>
+    <form-bean name="forecastForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="identity" type="System.String" />
+      <form-property name="basinType" type="System.String" />
+      <form-property name="basinId" type="System.String" />
+      <form-property name="stcdt" type="System.String" />
+      <form-property name="stationOrder" type="System.Int32" />
+      <form-property name="horq" type="System.String" />
+      <form-property name="HQ" type="System.String" />
+      <form-property name="startTime" type="System.DateTime" />
+      <form-property name="baseTime" type="System.DateTime" />
+      <form-property name="spanHours" type="System.Int32" />
+      <form-property name="workDT" type="System.Int32" />
+      <form-property name="stationId" type="System.String" />
+      <form-property name="taskConfig" type="System.String" />
+      <form-property name="stationConfig" type="System.String" />
+      <form-property name="forecastStatus" type="System.String" />
+      <form-property name="modelStage" type="System.Int32" />
+      <form-property name="session.taskConfig" type="forecastType" />
+      <form-property name="session.stationConfig" type="forecastType" />
+      <form-property name="session.curStation" type="forecastType" />
+      <form-property name="session.curSort" type="forecastType" />
+      <form-property name="session.curLocale" type="forecastType" />
+      <form-property name="session.curPlan" type="forecastType"/>
+      <form-property name="session.bNeedStatInfo" type="forecastType"/>
+      <form-property name="taskId" type="System.String" />
+      <form-property name="stationFirstStart" type="System.Boolean" />
+      <form-property name="taskFirstStart" type="System.Boolean" />
+
+      <form-property name="mainQStation" type="System.String" />
+      <form-property name="foreHTimes" type="System.Array@System.Array@System.DateTime" />
+      <form-property name="foreQTimes" type="System.Array@System.Array@System.DateTime" />
+      <form-property name="foreHs" type="System.Array@System.Array@System.Single" />
+      <form-property name="foreQs" type="System.Array@System.Array@System.Single" />
+      <form-property name="forecastType" type="System.String"/>
+
+      <form-property name="foreInOutQTime" type="System.Array@System.DateTime" />
+      <form-property name="foreInQ" type="System.Array@System.Single" />
+      <form-property name="foreOutQ" type="System.Array@System.Single" />
+      <form-property name="foreOutQNo" type="System.String" />
+      <form-property name="userUHID" type="System.Int32" />
+      <form-property name="baseQ" type="System.Single" />
+      <form-property name="Pa" type="System.Single" />
+      <form-property name="foreHQTime" type="System.Array@System.DateTime" />
+      <form-property name="foreHQ" type="System.Array@System.Single" />
+      <form-property name="InteractiveStatus" type="System.String" />
+      <form-property name="isOverrideResult" type="System.String" />
+      <form-property name="xishu" type="System.String" />
+      <form-property name="BasicQ" type="System.String" />
+      <form-property name="UHNumber" type="System.String" />
+    </form-bean>
+    <form-bean name="loginForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="userName" type="System.String" />
+      <form-property name="password" type="System.String" />
+    </form-bean>
+    <form-bean name="queryForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="keys" type="System.Array@System.String" />
+      <form-property name="paramNames" type="System.Array@System.String" />
+      <form-property name="paramValues" type="System.Array@System.String" />
+    </form-bean>
+    <form-bean name="InsertForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="keys" type="System.Array@System.String" />
+      <form-property name="paramNames" type="System.Array@System.String" />
+      <form-property name="paramValues" type="System.Array@System.Array@System.String" />
+    </form-bean>
+    <form-bean name="insertArrayForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="keys" type="System.Array2@System.String" />
+      <form-property name="paramNames" type="System.Array2@System.String" />
+      <form-property name="paramValues" type="System.Array2@System.Array2@System.String" />
+    </form-bean>
+    <form-bean name="OrginalHydroForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="keys" type="System.Array@System.String" />
+      <form-property name="paramNames" type="System.Array@System.String" />
+      <form-property name="paramValues" type="System.Array@System.String" />
+      <form-property name="dataSource" type="System.String" />
+      <form-property name="tagName" type="System.String" />
+      <form-property name="startTime" type="System.DateTime" />
+      <form-property name="endTime" type="System.DateTime" />
+      <form-property name="PTCode" type="System.String" />
+      <form-property name="Year" type="System.String" />
+      <form-property name="DTEnum" type="System.String" />
+    </form-bean>
+    <form-bean name="dataGridForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="PTCode" type="System.String" />
+    </form-bean>
+    <form-bean name="OptimalForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="HQ" type="System.String" />
+      <form-property name="PriceCate" type="System.String" />
+      <form-property name="TopoConfig" type="System.String" />
+      <form-property name="TopoCode" type="System.String" />
+      <form-property name="znqCode" type="System.String"/>
+      <form-property name="flowCode" type="System.String"/>
+      <form-property name="priceCode" type="System.String"/>
+      <form-property name="hqCode" type="System.String"/>
+      <form-property name="workDT" type="System.Int32" />
+      <form-property name="ObjectCategory" type="System.Int32"/>
+      <form-property name="Model" type="System.String"/>
+      <form-property name="endTime" type="System.DateTime" />
+      <form-property name="baseTime" type="System.DateTime" />
+      <form-property name="levelLists" type="System.Array@System.Array@System.Single" />
+      <form-property name="planName" type="System.String"/>
+      <form-property name="startPoint" type="System.Int32"/>
+      <form-property name="priceExec" type="System.Single"/>
+      <form-property name="dt" type="System.Int32"/>
+      <form-property name="Approve" type="System.Boolean" />
+      <form-property name="Retract" type="System.Boolean" />
+      <form-property name="planConfig" type="System.String" />
+      <form-property name="IsWorkFlowStart" type="System.Boolean" />
+      <form-property name="nextState" type="System.Int32" />
+      <form-property name="WorkflowType" type="System.String" />
+      <form-property name="readunit" type="System.String" />
+      <form-property name="readmarket" type="System.String" />
+      <form-property name="StateDec" type="System.Int32" />
+      <form-property name="coopStation" type="System.Boolean" />
+    </form-bean>
+    <form-bean name="RegComponentForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="uploadFileFileName" type="System.String" />
+      <form-property name="CompFunc" type="System.String" />
+      <form-property name="TypeId" type="System.Int32" />
+      <form-property name="CompPath" type="System.String" />
+    </form-bean>
+    <form-bean name="QuartsForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="jobId" type="System.Int32" />
+      <form-property name="jobName" type="System.String" />
+      <form-property name="jobGroup" type="System.String" />
+      <form-property name="jobDesc" type="System.String" />
+      <form-property name="jobCron" type="System.String" />
+      <form-property name="CronExpression" type="System.String" />
+      <form-property name="startTime" type="System.String" />
+      <form-property name="endTime" type="System.String" />
+    </form-bean>
+    <form-bean name="MXPaCaliForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="stcdt" type="System.String" />
+      <form-property name="Month" type="System.Int32" />
+      <form-property name="StartYear" type="System.Int32" />
+      <form-property name="EndYear" type="System.Int32" />
+      <form-property name="Interval" type="System.Int32" />
+      <form-property name="Degree" type="System.Int32" />
+      <form-property name="workDT" type="System.Int32" />
+    </form-bean>
+    <form-bean name="ZJLPaCaliForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="stcdt" type="System.String" />
+      <form-property name="Month" type="System.Int32" />
+      <form-property name="StartYear" type="System.Int32" />
+      <form-property name="EndYear" type="System.Int32" />
+      <form-property name="XLCount" type="System.Int32" />
+      <form-property name="ZJLCount" type="System.Int32" />
+      <form-property name="distance" type="System.Boolean" />
+      <form-property name="position" type="System.Boolean" />
+      <form-property name="workDT" type="System.Int32" />
+    </form-bean>
+    <form-bean name="MenuBuilderForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="userId" type="System.Int32" />
+    </form-bean>
+    <form-bean name="XAJPaCaliForm" type="cn.ctgu.webgis.DynamicForm">
+      <form-property name="stcdt" type="System.String"/>
+      <form-property name="startTime" type="System.DateTime"/>
+      <form-property name="endTime" type="System.DateTime"/>
+      <form-property name="RunTime" type="System.Int32"/>
+      <form-property name="CircleTime" type="System.Int32"/>
+      <form-property name="Population" type="System.Int32"/>
+    </form-bean>
+  </form-beans>
+
+  <action-mappings>
+    <action name="/pms/Base" type="cn.ctgu.webgis.Action.Controller.ActionController" >
+      <dispatch name = "/doLogin/getUserInfoTable" type="cn.ctgu.webgis.Action.ProcessAction" form="loginForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.Login"/>
+          <param name="@methodName" value="getUserInfoTable"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doreaddata/getdata" type="cn.ctgu.webgis.Action.ProcessAction" form="queryForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.BaseQuery"/>
+          <param name="@methodName" value="ExecuteReader"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doreaddata/adddata" type="cn.ctgu.webgis.Action.ProcessAction" form="InsertForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.BaseQuery"/>
+          <param name="@methodName" value="InsertDB"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/doBaseQuery/InsertArrayDB" type="cn.ctgu.webgis.Action.ProcessAction" form="insertArrayForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.BaseQuery"/>
+          <param name="@methodName" value="InsertDB"/>
+        </params>
+        <forward name="success" path=""/>
+      </dispatch>
+      <dispatch name = "/doLogin/Logout" type="cn.ctgu.webgis.Action.ProcessAction" form="loginForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.Login"/>
+          <param name="@methodName" value="Logout"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/doHydroProcess/GetOriginalHydro" type="cn.ctgu.webgis.Action.ProcessAction" form="OrginalHydroForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.Hydroprocess"/>
+          <param name="@methodName" value="GetOriginalHydro"/>
+        </params>
+        <forward name="success" path=""/>
+      </dispatch>
+      <dispatch name = "/doImportData/GetOriginalHydro" type="cn.ctgu.webgis.Action.ProcessAction" form="OrginalHydroForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.importData"/>
+          <param name="@methodName" value="GetOriginalHydro"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doImportData/GetOriginalPower" type="cn.ctgu.webgis.Action.ProcessAction" form="OrginalHydroForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.importPIData"/>
+          <param name="@methodName" value="Pi_GetPointValues"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/DataGridQuery/GetOriginalHydro" type="cn.ctgu.webgis.Action.ProcessAction" form="dataGridForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.DataGridQuery "/>
+          <param name="@methodName" value="GetOriginalHydro"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/DataGridQuery/Get24hWaterCalc" type="cn.ctgu.webgis.Action.ProcessAction" form="dataGridForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.DataGridQuery "/>
+          <param name="@methodName" value="Get24hWaterCalc"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/DataGridQuery/GetLastHourWaterCalc" type="cn.ctgu.webgis.Action.ProcessAction" form="dataGridForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.DataGridQuery "/>
+          <param name="@methodName" value="GetLastHourWaterCalc"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/DataGridQuery/ReInitPMSConfig" type="cn.ctgu.webgis.Action.ProcessAction" form="dataGridForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.DataGridQuery "/>
+          <param name="@methodName" value="ReInitPMSConfig"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/DataGridQuery/getInitialPlan" type="cn.ctgu.webgis.Action.ProcessAction" form="dataGridForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.DataGridQuery "/>
+          <param name="@methodName" value="getinitplan"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/doBaseQuery/RegComponent" type="cn.ctgu.webgis.Action.ProcessAction" form="RegComponentForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.BaseQuery"/>
+          <param name="@methodName" value="RegComponent"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/doMenuBuilder/MenuBuilder" type="cn.ctgu.webgis.Action.ProcessAction" form="MenuBuilderForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.MenuBuilder"/>
+          <param name="@methodName" value="Build"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/quaretsUtils/UpdateJobList" type="cn.ctgu.webgis.Action.ProcessAction" form="QuartsForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.quaretsUtils"/>
+          <param name="@methodName" value="UpdateJobList"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/quaretsUtils/ExecuteJob" type="cn.ctgu.webgis.Action.ProcessAction" form="QuartsForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.quaretsUtils"/>
+          <param name="@methodName" value="ExecuteJob"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/quaretsUtils/removeJob" type="cn.ctgu.webgis.Action.ProcessAction" form="QuartsForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.quaretsUtils"/>
+          <param name="@methodName" value="removeJob"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/quaretsUtils/modifyJob" type="cn.ctgu.webgis.Action.ProcessAction" form="QuartsForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.quaretsUtils"/>
+          <param name="@methodName" value="modifyJobTime"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/quaretsUtils/PauseJob" type="cn.ctgu.webgis.Action.ProcessAction" form="QuartsForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.quaretsUtils"/>
+          <param name="@methodName" value="PauseJob"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/quaretsUtils/ResumeJob" type="cn.ctgu.webgis.Action.ProcessAction" form="QuartsForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.quaretsUtils"/>
+          <param name="@methodName" value="ResumeJob"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/quaretsUtils/ExecuteJobOnece" type="cn.ctgu.webgis.Action.ProcessAction" form="QuartsForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.quaretsUtils"/>
+          <param name="@methodName" value="ExecuteJobOnece"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/quaretsUtils/GetTaskeFireTime" type="cn.ctgu.webgis.Action.ProcessAction" form="QuartsForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Base"/>
+          <param name="@className" value="cn.ctgu.webgis.Base.quaretsUtils"/>
+          <param name="@methodName" value="GetTaskeFireTime"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+    </action>
+    <action name="/pms/Forecast" type="cn.ctgu.webgis.Action.Controller.ActionController" >
+      <dispatch name = "/doForecast" type="cn.ctgu.webgis.Action.ProcessAction" form="forecastForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.HQ.Task.Task"/>
+          <param name="@methodName" value=""/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/MX_Pa_Cali" type="cn.ctgu.webgis.Action.ProcessAction" form="MXPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.MX_PA_Cali"/>
+          <param name="@methodName" value="MX_PA_Cali_Run"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/MX_Pa_Save" type="cn.ctgu.webgis.Action.ProcessAction" form="MXPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.MX_PA_Cali"/>
+          <param name="@methodName" value="MX_Pa_Save"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/MXYear_Pa_Cali" type="cn.ctgu.webgis.Action.ProcessAction" form="MXPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.YearMX_PA_Cali"/>
+          <param name="@methodName" value="MX_PA_Cali_Run"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/MXYear_Pa_Save" type="cn.ctgu.webgis.Action.ProcessAction" form="MXPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.YearMX_PA_Cali"/>
+          <param name="@methodName" value="MX_Pa_Save"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/MultiMXYear_Pa_Cali" type="cn.ctgu.webgis.Action.ProcessAction" form="MXPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.YearMXMulti_PA_Cali"/>
+          <param name="@methodName" value="MX_PA_Cali_Run"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/MultiMXYear_Pa_Save" type="cn.ctgu.webgis.Action.ProcessAction" form="MXPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.YearMXMulti_PA_Cali"/>
+          <param name="@methodName" value="MX_Pa_Save"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/ZJL_Pa_Cali" type="cn.ctgu.webgis.Action.ProcessAction" form="ZJLPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.ZJL_PA_Cali"/>
+          <param name="@methodName" value="ZJL_PA_Cali_Run"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/ZJL_Pa_Save" type="cn.ctgu.webgis.Action.ProcessAction" form="ZJLPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.ZJL_PA_Cali"/>
+          <param name="@methodName" value="ZJL_Pa_Save"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/doForecast/PSO_PA_Cali" type="cn.ctgu.webgis.Action.ProcessAction" form="XAJPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter.XAJ"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.PSO_PA_Cali"/>
+          <param name="@methodName" value="PSO_Model_Run"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/doForecast/XAJ_Pa_Save" type="cn.ctgu.webgis.Action.ProcessAction" form="XAJPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter.XAJ"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.PSO_PA_Cali"/>
+          <param name="@methodName" value="XAJ_Pa_Save"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/ZJLYear_Pa_Cali" type="cn.ctgu.webgis.Action.ProcessAction" form="ZJLPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.YearZJL_PA_Cali"/>
+          <param name="@methodName" value="ZJL_PA_Cali_Run"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/ZJLYear_Pa_Save" type="cn.ctgu.webgis.Action.ProcessAction" form="ZJLPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.YearZJL_PA_Cali"/>
+          <param name="@methodName" value="ZJL_Pa_Save"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/MultiZJL_Pa_Cali" type="cn.ctgu.webgis.Action.ProcessAction" form="ZJLPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.ZJLMulti_PA_Cali"/>
+          <param name="@methodName" value="ZJLMulti_PA_Cali_Run"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/MultiZJL_Pa_Save" type="cn.ctgu.webgis.Action.ProcessAction" form="ZJLPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.ZJLMulti_PA_Cali"/>
+          <param name="@methodName" value="ZJLMulti_Pa_Save"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/MultiZJLYear_Pa_Cali" type="cn.ctgu.webgis.Action.ProcessAction" form="ZJLPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.YearZJLMulti_PA_Cali"/>
+          <param name="@methodName" value="ZJLMulti_PA_Cali_Run"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doForecast/MultiZJLYear_Pa_Save" type="cn.ctgu.webgis.Action.ProcessAction" form="ZJLPaCaliForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast.Paramter"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.Paramter.YearZJLMulti_PA_Cali"/>
+          <param name="@methodName" value="ZJLMulti_Pa_Save"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doreaddata/getdata" type="cn.ctgu.webgis.Action.ProcessAction" form="queryForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.ForecastQuery"/>
+          <param name="@methodName" value="ExecuteReader"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name = "/doreaddata/adddata" type="cn.ctgu.webgis.Action.ProcessAction" form="InsertForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.Forecast"/>
+          <param name="@className" value="cn.ctgu.webgis.Forecast.ForecastQuery"/>
+          <param name="@methodName" value="InsertDB"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+    </action>
+    <action name="/pms/OptimalDispatch" type="cn.ctgu.webgis.Action.Controller.ActionController" >
+      <dispatch name = "/doOptimal" type="cn.ctgu.webgis.Action.ProcessAction" form="OptimalForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.optimalDispatch"/>
+          <param name="@className" value="cn.ctgu.webgis.OptimalDispatch.Task"/>
+          <param name="@methodName" value=""/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+      <dispatch name="/doOptim/GetZNQCodeList" type="cn.ctgu.webgis.Action.ProcessAction" form="OptimalForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.optimalDispatch"/>
+          <param name="@className" value="cn.ctgu.webgis.OptimalDispatch.Task"/>
+          <param name="@methodName" value="GetZNQCodeList"/>
+        </params>
+        <forward name="success" path=""/>
+      </dispatch>
+      <dispatch name="/doOptim/GetSelZNQCodeList" type="cn.ctgu.webgis.Action.ProcessAction" form="OptimalForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.optimalDispatch"/>
+          <param name="@className" value="cn.ctgu.webgis.OptimalDispatch.Task"/>
+          <param name="@methodName" value="GetSelZNQCodeList"/>
+        </params>
+        <forward name="success" path=""/>
+      </dispatch>
+      <dispatch name="/doOptim/GetFlowCodeList" type="cn.ctgu.webgis.Action.ProcessAction" form="OptimalForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.optimalDispatch"/>
+          <param name="@className" value="cn.ctgu.webgis.OptimalDispatch.Task"/>
+          <param name="@methodName" value="GetFlowCodeList"/>
+        </params>
+        <forward name="success" path=""/>
+      </dispatch>
+      <dispatch name="/doOptim/GetSelFlowCodeList" type="cn.ctgu.webgis.Action.ProcessAction" form="OptimalForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.optimalDispatch"/>
+          <param name="@className" value="cn.ctgu.webgis.OptimalDispatch.Task"/>
+          <param name="@methodName" value="GetSelFlowCodeList"/>
+        </params>
+        <forward name="success" path=""/>
+      </dispatch>
+      <dispatch name="/doOptim/getBasinStatisticValue" type="cn.ctgu.webgis.Action.ProcessAction" form="OptimalForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.optimalDispatch"/>
+          <param name="@className" value="cn.ctgu.webgis.OptimalDispatch.Task"/>
+          <param name="@methodName" value="GetBasinStatisticValue"/>
+        </params>
+        <forward name="success" path=""/>
+      </dispatch>
+      <dispatch name="/doOptim/GetPriceCodeList" type="cn.ctgu.webgis.Action.ProcessAction" form="OptimalForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.optimalDispatch"/>
+          <param name="@className" value="cn.ctgu.webgis.OptimalDispatch.Task"/>
+          <param name="@methodName" value="GetPriceCodeList"/>
+        </params>
+        <forward name="success" path=""/>
+      </dispatch>
+      <dispatch name="/doOptim/GetSelPriceCodeList" type="cn.ctgu.webgis.Action.ProcessAction" form="OptimalForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.optimalDispatch"/>
+          <param name="@className" value="cn.ctgu.webgis.OptimalDispatch.Task"/>
+          <param name="@methodName" value="GetSelPriceCodeList"/>
+        </params>
+        <forward name="success" path=""/>
+      </dispatch>
+      <dispatch name="/doOptim/SaveZNQCodeList" type="cn.ctgu.webgis.Action.ProcessAction" form="OptimalForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.optimalDispatch"/>
+          <param name="@className" value="cn.ctgu.webgis.OptimalDispatch.Task"/>
+          <param name="@methodName" value="SaveConstrains"/>
+        </params>
+        <forward name="success" path=""/>
+      </dispatch>
+      <dispatch name = "/doOptim/ExxcuteSql" type="cn.ctgu.webgis.Action.ProcessAction" form="queryForm">
+        <params>
+          <param name="@componentName" value="cn.ctgu.webgis.optimalDispatch"/>
+          <param name="@className" value="cn.ctgu.webgis.OptimalDispatch.HydroDispatchQuery"/>
+          <param name="@methodName" value="ExecuteReader"/>
+        </params>
+        <forward name="success" path="" />
+      </dispatch>
+    </action>
+  </action-mappings>
+</pms-config>
+
+
+

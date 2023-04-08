@@ -1,0 +1,1209 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>防洪调度</title>
+		<link rel="stylesheet" href="css/style_waterFloodScheduling.css" />		
+		<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>		
+	</head>
+
+	<style type="text/css">
+		@font-face{
+	     font-family: 'yejing'; 
+	     src:
+	         url('font/yejing5.ttf') format('truetype');
+		}
+		
+		select.sty1 {
+			/*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+			border: solid 0px #000;
+			border: none;
+			color: #00F6FF;
+			font-size: 16pt;
+			height: 38px;
+			line-height: 38px;
+			/*很关键：将默认的select选择框样式清除*/
+			appearance: none;
+			-moz-appearance: none;
+			-webkit-appearance: none;
+			/*在选择框的最右侧中间显示小箭头图片*/
+			background: no-repeat scroll right center transparent;
+		}
+		
+		.selectoptionbg {
+			background-color: #0E1C3B;
+			color: #00F6FF;
+		}
+		/*.ol-overlaycontainer-stopevent
+		{
+			display:none;
+		} */
+		/*横条样式*/
+		
+		input[type=range] {
+			-webkit-appearance: none;
+			/*清除系统默认样式*/
+			width: 100%;
+			background: -webkit-linear-gradient(#0087ED, #0087ED) no-repeat, #ddd;
+			/*设置左边颜色为#61bd12，右边颜色为#ddd*/
+			background-size: 100% 100%;
+			/*设置左右宽度比例*/
+			/*height: 3px;/*横条的高度*/
+			*/
+		}
+		/*拖动块的样式*/
+		
+		input[type=range]::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			/*清除系统默认样式*/
+			height: 15px;
+			/*拖动块高度*/
+			width: 15px;
+			/*拖动块宽度*/
+			background: #fff;
+			/*拖动块背景*/
+			border-radius: 50%;
+			/*外观设置为圆形*/
+			border: solid 5px #ddd;
+			/*设置边框*/
+		}
+		
+		.swal-modal {
+			background-color: #00FCFF;
+		}
+		
+		.ol-control {
+			display: none;
+		}
+		/**地图提示框*/
+		
+		.ol-popup {
+			position: absolute;
+			background-color: rgba(0, 0, 0, .3);
+			-webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+			filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+			/*padding: 5px 7px;*/
+			border-radius: 5px;
+			border: 1px solid #cccccc;
+			/*border: none;*/
+			padding: 10px;
+			color: white;
+			bottom: 12px;
+			left: -50px;
+			min-width: 220px;
+		}
+		
+		.ol-popup:after,
+		.ol-popup:before {
+			top: 100%;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+		}
+		
+		.ol-popup:after {
+			border-top-color: white;
+			border-width: 10px;
+			left: 48px;
+			margin-left: -10px;
+		}
+		
+		.ol-popup:before {
+			border-top-color: #cccccc;
+			border-width: 11px;
+			left: 48px;
+			margin-left: -11px;
+		}
+		
+		.ol-popup-closer {
+			text-decoration: none;
+			position: absolute;
+			top: 2px;
+			right: 8px;
+		}
+		
+		.ol-popup-closer:after {
+			content: "✖";
+			color: #00FCFF;
+		}
+		/*************************************/
+		
+		#shuiwei_biao {
+			width: 440px;
+			height: 352px;
+			margin-left: -28px;
+			margin-top: 40px;
+			float: left;
+			position: absolute;
+			z-index: -99;
+			/*background-color: red;*/
+		}
+		
+		.zhedan_dandanyige_tu {
+			width: 384px;
+			height: 335px;
+			margin-left: 0px;
+			margin-top: 69px;
+			float: left;
+			position: absolute;
+			z-index: -9;
+			background-image: url(images/zhedan_beijing.png);	
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		
+		.zhedan_dandanyige_level{
+			width: 297px;
+			height: 20px;
+			margin-top: 372px;
+			margin-left: 40px;
+			position: absolute;
+			background-color: #0e1c3b;
+			z-index: 9999;
+		}
+		
+		.danqian_shuiwei {
+			width: 300px;
+			height: 30px;
+			position: absolute;
+			z-index: 10;
+			/*background-color: red;*/
+			margin-top: 340px;
+			margin-left: 95px;
+		}
+		
+		.shuiwei_baozhen {
+			width: 350px;
+			height: 20px;
+			position: absolute;
+			z-index: -10;
+			/*background-color: red;*/
+			margin-top: 111px;
+			/*margin-top: 111px;*/
+			margin-left: 0px;
+		}
+		
+		.shuiwei_jingjie {
+			width: 350px;
+			height: 10px;
+			position: absolute;
+			z-index: -10;
+			/*background-color: red;*/
+			margin-top: 128px;
+			/*margin-top: 128px;*/
+			margin-left: 0px;
+		}
+		
+		.baozhen_xian {
+			width: 350px;
+			height: 2px;
+			background-color: red;
+		}
+		
+		.baozhen_zi {
+			z-index: 100;
+			margin-left: 140px;
+			margin-top: -22px;
+			font-size: 1em;
+			color: red;
+		}
+		
+		
+		.jingjie_xian {
+			width: 350px;
+			height: 2px;
+			background-color: yellow;
+		}
+		
+		.jingjie_zi {
+			z-index: 100;
+			margin-left: 140px;
+			margin-top: -22px;
+			font-size: 1em;
+			color: yellow;
+		}
+		
+		#sectionSlID {
+			font-size: 1em;
+		}
+		.shuiqin_jianbao{
+			/*width: 170px;
+			height: 80px;
+			/*background-color: red;
+			background-image: url(images/anniu.png);
+			margin-top: -109px;
+			margin-left:200px;
+			float: left;
+			text-align: center;
+			line-height: 75px;
+			background-repeat: no-repeat;
+			background-size: cover;
+			font-size: 1em;*/
+		}
+		.shuiqin_dianjitanchu{
+			width: 1280px;
+			height: 920px;
+			background-image: url(images/a_tanchuan.png);
+			position: absolute;
+			margin-top: -100px;
+			margin-left:-1200px;
+			z-index: 99999;
+			display: none;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		.shuiqin_dianjitanchu h4{
+			color: white;
+			text-align: center;
+			padding-top: 30px;
+			font-size: 2.5em;
+			padding-bottom: 50px;
+			margin-left: 450px;
+			float: left;
+			text-shadow:5px 2px 6px #000;
+			
+		}
+		.shuiqin_riqi{
+			color: white;
+			text-align: center;
+			padding-left: 550px;
+			font-size: 1.5em;
+			padding-bottom: 0px;
+			position: absolute;
+			margin-top: 140px;
+			/*background-color: wheat;*/
+			float: left;
+			text-shadow:5px 2px 6px #000;
+		}
+		.shuiqin_qianzi1{
+			text-indent:2em;
+			
+		}
+		.shuiqin_qianzi{
+			text-indent:1.5em;
+			
+		}
+		.shuiqin_dianjitanchu li{
+			color: white;
+			padding-left: 100px;
+			font-size: 1.5em;
+			width: 1100px;
+			list-style-type:none;
+			float: left;
+			text-shadow:5px 2px 6px #000;
+			font-family:"宋体";
+		}
+		.shuiiqn_logo{
+			width: 75px;
+			height: 50px;
+			/*background-color: black;*/
+			margin-left: 160px;
+			margin-top: 85px;
+			z-index: 999;
+			position: absolute;
+			background-image: url(images/a_logo.png);
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		.sszxgs_xiabiao{
+			position: absolute;
+			/*width: 100px;
+			height: 100px;
+			background-color: red;*/
+			top: 700px;
+			right: 200px;
+			font-size: 2em;
+			font-family:"宋体";
+			text-shadow:5px 2px 6px #000;
+		}
+	</style>
+
+	<body>
+		<header>
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 50px; top:-5px;width:600px;height: 50px; display:inline;">
+				<img src="images/logo_name.png" style="width: 450px; height: 40px;"/>				
+			</div>
+			<div class="masked1" style="font-weight: bold;">防 洪 调 度</div>
+					
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;">
+				<ul class="menu">
+					<li><a href="page_home.html">管控大屏</a></li>
+					<li><a href="#">水务预警</a>
+						<ul class="submenu">
+							<li><a href="page_shuiqing.html">水情预警</a></li>
+							<li><a href="page_shuizhi.html">水质预警</a></li>
+							<li><a href="page_weiyi.html">工程安全</a></li>
+							<li><a href="page_videocenter.html">视频预警</a></li>
+						</ul>
+					</li>
+					<li><a  style="color:#00FCFF" href="#">流域调度</a>
+						<ul class="submenu">
+							<li><a  style="color:#00FCFF" href="page_waterFloodScheduling.html">防洪调度</a></li>
+							<li><a href="page_waterscheduling.html">水质调度</a></li>
+						</ul>
+					</li>
+					<li><a href="page_guanyang.html">河道管养</a></li>
+				</ul>
+			</div>
+		</header>
+		<canvas id="canvas" style="position: absolute; left: 680px; top:0px; width: 580px; height: 80px;"></canvas>
+
+		<div id="content">
+			<div class="content_center">
+				<div class="center_top">
+					<div class="centerTabTitle"><img src="images/icon03.png" /> 地图</div>
+					<span id="localtime" style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 100px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<span id="localtime2" style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 220px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="440" height="45" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute; left: 1120px; top:140px; z-index: 9990;"></iframe>
+					
+					<div class="center_top_con" id="distribution_map">
+					</div>
+					<div id="popup" class="ol-popup">
+						<a href="#" id="popup-closer" class="ol-popup-closer"></a>
+						<div id="popup-content"></div>
+					</div>
+				</div>
+				<div class="center_bot">
+					<div class="centerTabTitle"><img src="images/icon04.png" /> 沿程水面线</div>
+					<div id="centerBotDiv" class="chartpanel">
+					</div>
+				</div>
+			</div>
+			<div class="content_right">
+				<div class="topPanel">
+					<div class="tabtitle" id="shuiqingTitleID"><img src="images/data_select.png" /> 水情指标</div>
+					<div style="position: absolute; margin-left:10px;margin-top: 20px; color: #00FCFF; font-size: 14pt;text-align: center;">预报发布时刻：
+						<input style=" background-color: #0E1C3B; width:155px;color:#00FCFF;font-size: 14pt;border: None;" type="date" id="lblTime" value="2019-01-01"/></div>
+						<input id="time_hour" value="1" style="position: absolute;background-color: #0E1C3B;color:#00FCFF;font-size: 14pt;border: None;z-index: 9999;margin-left:280px;margin-top: 23px;width: 20px;">
+						<div style="position: absolute;font-size: 14pt;margin-left:305px;margin-top: 21px;">点</div>
+					<div class="tablePanel" style="position: absolute; float: top; margin-left: 10px; margin-top: 40px;">
+						<table id="planTable" class="panel-table" border="1">
+							<tbody >
+								<tr class="aaa" align="center">
+									<td v-for="item in tableHeader" style="color: #00fcff; font-size: 18px; padding: 5px 0;">{{ item.categories }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+						<!--<div class="shuiqin_jianbao">水情简报</div>-->
+						<div class="shuiqin_dianjitanchu" id="shuiqin_dianjitanchu">
+							<div class="shuiiqn_logo"></div>
+							<h4>梧桐山河流域水情简报</h4>
+							<div class="shuiqin_riqi">日期:<label id="show_riqi"></label></div>
+							<li class="shuiqin_qianzi1">根据我市气象局日期发布的气象信息反馈，未来我市有<label id="shuiqin_yuling">xx</label>毫米降水，依据梧桐山河流域水文气象监测数据，结合当前我市气象预报信息，通过水库调度和水力学模型分析计算，对流域内河道断面流量、水位进行预报，具体如下：</li>
+							<li>&nbsp;</li>
+							<li>1、横沥口水库水情预报</li>
+							<li class="shuiqin_qianzi">横沥口水库当前水位<label id="shuiqin_hlk_shuiwei">xx</label>m，溢流堰顶高程94.5m，汛限水位94.5m，设计洪水位95.56m。
+							<li class="shuiqin_qianzi">未来最高库水位 <label id="shuiqin_hlk_weilai">xx</label>m,最大入库流量<label id="shuiqin_hlk_ruku">xx</label> m³/s，最大出库流量  <label id="shuiqin_hlk_chuku">xx</label>m³/s。</li>
+							<li>2、梧桐山河监测断面水情预报</li>
+							<li class="shuiqin_qianzi">断面1：茂仔水，断面2：赤水洞水；断面3：坑背河;断面4：深圳水库入库;</li>
+							<li class="shuiqin_qianzi">茂仔水断面，河道底高程<label id="mzs_digao">xx</label>m，河道岸坡高程<label id="mzs_angao">xx</label>m，当前水位<label id="mzs_shuiwei">xx</label>m</li>
+							<li class="shuiqin_qianzi">赤水洞水断面，河道底高程<label id="cs_digao">xx</label>m，河道岸坡高程<label id="cs_angao">xx</label>m，当前水位<label id="cs_shuiwei">xx</label>m</li>
+							<li class="shuiqin_qianzi">坑背河断面，河道底高程<label id="kenbei_digao">xx</label>m，河道岸坡高程<label id="kenbei_angao">xx</label>m，当前水位<label id="kenbei_shuiwei">xx</label>m</li>
+							<li class="shuiqin_qianzi">深圳水库入库断面，河道底高程<label id="szsk_digao">xx</label>m，河道岸坡高程<label id="szsk_angao">xx</label>m，当前水位<label id="szsk_shuiwei">xx</label>m</li>
+							<div class="sszxgs_xiabiao">深水咨询公司</div>
+						</div>
+					
+				</div>
+
+				<div class="bottomPanel">
+					<div class="tabtitle"><img src="images/icon02.png" /> 预警断面</div>
+					<div class="news_list">
+						<ul>
+							<li style="margin-left: 113px;margin-top:10px;color: #00FCFF;font-size: 14pt;z-index: 99999;">
+								断面名称：
+								<select id="sectionSlID" class="sty1" name="shuiwei_gaodu" style="z-index: 999996;">
+									<option class="selectoptionbg" value="2" id="maozaishui">茂仔水</option>
+									<option class="selectoptionbg" value="3" id="chishui">赤水洞水</option>
+									<option class="selectoptionbg" value="4" id="xintian">新田仔</option>
+									<option class="selectoptionbg" value="5" id="shenzhen">深圳水库</option>
+								</select>
+							</li>
+						</ul>
+						<div class="zhedan_dandanyige_tu"></div>
+						<div class="zhedan_dandanyige_level"></div>
+						<div class="yubao_shuiwei">
+							<div id="shuiwei_biao" style=""></div>
+						</div>
+						<div class="danqian_shuiwei" style="color: #00FCFF;font-size: 14pt;">当前水位：<label id="labwater"></label>m</div>
+						<div class="shuiwei_baozhen" id="shuiwei_baozhen">
+							<div class="baozhen_xian"></div>
+							<div class="baozhen_zi">保证水位<label id="baozhen_labwater">63.35</label>m</div>
+						</div>
+						<div class="shuiwei_jingjie" id="shuiwei_jingjie">
+							<div class="jingjie_xian"></div>
+							<div class="jingjie_zi">警戒水位<label id="jingjie_labwater">63.1</label>m</div>
+						</div>
+						
+					</div>
+					
+				</div>
+
+			</div>
+		</div>
+
+		
+		<!--背景动画        -->
+		<script type="text/javascript" src="js/bgannimation.js" ></script>	
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/echarts.min.js"></script>
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script type="text/javascript" src="js/times.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/CommonJS.js"></script>
+
+		<!--调用op库-->
+		<link rel="stylesheet" href="css/ol.css" type="text/css">
+		<script src="js/ol.js" type="text/javascript" charset="utf-8"></script>
+
+		<link rel="stylesheet" type="text/css" href="overlay/popupoverlay.css" />
+		<script type="text/javascript" src="overlay/popupoverlay.js"></script>
+
+		<script src="js/basicmap.js" type="text/javascript" charset="utf-8"></script>
+
+		<!-- sweet-alert库 -->
+		<link href="css/sweet-alert.css" rel="stylesheet" type="text/css" />
+		<script src="js/sweet-alert.js"></script>
+
+		<script>
+			//var ServerURL = "http://210.42.41.197:5566";
+
+			//		refreshData();
+			//		setInterval(refreshData,3000);///刷新数据
+			//		setInterval(refreshSalData,2000);///刷新数据
+			var d = new Date();
+			var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+			$("#show_riqi").text(str);
+				var date = new Date();
+		        var seperator1 = "-";
+		        var year = date.getFullYear();
+		        var month = date.getMonth() + 1;
+		        var strDate = date.getDate();
+		        var current_hour = date.getHours();
+		        if (month >= 1 && month <= 9) {
+		            month = "0" + month;
+		        }
+		        if (strDate >= 0 && strDate <= 9) {
+		            strDate = "0" + strDate;
+		        }
+		        var currentdate = year + seperator1 + month + seperator1 + strDate;
+				document.getElementById("lblTime").value=currentdate;
+				document.getElementById("time_hour").value=current_hour;
+
+            $("#lblTime").bind("input propertychange change", function(event) {
+				//
+				refreshSchedulingPlan(new Date(event.timeStamp));
+			});
+			$("#time_hour").bind("input propertychange change", function(event) {
+				//
+				refreshSchedulingPlan(new Date(event.timeStamp));
+			});
+			
+			function initialWaterQCurverChartControl() {
+				var dom = document.getElementById("centerBotDiv");
+				var myChart = echarts.init(dom);
+				var app = {};
+				option = null;
+
+				option = {
+					tooltip: {
+						trigger: 'axis'
+					},
+					legend: {
+						orient: 'vertical',
+						left: 'right',
+						y: 'center',
+						data: ['水位', '河底高程', '河堤高程'],
+						textStyle: { //图例文字的样式
+							color: '#ccc',
+							fontSize: 16
+						}
+					},
+					grid: {
+						left: 60,
+						right: 100,
+						bottom: '3%',
+						top: '4%',
+						containLabel: true
+					},
+					xAxis: {
+						type: 'category',
+						boundaryGap: false,
+						data: ['1#', '2#', '3#', '4#', '5#', '6#', '7#'],
+						splitLine: {
+							show: false
+						},
+						axisLine: {
+							lineStyle: {
+								color: '#0087ED',
+								width: 1, //这里是为了突出显示加上的
+							}
+						},
+						axisLabel: {
+							show: true,
+							textStyle: {
+								color: '#0087ED',
+								fontSize: 16
+							}
+						}
+					},
+					yAxis: {
+						type: 'value',
+						splitLine: {
+							show: false
+						},
+						axisLine: {
+							lineStyle: {
+								color: '#0087ED',
+								width: 1, //这里是为了突出显示加上的
+							}
+						},
+						axisLabel: {
+							show: true,
+							textStyle: {
+								color: '#0087ED',
+								fontSize: 16
+							}
+						}
+					},
+					series: [{
+							name: '水位',
+							type: 'line',
+							symbol: 'none', //这句就是去掉点的  
+							//stack: '总量',
+							smooth: true,
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: '#00FF00'
+									}
+								}
+							},
+							data: [120, 132, 101, 134, 90, 230, 210]
+						},
+						{
+							name: '河底高程',
+							type: 'line',
+							symbol: 'none', //这句就是去掉点的  
+							//stack: '总量',
+							smooth: true,
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: '#C7D639'
+									}
+								}
+							},
+							data: [220, 182, 191, 234, 290, 330, 310]
+						},
+						{
+							name: '河堤高程',
+							type: 'line',
+							symbol: 'none', //这句就是去掉点的  
+							//stack: '总量',
+							smooth: true,
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: '#FF0000'
+									}
+								}
+							},
+							data: [150, 232, 201, 154, 190, 330, 410]
+						}
+					]
+				};
+				if(option && typeof option === "object") {
+					myChart.setOption(option, true);
+				}
+			}
+
+			function dateToString(date) {
+				var year = date.getFullYear();
+				var month = (date.getMonth() + 1).toString();
+				var day = (date.getDate()).toString();
+				if(month.length == 1) {
+					month = "0" + month;
+				}
+				if(day.length == 1) {
+					day = "0" + day;
+				}
+				var dateTime = year + "-" + month + "-" + day;
+				return dateTime;
+			}
+
+			function refreshSchedulingPlan(queryDataTime) {		
+				queryDataTime=$("#lblTime").val();
+				hh= $("#time_hour").val();
+				var now=new Date();
+//				var hh=now.getHours();
+
+				queryDataTime=queryDataTime+ ' '+hh+':00'//'2019-05-12'
+
+				var param = "101#" + queryDataTime + "#DD#lsd";
+				RunWebServiceJSON(true, "getTSDBLevelAutodata",
+					"/pms/Base", "/doreaddata/getdata",
+					"timeindex", queryDataTime,
+					function(data) {
+						var jqueryObj = $(data);
+						var message = jqueryObj.children();
+						var text = message.text();
+						var tmpObjs = eval("(" + text + ")");
+
+                    var tmpDTUTBHTML = '<tbody>'
+                        	+'<tr class="aaa" align="center">';
+                        //列头
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:100px;background-color:#0b122E;">水情指标</td>';
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:50px;background-color:#0b122E;">水情数据</td>';
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:50px;background-color:#0b122E;">发生时间</td>';
+			            tmpDTUTBHTML+='</tr>';			            
+			            var tmpTTTid = 0;
+			            var tmpPlanID = '';
+			            var tmpDefaultBtnID = '';						 
+			            for(var tmpI in tmpObjs){
+							var tmpitem01 = tmpObjs[tmpI];
+			            	var tmpBtnID = 'btn_tb_op_'+tmpI;
+			            	var tmpStr01 = '---';
+			            	if(tmpitem01.calcvalue!=null)
+			            	{
+			            		var tmpF01 = parseFloat(tmpitem01.calcvalue);
+			            		tmpStr01 = tmpF01.toFixed(2);
+			            	}
+			            	var tmpStr02 = '---';
+			            	if(tmpitem01.calctime!=null)
+			            	{
+			            		var tmpDate01 = parseDate(tmpitem01.calctime);
+			            		tmpStr02 = tmpDate01.Format("HH:mm:ss");
+			            	}
+			            	
+							tmpDTUTBHTML+='<tr class="aaa" style="font-size: 16px; " align="center" >'
+			            		+'<td style="color: #00fcff; font-size: 18px; padding: 5px 0;" onclick="openPlanInfo(\''+tmpitem01.planID+'\');">'+tmpitem01.calcname
+			            		+'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpStr01
+			            		+'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpStr02
+			            		+'</td></tr>';
+			            	if(tmpPlanID == '')
+			            		tmpPlanID ='-877738510';// tmpitem01.planID;
+			            	if(tmpDefaultBtnID == '')
+			            		tmpDefaultBtnID = tmpBtnID;
+			            	tmpTTTid++;
+			            	if(tmpTTTid >= 5)
+			            		break;
+			            }
+			            $("#planTable").html(tmpDTUTBHTML);
+//						$("#lblTime").val(queryDataTime);
+						
+						//var tmpTimeStr01 = "";
+						//var tmpTotalHTML = "";
+						try{
+							for(var tmpI in tmpObjs) {
+							var tmpObj = tmpObjs[tmpI];
+							
+							//0
+							
+							
+							if(tmpI == 0) 
+								{hlk_yuling=tmpObj.calcvalue;}
+								
+							if(tmpI == 1) 
+								{
+									hlk_weilai=tmpObj.calcvalue;
+									hlk_weilai = Number(hlk_weilai.toString().match(/^\d+(?:\.\d{0,2})?/));
+								}
+							
+							if(tmpI == 2) 
+								
+							{
+							hlk_ruku=tmpObj.calcvalue;
+							hlk_ruku = Number(hlk_ruku.toString().match(/^\d+(?:\.\d{0,3})?/));
+							}
+							if(tmpI == 3) 
+								{hlk_chuku=tmpObj.calcvalue;
+								hlk_chuku = Number(hlk_chuku.toString().match(/^\d+(?:\.\d{0,3})?/));
+								}
+							
+							
+						if(tmpI == 4) 
+								{
+									hlk_shuiwei=tmpObj.calcvalue;
+									hlk_shuiwei = Number(hlk_shuiwei.toString().match(/^\d+(?:\.\d{0,2})?/));
+								}
+                         }
+						$("#shuiqin_yuling").text(hlk_yuling);
+						$("#shuiqin_hlk_shuiwei").text(hlk_shuiwei);
+						$("#shuiqin_hlk_weilai").text(hlk_weilai);
+						$("#shuiqin_hlk_ruku").text(hlk_ruku);
+						$("#shuiqin_hlk_chuku").text(hlk_chuku);
+						}catch(e){
+							//TODO handle the exception
+						}
+						//circleChartChange();
+						//$("#top_right_div").html(tmpTotalHTML);
+
+
+//						if(tmpPlanID!='')
+//			            	exeSchedulingPlan(document.getElementById(tmpDefaultBtnID), tmpPlanID);
+
+					});
+			}
+
+			var m_SchedulingPlanDataArray = [];
+			var m_SchedulingPlanTimeArray = [];
+			var m_AutoloopIntervalID = undefined;
+
+			/***
+			 * 执行方案
+			 * @param {Object} planID 方案编号
+			 */
+			function exeSchedulingPlan(btn, planID) {
+				//circleChartChange();
+
+				$(".b1").addClass("b2");
+				$(".b1").text('执行');
+				$(".b1").removeClass("b1");
+				if(btn != undefined) {
+					$(btn).removeClass("b2");
+					$(btn).addClass("b1");
+					$(btn).text('执行中');
+				}
+
+				m_SchedulingPlanDataArray = [];
+				m_SchedulingPlanTimeArray = [];
+				for(var i = 0; i < 26; i++) {
+					m_SchedulingPlanDataArray[i] = null;
+					m_SchedulingPlanTimeArray[i] = '';
+				}
+				if(m_AutoloopIntervalID != undefined)
+					clearInterval(m_AutoloopIntervalID);
+				//水力学计算结果只有1组数据
+				for(var i0 = 0; i0 < 1; i0++) {
+					RunWebServiceJSON(true, "getTSDBLeveldata", "/pms/Base", "/doreaddata/getdata",
+						"guid#timeindex", String(planID) + "#-1",
+						function(data) {
+							//m_SchedulingPlanDataArray[i0-1] = null;			        	
+							var jqueryObj = $(data);
+							var message1 = jqueryObj.children();
+							var text = message1.text();
+							var tmpObjs1 = eval("(" + text + ")");
+							var tmpDataArray = [],
+								tmpDataArray2 = [];
+							var tmpDataArray3 = [],
+								tmpDataArray4 = [];
+							var tmpTid = 0,
+								tmpTid2 = 0;
+							var tmpTimInt = -1;
+							var tmpSkipFirst = true;
+							for(var tmpI in tmpObjs1) {
+								var tmpObj1 = tmpObjs1[tmpI];
+								if(tmpTimInt == -1)
+									tmpTimInt = parseInt(tmpObj1.MAXS);
+								tmpDataArray2[tmpTid2] = parseFloat(tmpObj1.V);
+								tmpDataArray3[tmpTid2] = parseFloat(tmpObj1.MAXV);
+								tmpDataArray4[tmpTid2] = parseFloat(tmpObj1.MINV);
+								tmpTid2++;
+							}
+							tmpDataArray[tmpTid++] = tmpDataArray2; //水位
+							tmpDataArray[tmpTid++] = tmpDataArray3; //河底高程
+							tmpDataArray[tmpTid++] = tmpDataArray4; //河堤高程
+							
+							
+							
+							shuiqin_de_shuiwei=tmpDataArray2;
+							var shiwei1 = shuiqin_de_shuiwei.slice(17,18);
+							var shiwei1 = Number(shiwei1.toString().match(/^\d+(?:\.\d{0,2})?/));
+							var shiwei2 = shuiqin_de_shuiwei.slice(26,27);
+							var shiwei2 = Number(shiwei2.toString().match(/^\d+(?:\.\d{0,2})?/));
+							var shiwei3 = shuiqin_de_shuiwei.slice(29,30);
+							var shiwei3 = Number(shiwei3.toString().match(/^\d+(?:\.\d{0,2})?/));
+							var shiwei4 = shuiqin_de_shuiwei.slice(55,56);
+							var shiwei4 = Number(shiwei4.toString().match(/^\d+(?:\.\d{0,2})?/));
+							$("#mzs_shuiwei").text(shiwei1);
+							$("#cs_shuiwei").text(shiwei2);
+							$("#kenbei_shuiwei").text(shiwei3);
+							$("#szsk_shuiwei").text(shiwei4);
+							
+							shuiqin_hedi=tmpDataArray3; 
+							var shiwei1 = shuiqin_hedi.slice(17,18);
+							var shiwei1 = Number(shiwei1.toString().match(/^\d+(?:\.\d{0,2})?/));
+							var shiwei2 = shuiqin_hedi.slice(26,27);
+							var shiwei2 = Number(shiwei2.toString().match(/^\d+(?:\.\d{0,2})?/));
+							var shiwei3 = shuiqin_hedi.slice(29,30);
+							var shiwei3 = Number(shiwei3.toString().match(/^\d+(?:\.\d{0,2})?/));
+							var shiwei4 = shuiqin_hedi.slice(55,56);
+							var shiwei4 = Number(shiwei4.toString().match(/^\d+(?:\.\d{0,2})?/));
+							$("#mzs_digao").text(shiwei1);
+							$("#cs_digao").text(shiwei2);
+							$("#kenbei_digao").text(shiwei3);
+							$("#szsk_digao").text(shiwei4);
+							
+							shuiqin_heti= tmpDataArray4;
+							var shiwei1 = shuiqin_heti.slice(17,18);
+							var shiwei1 = Number(shiwei1.toString().match(/^\d+(?:\.\d{0,2})?/));
+							var shiwei2 = shuiqin_heti.slice(26,27);
+							var shiwei2 = Number(shiwei2.toString().match(/^\d+(?:\.\d{0,2})?/));
+							var shiwei3 = shuiqin_heti.slice(29,30);
+							var shiwei3 = Number(shiwei3.toString().match(/^\d+(?:\.\d{0,2})?/));
+							var shiwei4 = shuiqin_heti.slice(55,56);
+							var shiwei4 = Number(shiwei4.toString().match(/^\d+(?:\.\d{0,2})?/));
+							$("#mzs_angao").text(shiwei1);
+							$("#cs_angao").text(shiwei2);
+							$("#kenbei_angao").text(shiwei3);
+							$("#szsk_angao").text(shiwei4);
+							
+							
+							m_SchedulingPlanDataArray[tmpTimInt] = tmpDataArray;
+							//m_SchedulingPlanTimeArray[tmpTimInt] = '';//时刻
+							if(tmpTimInt == 0) {
+								initialWaterQCurverChartControlByPlan(tmpDataArray);
+								$('#myRange').val(0);
+								circleChartChange();
+								
+//								m_CurrentSchedulingIndex = 0;
+//								if(m_AutoloopIntervalID != undefined)
+//									clearInterval(m_AutoloopIntervalID);
+//								m_AutoloopIntervalID = setInterval(startLoopSchedulingIndex, 3000); ///刷新数据
+							}
+						});
+				}
+			}
+
+			function initialWaterQCurverChartControlByPlan(dataArray) {
+				var dom = document.getElementById("centerBotDiv");
+				var myChart = echarts.init(dom);
+				var app = {};
+				option = null;
+
+				var tmpXData = [];
+				for(var tmpI = 1; tmpI < 58; tmpI++)
+					tmpXData[tmpI - 1] = String(tmpI) + "#";
+
+				option = {
+					tooltip: {
+						trigger: 'axis'
+					},
+					legend: {
+						orient: 'vertical',
+						left: 'right',
+						y: 'center',
+						data: ['水位', '河底高程', '河堤高程'],
+						textStyle: { //图例文字的样式
+							color: '#ccc',
+							fontSize: 16
+						}
+					},
+					grid: {
+						left: 60,
+						right: 100,
+						bottom: '3%',
+						top: '4%',
+						containLabel: true
+					},
+					color: ['#00FF00', '#C7D639', '#FF0000'],
+					xAxis: {
+						type: 'category',
+						boundaryGap: false,
+						data: tmpXData, //['1#','2#','3#','4#','5#','6#','7#'],
+						splitLine: {
+							show: false
+						},
+						axisLine: {
+							lineStyle: {
+								color: '#0087ED',
+								width: 1, //这里是为了突出显示加上的
+							}
+						},
+						axisLabel: {
+							show: true,
+							textStyle: {
+								color: '#0087ED',
+								fontSize: 16
+							}
+						}
+					},
+					yAxis: {
+						type: 'value',
+						splitLine: {
+							show: false
+						},
+						axisLine: {
+							lineStyle: {
+								color: '#0087ED',
+								width: 1, //这里是为了突出显示加上的
+							}
+						},
+						axisLabel: {
+							show: true,
+							formatter: '{value} m',
+							textStyle: {
+								color: '#0087ED',
+								fontSize: 16
+							}
+						}
+					},
+					series: [{
+							name: '水位',
+							type: 'line',
+							symbol: 'none', //这句就是去掉点的  
+							//stack: '总量',
+							smooth: true,
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: '#00FF00'
+									}
+								}
+							},
+							data: dataArray[0] //[120, 132, 101, 134, 90, 230, 210]
+						},
+						{
+							name: '河底高程',
+							type: 'line',
+							symbol: 'none', //这句就是去掉点的  
+							//stack: '总量',
+							smooth: true,
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: '#C7D639'
+									}
+								}
+							},
+							data: dataArray[1] //[220, 182, 191, 234, 290, 330, 310]
+						},
+						{
+							name: '河堤高程',
+							type: 'line',
+							symbol: 'none', //这句就是去掉点的  
+							//stack: '总量',
+							smooth: true,
+							itemStyle: {
+								normal: {
+									lineStyle: {
+										color: '#FF0000'
+									}
+								}
+							},
+							data: dataArray[2] //[150, 232, 201, 154, 190, 330, 410]
+						}
+
+					]
+				};
+				if(option && typeof option === "object") {
+					myChart.setOption(option, true);
+				}
+			}
+
+			/**
+			 * 更新圆圈图标
+			 */
+			function circleChartChange() {
+				var tmpSectionIndex = $('#sectionSlID').val() - 1;
+				var tmpSectionID = m_sectionID[tmpSectionIndex] - 1;
+				//河道水位、河底高程、河堤高程
+
+				var tmpArray = m_SchedulingPlanDataArray[0];
+				//var tmpCOD = tmpArray[3][tmpSectionID];
+				var tmpTN = tmpArray[1][tmpSectionID];
+				var tmpTP = tmpArray[0][tmpSectionID];
+				var tmpN3 = tmpArray[2][tmpSectionID];
+
+				//initialWaterQChart01Control(tmpCOD, 20);//COD
+				refreshWaterLevelChart(tmpTN);
+
+//				initialChartCircle([tmpArray[3][tmpSectionID],
+//					tmpArray[1][tmpSectionID],
+//					tmpArray[0][tmpSectionID],
+//					tmpArray[2][tmpSectionID],
+//					7
+//				]);
+
+			}
+
+			function openPlanInfo(planName) {
+				//planName = "水质应急事件0505001";
+				RunWebServiceJSON(true, "getWaterqualityData", "/pms/Base", "/doreaddata/getdata",
+					"planname", planName,
+					function(data) {
+						var jqueryObj = $(data);
+						var message = jqueryObj.children();
+						var text = message.text();
+						var tmpObjs = eval("(" + text + ")");
+
+						var tmpTotalHTML = '<tr class="aaa" align="center">';
+						//列头
+						tmpTotalHTML += '<td style="color: #00fcff; font-size: 18px; padding: 5px 0;width:100px;">断面</td>';
+						tmpTotalHTML += '<td style="color: #00fcff; font-size: 18px; padding: 5px 0;width:50px;">总氮</td>';
+						tmpTotalHTML += '<td style="color: #00fcff; font-size: 18px; padding: 5px 0;width:50px;">总磷</td>';
+						tmpTotalHTML += '<td style="color: #00fcff; font-size: 18px; padding: 5px 0;width:50px;">氨氮</td>';
+						tmpTotalHTML += '<td style="color: #00fcff; font-size: 18px; padding: 5px 0;width:50px;">COD</td>';
+						tmpTotalHTML += '</tr>';
+
+						var tmpSectionnames = ['横沥口', '茂仔水', '赤水洞水', '彩虹桥入库断面'];
+						for(var tmpI in tmpObjs) {
+							var tmpObj = tmpObjs[tmpI];
+							tmpTotalHTML += '<tr class="aaa" style="font-size: 16px;" align="center" >' +
+								'<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">' + tmpSectionnames[tmpI] +
+								'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">' + tmpObj.TN +
+								'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">' + tmpObj.TP +
+								'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">' + tmpObj.NH3N +
+								'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">' + tmpObj.COD +
+								'</td></tr>';
+						}
+						$('.bgPop2,.pop2').show();
+						$('#pop2_tableID').html(tmpTotalHTML);
+					});
+			}
+
+			var m_sectionID = [1, 18, 28, 31, 57];
+			//时间可以切换
+			refreshSchedulingPlan(dateToString(new Date()));
+
+			exeSchedulingPlan(undefined, "18414");
+		</script>
+		
+		<script>
+			dataV_max=63.5;
+			dataV_min=60;
+						
+			$("#sectionSlID").on("change",function(){
+				if ($("option:selected",this).index() ==0) {
+					document.getElementById("shuiwei_baozhen").style.marginTop = "111px";
+					document.getElementById("shuiwei_jingjie").style.marginTop = "128px";
+					$("#baozhen_labwater").text('63.1');
+					$("#jingjie_labwater").text('63.35');
+					dataV_max=63.5;
+					dataV_min=60;				
+				}
+				else if ($("option:selected",this).index() ==1) {
+					document.getElementById("shuiwei_baozhen").style.marginTop = "105px";
+					document.getElementById("shuiwei_jingjie").style.marginTop = "116px";
+					$("#baozhen_labwater").text('54.8');
+					$("#jingjie_labwater").text('54.48');
+					dataV_max=55;
+					dataV_min=49;
+				}
+				else if ($("option:selected",this).index() ==2) {
+					document.getElementById("shuiwei_baozhen").style.marginTop = "110px";
+					document.getElementById("shuiwei_jingjie").style.marginTop = "128px";
+					$("#baozhen_labwater").text('49.96');
+					$("#jingjie_labwater").text('49.69');
+					 dataV_max=50.15;
+					 dataV_min=46.8;
+				}
+				else if ($("option:selected",this).index() ==3) {
+					document.getElementById("shuiwei_baozhen").style.marginTop = "109px";
+					document.getElementById("shuiwei_jingjie").style.marginTop = "124px";
+					$("#baozhen_labwater").text('32.1');
+					$("#jingjie_labwater").text('31.93');
+					dataV_max=32.25;
+					 dataV_min=29;
+				}
+				circleChartChange();
+			});
+			
+			
+
+		</script>
+		
+		<script type="text/javascript">
+			
+			function refreshWaterLevelChart(tmpTN) {
+				//指定图标的配置和数据
+				var data = []
+				data.push(tmpTN)
+				danqian_suiwei=data;
+				danqian_suiwei = Number(danqian_suiwei.toString().match(/^\d+(?:\.\d{0,2})?/));
+				$("#labwater").text(danqian_suiwei);
+				//				Reservoirlevel
+
+				var max=dataV_max;
+				var min=dataV_min;
+							
+				option = {
+					xAxis: {
+						type: 'category',
+						data: ['Sun'],
+						show:false
+					},
+					yAxis: {
+						type: 'value',
+						max: max,
+						min: min,
+						show:false,
+						splitNumber:0,
+						splitLine: {
+							show: false,							　　
+						}
+					},
+					series: [{
+						data: data,
+//						data: ['65'],
+						type: 'bar',
+						itemStyle: {
+							normal: {
+								color: '#0087ed'
+							}
+						},
+					}]
+				};
+				
+				//初始化echarts实例
+				var myChart = echarts.init(document.getElementById('shuiwei_biao'));
+
+				//使用制定的配置项和数据显示图表
+				myChart.setOption(option);
+			}
+			
+			
+			// 对Date的扩展，将 Date 转化为指定格式的String
+			// 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符， 
+			// 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字) 
+			Date.prototype.Format = function (fmt) { //author: meizz 
+			    var o = {
+			        "M+": this.getMonth() + 1, //月份 
+			        "d+": this.getDate(), //日 
+			        "H+": this.getHours(), //小时 
+			        "m+": this.getMinutes(), //分 
+			        "s+": this.getSeconds(), //秒 
+			        "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+			        "S": this.getMilliseconds() //毫秒 
+			    };
+			    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+			    for (var k in o)
+			    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+			    return fmt;
+			}
+		</script>
+		
+		<script>
+			
+			 $("#shuiqingTitleID").click(function(event){ 
+			 	//取消冒泡事件
+			 	event.stopPropagation();//这句是必须 //若css已经给divTop定位则不需要再定位 
+			 	var offset = $(event.target).offset();
+			 	$(".shuiqin_dianjitanchu").css({
+		 			top:offset.top+$(event.target).height+"px",left:offset.left
+		 		});
+			 	$(".shuiqin_dianjitanchu").slideToggle(); 
+			 });
+			 
+		 	//点击空白或者其他区域时divTop隐藏
+		 	$(document).click(function(){ $(".shuiqin_dianjitanchu").slideUp('slow'); }); 
+		 	//点击divTop自身隐藏 
+//			$(".shuiqin_dianjitanchu").click(function(){ $(this.fadeOut(1000)); })
+			$(".shuiqin_dianjitanchu").click(function(event){
+				event.stopPropagation();
+			}); 
+
+
+
+		</script>
+		
+	</body>
+
+</html>
