@@ -1,0 +1,2328 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>河道管养智慧流域管控决策平台</title>
+		<link rel="stylesheet" href="css/style_home.css" />
+		<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+	</head>
+		
+	<style type="text/css">	
+		@font-face{
+	     font-family: 'yejing'; 
+	     src:
+	         url('font/yejing5.ttf') format('truetype');
+		}
+
+		select.sty1 {
+          /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+          border: solid 0px #000;
+          border:none;
+          color:#00F6FF;
+          font-size: 14pt;
+          /*height: 38px; 
+          line-height: 38px;*/
+          /*很关键：将默认的select选择框样式清除*/
+          appearance:none;
+          -moz-appearance:none;
+          -webkit-appearance:none;        
+          /*在选择框的最右侧中间显示小箭头图片*/
+          background: no-repeat scroll right center transparent;          
+        }
+        
+         .selectoptionbg{
+		  background-color:#0E1C3B;
+		  color:#00F6FF;
+		}
+        	
+		/*.ol-overlaycontainer-stopevent
+		{
+			display:none;
+		} */
+		
+		/*横条样式*/
+		input[type=range] {
+		  -webkit-appearance: none;/*清除系统默认样式*/
+		  width: 100%;
+		  background: -webkit-linear-gradient(#0087ED, #0087ED) no-repeat, #ddd;/*设置左边颜色为#61bd12，右边颜色为#ddd*/
+		  background-size: 100% 100%;/*设置左右宽度比例*/
+		  /*height: 3px;/*横条的高度*/*/
+		}
+		/*拖动块的样式*/
+		input[type=range]::-webkit-slider-thumb {
+		  -webkit-appearance: none;/*清除系统默认样式*/
+		  height: 15px;/*拖动块高度*/
+		  width: 15px;/*拖动块宽度*/
+		  background: #fff;/*拖动块背景*/
+		  border-radius: 50%; /*外观设置为圆形*/
+		  border: solid 5px #ddd; /*设置边框*/
+		}
+		
+		.swal-modal{
+			background-color: #00FCFF;
+		}
+		
+		.ol-control{
+			display: none;
+		}
+		/**地图提示框*/
+     .ol-popup {
+				position: absolute;
+				background-color: rgba(0, 0, 0, .3);
+				-webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+				filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+				/*padding: 5px 7px;*/
+				border-radius: 5px;
+				border: 1px solid #cccccc;
+				/*border: none;*/
+				padding: 10px;
+				color: white;
+				bottom: 12px;
+				left: -50px;
+				min-width: 220px;
+			}
+      .ol-popup:after, .ol-popup:before {
+        top: 100%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+      }
+      .ol-popup:after {
+        border-top-color: white;
+        border-width: 10px;
+        left: 48px;
+        margin-left: -10px;
+      }
+      .ol-popup:before {
+        border-top-color: #cccccc;
+        border-width: 11px;
+        left: 48px;
+        margin-left: -11px;
+      }
+      .ol-popup-closer {
+        text-decoration: none;
+        position: absolute;
+        top: 2px;
+        right: 8px;
+      }
+      .ol-popup-closer:after {
+        content: "✖";
+        color: #00FCFF;
+      }
+                  
+	</style>
+	
+	<body>
+		<header>		
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 50px; top:-5px;width:600px;height: 50px; display:inline;">
+				<img src="images/pie.png" style="width: 100px; height: 50px;"/>				
+			</div>
+			<div class="masked1" style="font-weight: bold;">梧桐山智慧流域管控平台</div>					
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;">
+				<ul class="menu">
+					<li><a href="page_home.html" style="color:#00FCFF">管控大屏</a></li>
+					<li><a href="#">水务预警</a>
+						<ul class="submenu">
+							<li><a href="page_shuiqing.html">水情预警</a></li>
+							<li><a href="page_shuizhi.html">水质预警</a></li>
+							<li><a href="page_weiyi.html">工程安全</a></li>
+							<li><a href="page_videocenter.html">视频预警</a></li>
+						</ul>
+					</li>
+					<li><a href="#" >流域调度</a>
+						<ul class="submenu">
+							<li><a href="page_waterFloodScheduling.html">防洪调度</a></li>
+							<li><a href="page_waterscheduling.html">水质模拟</a></li>
+						</ul>
+					</li>
+					<li><a href="page_guanyang.html">河道管养</a></li>
+				</ul>
+			</div>
+		</header>					
+		<canvas id="canvas" style="position: absolute; left: 680px; top:0px; width: 580px; height: 80px;"></canvas>		
+		<div id="content">
+			<div class="content_left">
+				<div class="topBox">
+					<div style="display:float;margin: 10px;">
+						<strong>站点：
+						<input type="radio" name="stationRadio" value="1" checked/> 横沥口
+						<input type="radio" name="stationRadio" value="2" /> 茂仔水</strong>
+					</div>						
+					<div class="leftBox" style="display:inline;">						
+						<div id="container01" style="height: 100%"></div>
+					</div>
+					<div class="rightBox" style="display:inline;">
+						<div id="container02" style="height: 100%;"></div>						
+					</div>
+				</div>
+                <div class="online">
+                	<div class="tabtitle"><img src="images/icon01.png" /> 水质情况</div>
+                	<ul>
+							<li style="margin-left: 80px;">
+								断面名称：
+								<select id="sectionSlID" class="sty1" onchange="refreshWaterQDataFromServer();">
+									<option class="selectoptionbg" value="1">横沥口</option>
+									<option class="selectoptionbg" value="2">茂仔水</option>
+									<option class="selectoptionbg" value="3">赤水洞水</option>
+									<option class="selectoptionbg" value="4">新田仔</option>
+									<option class="selectoptionbg" value="5">深圳水库</option>
+								</select>
+							</li>
+					</ul>
+                	<div class="waterQPanel" id="container03">                		
+                	</div>
+                </div>
+                <div class="bottomBox" >
+					<div class="tabtitle" ><img src="images/icon06.png" /> 工程安全</div>
+					<div style="display:float;margin: 10px;margin-left: 30px;">
+						站点：
+						<input type="radio" name="slopeStationRadio" value="1" checked/> 横沥口
+						<input type="radio" name="slopeStationRadio" value="2"/> 横沥口岸坡
+						<input type="radio" name="slopeStationRadio" value="3"/> 彩虹桥
+					</div>					
+					<div class="TopBox">
+						<div class="leftBox" >
+							<div id="container04" style="height: 100%"></div>
+						</div>
+						<div class="leftBox">
+							<img id="dispImgID" src="images/tupian_1.png" alt="" style="width: 150px; height:150px;margin-left: 10px;">
+						</div>						
+					</div>
+					<div class="BottomBox">
+						<div id="container05" style="height: 100%"></div>
+					</div>						
+				</div>
+			</div>
+			<div class="content_center">
+				<div class="center_top">
+					<div class="centerTabTitle"><img id="switchMapZoomID" src="images/icon03.png" /> 地图</div>
+					<span id="localtime" style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 460px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<span id="localtime2" style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 580px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="180" height="90" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute; left: 1120px; top:140px; z-index: 9990;"></iframe>
+					
+					<div class="t_mbox t_userbox" style="text-align: center;position: absolute; left: 450px; top:220px; width：100px;z-index: 9990;">
+		                    <i></i>
+		                    <span>人员信息</span>
+		                    <h2 id="gy_Label03">-/-</h2>
+                		</div>  
+                		
+					<div class="center_top_con" id="distribution_map"></div>
+					<div id="popup" class="ol-popup">
+				      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+				      <div id="popup-content"></div>
+				   </div>				    
+				    <div style="width: 100%; height: 60px;">
+				    	<img id="mapBottomControlBtnHome" class="mapBottomControlBtn" src="images/map_home.png" style="margin-right: 20px;" title="地图全图"/>
+				    	<img id="mapBottomControlBtnRadarMap" class="mapBottomControlBtn" src="images/layer_radar_on.png" title="雷达监测"/>
+				    	<img id="mapBottomControlBtnSalMap" class="mapBottomControlBtn" src="images/layer_salmap_off.png" title="卫星地图"/>
+				    	<img id="mapBottomControlBtnRiver" class="mapBottomControlBtn" src="images/layer_river_on.png" title="河道地图切换"/>
+				    	<img id="mapBottomControlBtnTurb" class="mapBottomControlBtn" src="images/layer_turb_on.png" title="台风地图"/>
+				    	<img id="mapBottomControlBtnSheShi" class="mapBottomControlBtn" src="images/layer_sheshi_on.png" title="设施地图"/>
+				    	<img id="mapBottomControlBtnCamera" class="mapBottomControlBtn" src="images/layer_camera_on.png" title="摄像头地图"/>
+				    	<img id="mapBottomControlBtnEvent" class="mapBottomControlBtn" src="images/layer_event_on.png" title="事件地图"/>
+				    	<img id="mapBottomControlBtnUser" class="mapBottomControlBtn" src="images/layer_user_on.png" title="人员"/>
+				    </div>
+				</div>
+				<div class="center_bot">
+					<div class="centerTabTitle"><img src="images/icon03.png" /> 流域概况</div>
+					<div id="centerBotDiv" class="chartpanel">
+						
+						<p>
+							<font color="#FFD000"><strong>梧桐山河流域简介：</strong></font>
+							梧桐山河发源于梧桐山北麓，流经横沥口、坑背等7个村注入深圳水库，沿线五条支流汇入梧桐山河，全流域属东深供水水系，为饮用水源保护区。河道上游建有横沥口水库，属小2型。
+							河道长度为3.87km，流域面积12.53平方公里，管理范围面积14.34万平方米，河道防洪标准50年一遇，河道水质为2类，是一条融景观性、功能性、生态理念于一体的河域生态景观带。</p>
+						<p>
+							<font color="#FFD000"><strong>管养情况简介：</strong></font>
+							深圳水库入库河道目前已纳入管养的包括一级支流梧桐山河、正坑水、二级支流新田仔水、兰科中心排洪渠、赤水洞水、坑背村排洪渠、茂仔水等；其中梧桐山河全长3.87km，流域面积12.53平方公里,水域面积8.3万平方米，陆域面积5.9万平方米,行洪断面最宽40m，草皮绿化共3.3万平方米，管养级别为2级。梧桐山河在综合整治后于2013年正式纳入管养。
+							正坑水、新田仔水、兰科中心排洪渠、赤水洞水、坑背村排洪渠、茂仔水等6条河流，总长度为14.03km。其中正坑水属于深圳水库的一级支流，其余5条河渠均属深圳水库的二级支流，汇入梧桐山河后再入库。此6条支流于2016年4月正式纳入管养。
+						</p>
+						
+					</div>
+				</div>
+			</div>
+			
+			<div class="content_right">
+				<div class="topBox">
+					<div class="tabtitle"><img src="images/icon05.png" /> 河道管养</div>
+					<div style="width: 100%; height: 80px; display: block;margin-top: 20px;" >
+						<div class="t_mbox t_rbox" style="margin-left: 30px;text-align: center;">
+		                    <i></i>
+		                    <span>本月工单</span>
+		                    <h2 id="gy_Label01">0</h2>
+                		</div>                		
+                		<div class="t_mbox t_gbox" style="margin-left: 20px;">
+		                    <i></i>
+		                    <span>本月事件</span>
+		                    <h2 id="gy_Label02"></h2>
+                		</div>
+					</div>
+					<div style="height: 130px; position: relative;" >						
+						<div id="patrolListDiv" class="patrolList">
+                            <ul class="clearfix">
+                                <li class="clearfix"><label class="lableRC_Yellow">重要</label> 安全隐患|隐患巡查工单 2019/4/30 0:00:00</li>
+                                <li class="clearfix"><label class="lableRC_Red">紧急</label> 违法违规|隐患巡查工单 2019/4/30 0:00:00</li>
+                                <li class="clearfix"><label class="lableRC_Blue">重要</label> 涉河工程|隐患巡查工单 2019/4/30 0:00:00</li>
+                                <li class="clearfix"><label class="lableRC_Yellow">重要</label> 安全隐患|隐患巡查工单 2019/4/30 0:00:00</li>
+                                <li class="clearfix"><label class="lableRC_Yellow">重要</label> 安全隐患|隐患巡查工单 2019/4/30 0:00:00</li>
+                                <li class="clearfix"><label class="lableRC_Yellow">重要</label> 安全隐患|隐患巡查工单 2019/4/30 0:00:00</li>
+                            </ul>
+                        </div>
+					</div>					
+				</div>
+				
+				<div class="topBox2" style="margin-top: 20px;">
+					<div class="tabtitle"><img src="images/icon05.png" /> 气象预报</div>
+					<table id="qixiangTable" class="panel-table" style="margin-top: 0px !important">                        
+                        <tbody>
+                        <tr class="aaa" align="center">
+                        	<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">时间</td>
+                        	<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">小时雨量</td>
+                        	<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">温度</td>
+                        	<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">风速等级</td>
+                        	<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">风向</td>
+                        </tr>
+                    </table>   
+                    <label style="margin-left: 50px;color: #FFFF00; font-size: 12px;">注：各参数单位为:小时雨量mm,温度℃.</label>
+				</div>
+				<div class="topBox3" style="margin-top: 20px;">
+					<div class="tabtitle"><img src="images/icon05.png" /> 水文预报</div>
+					<table id="shuiwenTable" class="panel-table" style="margin-top: 0px !important">                        
+                        <tbody>
+                        <tr class="aaa" align="center">
+                        	<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">时间</td>
+                        	<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">水位</td>
+                        	<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">入库流量</td>
+                        	<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">出库流量</td>
+                        </tr>
+                    </table>
+                    <label style="margin-left: 50px;color: #FFFF00; font-size: 12px;">注：各参数单位为:水位m,流量m3/s.</label>
+				</div>	
+			</div>
+		</div>
+				
+		<!--遮罩层-->
+		<div class="bgPop"></div>
+		
+		<script>
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop,.pop').hide();
+		        });
+		        $('.click_pop').click(function () {
+		            $('.bgPop,.pop').show();
+		        });
+		    })
+		
+		</script>
+		<!--遮罩层-->
+		<div class="bgPop2"></div>
+		<!--弹出框-->
+		<div class="pop2">
+		    <div class="pop-top">
+		        方案信息
+		    </div>
+		    <div class="pop-content">
+		        <table id="pop2_tableID" class="panel-table" bordercolor="#deefff" border="1">
+                    <tbody>
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    </tbody>
+                </table>
+		    </div>
+		    <div class="pop-foot">
+		        <input type="button" value="确定" class="pop-cancel pop-close">
+		    </div>
+		</div>
+		<script>
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop2,.pop2').hide();
+		        });
+		        $('.click_pop2').click(function () {
+		            $('.bgPop2,.pop2').show();
+		        });
+		    })
+		</script>
+			
+		<!--遮罩层-->
+		<div class="bgPop3"></div>
+		<!--弹出框-->
+		<div class="pop3">
+		    <div class="pop-top">
+		        台风信息
+		    </div>
+		    <div class="pop-content">
+		        <table id="pop3_tableID" class="panel-table" bordercolor="#deefff" border="1">
+                    <tbody>
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="aaa" style="font-size: 16px;" align="center" >
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    </tbody>
+                </table>
+		    </div>
+		    <div class="pop-foot">
+		        <input id="dataSelectID" type="button" value="确定" class="pop-cancel pop-close">
+		    </div>
+		</div>
+		<script>
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop3,.pop3').hide();
+		        });
+		        $('.click_pop3').click(function () {
+		            $('.bgPop3,.pop3').show();		            
+		        });
+		        $('#dataSelectID').click(function () {
+		            var tmpOpt01 = $("input:radio[name='TyphoonSelectRadio']:checked").val();
+		            if(tmpOpt01!="")
+		            	refreshTyphoonGISData(tmpOpt01);
+		        });	
+		    })
+		</script>	
+		<!--遮罩层-->
+		<div class="bgPop4"></div>
+		<!--弹出框-->
+		<div class="pop4">
+		    <div class="pop-top">
+		        <label id="camaraTitleID">摄像头</label>
+		        <span class="pop-close">Ｘ</span>
+		    </div>
+		    <div class="pop-content">
+		        <img id="cameraEventImg" src="https://www.baidu.com/img/bd_logo1.png?where=super" style="width: 100%;height: 480px;">
+		    </div>
+		</div>
+		<script>
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop4,.pop4').hide();
+		        });
+		        $('.click_pop4').click(function () {
+		            $('.bgPop4,.pop4').show();		            
+		        });
+		    })
+		</script>
+		
+		<!--遮罩层-->
+		<div class="bgPop5"></div>
+		<!--弹出框-->
+		<div class="pop5" style="width:500px;height:240px !important;min-height: 100px;">
+		    <div class="pop-top">
+		        <label id="page_querytrack_Title">选择查询时间</label>
+		        <span class="pop-close">Ｘ</span>
+		    </div>
+		    <div class="pop-content">
+		    	<div style="text-align: center;font-size: 16pt;height: 50px;vertical-align: middle;padding-top:30px;">
+		    		<label>开始时间：</label>
+		    		<select id="dateYearSelectID" class="sty1" style="font-size: 20pt;">
+						<option class="selectoptionbg" value="2019">2019</option>
+						<option class="selectoptionbg" value="2">2018</option>
+					</select>
+					<label>-</label>
+					<select id="dateMonthSelectID" class="sty1" style="font-size: 20pt;">
+						<option class="selectoptionbg" value="1">01</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>-</label>
+					<select id="dateDaySelectID" class="sty1" style="font-size: 20pt;">
+						<option class="selectoptionbg" value="1">01</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>&nbsp;&nbsp;</label>
+					<select id="dateHourSelectID" class="sty1" style="font-size: 20pt;">
+						<option class="selectoptionbg" value="1">00</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>:</label>
+					<select id="dateMinSelectID" class="sty1" style="font-size: 20pt;">
+						<option class="selectoptionbg" value="1">00</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>:</label>
+					<select id="dateSecSelectID" class="sty1" style="font-size: 20pt;">
+						<option class="selectoptionbg" value="1">00</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label id="queryUserTrackID" style="display: none;"></label>
+		    	</div>
+		    	<div style="text-align: center;font-size: 16pt;height: 50px;vertical-align: middle;padding-top:10px;">
+		    		<label>结束时间：</label>
+		    		<select id="dateYearSelectID2" class="sty1" style="font-size: 20pt;">
+						<option class="selectoptionbg" value="2019">2019</option>
+						<option class="selectoptionbg" value="2">2018</option>
+					</select>
+					<label>-</label>
+					<select id="dateMonthSelectID2" class="sty1" style="font-size: 20pt;">
+						<option class="selectoptionbg" value="1">01</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>-</label>
+					<select id="dateDaySelectID2" class="sty1" style="font-size: 20pt;">
+						<option class="selectoptionbg" value="1">01</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>&nbsp;&nbsp;</label>
+					<select id="dateHourSelectID2" class="sty1" style="font-size: 20pt;">
+						<option class="selectoptionbg" value="1">00</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>:</label>
+					<select id="dateMinSelectID2" class="sty1" style="font-size: 20pt;">
+						<option class="selectoptionbg" value="1">00</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>:</label>
+					<select id="dateSecSelectID2" class="sty1" style="font-size: 20pt;">
+						<option class="selectoptionbg" value="1">00</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label id="queryUserTrackID2" style="display: none;"></label>
+		    	</div>
+		    	<div style="text-align: center;font-size: 20pt;height: 50px;vertical-align: middle;">
+		    		<input id="startQueryTrackBtnID" type="button" value="确定" class="pop-cancel pop-close" style="font-size: 14pt;">
+		    	</div>
+		    </div>
+		    <!--<div class="pop-foot">
+		        <input id="dataSelectID" type="button" value="确定" class="pop-cancel pop-close">
+		    </div>-->
+		</div>
+		<script>						
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop5,.pop5').hide();
+		        });
+		        $('.click_pop5').click(function () {
+		            $('.bgPop5,.pop5').show();		            
+		        });
+		        
+		        $("#dateYearSelectID").empty();$("#dateYearSelectID2").empty();
+		        for(var tmpI = 2017; tmpI < 2030; tmpI++)
+		        {
+      				$("#dateYearSelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI+"</option>'");
+      				$("#dateYearSelectID2").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI+"</option>'");
+		        }
+      			$("#dateMonthSelectID").empty();$("#dateMonthSelectID2").empty();
+		        for(var tmpI = 1; tmpI < 13; tmpI++)
+		        {
+		        	var tmpI2 = tmpI;
+		        	if(tmpI<10)
+		        		tmpI2 = "0"+tmpI;		        		
+      				$("#dateMonthSelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+      				$("#dateMonthSelectID2").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+		        }
+		        $("#dateDaySelectID").empty();$("#dateDaySelectID2").empty();
+		        for(var tmpI = 1; tmpI < 32; tmpI++)
+		        {
+		        	var tmpI2 = tmpI;
+		        	if(tmpI<10)
+		        		tmpI2 = "0"+tmpI;
+      				$("#dateDaySelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+      				$("#dateDaySelectID2").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+		        }
+		        
+		        $("#dateHourSelectID").empty();$("#dateHourSelectID2").empty();
+		        for(var tmpI = 0; tmpI < 24; tmpI++)
+		        {
+		        	var tmpI2 = tmpI;
+		        	if(tmpI<10)
+		        		tmpI2 = "0"+tmpI;		        		
+      				$("#dateHourSelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+      				$("#dateHourSelectID2").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+		        }
+		        $("#dateMinSelectID").empty();$("#dateMinSelectID2").empty();
+		        for(var tmpI = 0; tmpI < 60; tmpI++)
+		        {
+		        	var tmpI2 = tmpI;
+		        	if(tmpI<10)
+		        		tmpI2 = "0"+tmpI;		        		
+      				$("#dateMinSelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+      				$("#dateMinSelectID2").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+		        }
+		        $("#dateSecSelectID").empty();$("#dateSecSelectID2").empty();
+		        for(var tmpI = 0; tmpI < 60; tmpI++)
+		        {
+		        	var tmpI2 = tmpI;
+		        	if(tmpI<10)
+		        		tmpI2 = "0"+tmpI;		        		
+      				$("#dateSecSelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+      				$("#dateSecSelectID2").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+		        }
+		        
+		        $('#startQueryTrackBtnID').click(function () {
+		            var tmpStr = $("#dateYearSelectID").val();
+		            if($("#dateMonthSelectID").val()<10)
+		            	tmpStr += "-0"+$("#dateMonthSelectID").val();
+		            else
+		            	tmpStr += "-"+$("#dateMonthSelectID").val();
+		            if($("#dateDaySelectID").val()<10)
+		            	tmpStr += "-0"+$("#dateDaySelectID").val();	
+		            else
+		            	tmpStr += "-"+$("#dateDaySelectID").val();	
+		            tmpStr+=" ";
+		            if($("#dateHourSelectID").val()<10)
+		            	tmpStr += "0"+$("#dateHourSelectID").val();	
+		            else
+		            	tmpStr += $("#dateHourSelectID").val();
+		            if($("#dateMinSelectID").val()<10)
+		            	tmpStr += ":0"+$("#dateMinSelectID").val();	
+		            else
+		            	tmpStr += ":"+$("#dateMinSelectID").val();
+		            if($("#dateSecSelectID").val()<10)
+		            	tmpStr += ":0"+$("#dateSecSelectID").val();	
+		            else
+		            	tmpStr += ":"+$("#dateSecSelectID").val();
+		            	
+		            var tmpStartTimeStr = tmpStr;
+		            tmpStr = $("#dateYearSelectID2").val();
+		            if($("#dateMonthSelectID2").val()<10)
+		            	tmpStr += "-0"+$("#dateMonthSelectID2").val();
+		            else
+		            	tmpStr += "-"+$("#dateMonthSelectID2").val();
+		            if($("#dateDaySelectID2").val()<10)
+		            	tmpStr += "-0"+$("#dateDaySelectID2").val();	
+		            else
+		            	tmpStr += "-"+$("#dateDaySelectID2").val();	
+		            tmpStr+=" ";	
+		            if($("#dateHourSelectID2").val()<10)
+		            	tmpStr += "0"+$("#dateHourSelectID2").val();	
+		            else
+		            	tmpStr += $("#dateHourSelectID2").val();		            	
+		            if($("#dateMinSelectID2").val()<10)
+		            	tmpStr += ":0"+$("#dateMinSelectID2").val();	
+		            else
+		            	tmpStr += ":"+$("#dateMinSelectID2").val();
+		            if($("#dateSecSelectID2").val()<10)
+		            	tmpStr += ":0"+$("#dateSecSelectID2").val();	
+		            else
+		            	tmpStr += ":"+$("#dateSecSelectID2").val();
+		            var tmpEndTimeStr = tmpStr;
+		            queryGPSLine($("#queryUserTrackID").val(),$("#queryUserTrackID2").val(),tmpStartTimeStr,tmpEndTimeStr);
+		        });		        
+		    })
+		</script>
+		
+		<!--背景动画        -->
+		<script type="text/javascript" src="js/bgannimation.js" ></script>	
+		<script type="text/javascript" src="js/jquery.min.js"></script>		
+		<script type="text/javascript" src="js/echarts.min.js"></script>
+		<!--<script type="text/javascript" src="js/vue.min.js"></script>-->
+		<script type="text/javascript" src="js/times.js"></script>
+		<!--<script type="text/javascript" src="js/index.js"></script>-->
+		<script src="js/echarts-liquidfill.js" type="text/javascript" charset="utf-8"></script>
+				
+		<script type="text/javascript" src="js/CommonJS.js"></script>
+		
+		<!--调用op库-->	
+		<link rel="stylesheet" href="css/ol.css" type="text/css">
+		<script src="js/ol.js" type="text/javascript" charset="utf-8"></script>
+		
+		<link rel="stylesheet" type="text/css" href="overlay/popupoverlay.css" />
+		<script type="text/javascript" src="overlay/popupoverlay.js"></script>
+		
+		<!--
+        	作者：xwebsite@163.com
+        	时间：2019-05-07
+        	描述：地图相关操作
+        -->
+		<script src="js/basicmap_home.js" type="text/javascript" charset="utf-8"></script>
+		
+		<!-- sweet-alert库 -->
+		<link href="css/sweet-alert.css" rel="stylesheet" type="text/css" />	
+		<script src="js/sweet-alert.js"></script>
+		
+		<script>
+				
+		function dateToString(date){ 
+		  var year = date.getFullYear(); 
+		  var month =(date.getMonth() + 1).toString(); 
+		  var day = (date.getDate()).toString();  
+		  if (month.length == 1) { 
+		      month = "0" + month; 
+		  } 
+		  if (day.length == 1) { 
+		      day = "0" + day; 
+		  }
+		  var dateTime = year + "-" + month + "-" + day;
+		  return dateTime; 
+		}
+			
+		/**点击地图可缩放*/
+		$("#switchMapZoomID").click(function(){
+			var draw = new ol.interaction.MouseWheelZoom();
+			M_map.addInteraction(draw);			
+			$("#switchMapZoomID").unbind("click");
+			
+			//m_CurrentGYEventInfoStr = "0/1";
+			//m_LastGYEventQueryTimeStr = '2019-05-09 20:00:00';
+		});
+		
+		var m_sectionID = [1,17,25,51,57];
+		/**查询的日期*/
+		var m_CurrentQueryData = dateToString(new Date()); 
+		
+		//refreshSchedulingPlan(m_CurrentQueryData);
+				
+		//exeSchedulingPlan(undefined, "9695");
+		
+		/**
+		 * 水位控件
+		 * @param {Object} dataV
+		 */
+		function initialLeftTopChart(dataV) {			
+			var myChart = echarts.init(document.getElementById('container01'));
+			var data = [];
+			data.push(dataV / 100 - 0.1);
+			data.push(dataV / 100 - 0.2);
+			data.push(dataV / 100 - 0.3);
+			data.push(dataV / 100 - 0.4);
+			data.push(dataV / 100 - 0.5);
+			var option = {			
+				series: [{
+					type: 'liquidFill',
+					name: '水位',
+					outline: {
+						// show: false
+						borderDistance: 10,
+						itemStyle: {
+							borderWidth: 8,
+							borderColor: 'rgb(7,184,230,0.1)'
+						},
+					},
+					radius: '90%',
+					data: data,
+					backgroundStyle: {
+						borderWidth: 5,
+						borderColor: 'rgb(7,184,230,0.9)',
+						color: 'rgb(255,0,255,0.01)'
+					},
+					label: {
+						normal: {
+							formatter:"水位\n" + dataV + "m",
+							textStyle: {
+								fontSize: 16,	
+								color: '#ffffff'
+							}
+						}
+					}					
+				}]				
+			};
+			myChart.setOption(option);
+		}
+		
+		/**
+		 * 水位控件
+		 * @param {Object} dataV
+		 */
+		function initialLeftTop2Chart(dataV) {			
+			var myChart = echarts.init(document.getElementById('container02'));
+			var data = [];
+			if(dataV > 25)
+				dataV = 25;
+			data.push(dataV / 25);
+			data.push(dataV / 25 - 0.1);
+			data.push(dataV / 25 - 0.2);
+			data.push(dataV / 25 - 0.3);
+			data.push(dataV / 25 - 0.4);
+			var option = {	
+				series: [{
+					type: 'liquidFill',		
+					outline: {
+						// show: false
+						borderDistance: 10,
+						itemStyle: {
+							borderWidth: 8,
+							borderColor: 'rgb(7,184,230,0.1)'
+						},
+					},
+					radius: '90%',
+					data: data,
+					amplitude: 0,
+        			waveAnimation: 0,
+					backgroundStyle: {
+						borderWidth: 5,
+						borderColor: 'rgb(211,89,38,0.9)',
+						color: 'rgb(255,0,255,0.01)'
+					},
+					label: {
+						normal: {
+							formatter: "雨量\n" + dataV + "mm",
+							textStyle: {
+								fontSize: 16,
+								color: '#ffffff'
+							}
+						}
+					}
+				}]
+			};
+			// 使用刚指定的配置项和数据显示图表。
+			if (option && typeof option === "object") {
+			    myChart.setOption(option, true);
+			}
+		}
+		
+		function refreshLastWaterLevelAndRainData() { //加载横沥口数据
+			RunWebServiceJSON(true, null, "/pms/Base", "/DataGridQuery/GetLastHourWaterCalc",
+			       null, null, function (data) {
+				var jqueryObj = $(data);
+				var message = jqueryObj.children();
+				var text = message.text();
+				var tmpObjs = eval("(" + text + ")");
+				if(tmpObjs!=null && tmpObjs.length>0)
+				{
+					var tmpObj = tmpObjs[0];
+					//水位雨量
+					var tmpWaterLevel = 93, tmpRainLevel = 0;
+					var tmpOpt01 = $("input:radio[name='stationRadio']:checked").val();
+					if(tmpOpt01==1)
+					{
+						tmpWaterLevel = parseFloat(tmpObj.HNZ_upZ);
+						tmpRainLevel = parseFloat(tmpObj.HNZ_rainFall);
+					}
+					else{
+						tmpWaterLevel = parseFloat(tmpObj.HTK_upZ);
+						tmpRainLevel = parseFloat(tmpObj.HTK_rainFall);
+					}
+					initialLeftTopChart(tmpWaterLevel);
+					initialLeftTop2Chart(tmpRainLevel);
+					
+					//水质
+//					var tmpSectionIndex = $('#sectionSlID').val();
+//					var tmpTP = 0,tmpTN = 0,tmpN3 = 0,tmpCOD = 0;
+//					if(tmpSectionIndex == 1)
+//					{
+//						tmpTP = parseFloat(tmpObj.HNZ_TP);
+//						tmpTN = parseFloat(tmpObj.HNZ_TN);
+//						tmpN3 = parseFloat(tmpObj.HNZ_NH4N);
+//						tmpCOD = parseFloat(tmpObj.HNZ_COD);
+//					}
+//					else if(tmpSectionIndex == 2)//茂仔水
+//					{
+//						tmpTP = parseFloat(tmpObj.HTK_TP);
+//						tmpTN = parseFloat(tmpObj.HTK_TN);
+//						tmpN3 = parseFloat(tmpObj.HTK_NH4N);
+//						tmpCOD = parseFloat(tmpObj.HTK_COD);
+//					}
+//					else if(tmpSectionIndex == 3)//赤水洞水
+//					{
+//						tmpTP = parseFloat(tmpObj.LZ_TP);
+//						tmpTN = parseFloat(tmpObj.LZ_TN);
+//						tmpN3 = parseFloat(tmpObj.LZ_NH4N);
+//						tmpCOD = parseFloat(tmpObj.LZ_COD);
+//					}
+//					else if(tmpSectionIndex == 4)//新田仔
+//					{
+//						tmpTP = parseFloat(tmpObj.LZ_TP);
+//						tmpTN = parseFloat(tmpObj.LZ_TN);
+//						tmpN3 = parseFloat(tmpObj.LZ_NH4N);
+//						tmpCOD = parseFloat(tmpObj.LZ_COD);
+//					}
+//					else if(tmpSectionIndex == 5)//赤水洞水
+//					{
+//						tmpTP = parseFloat(tmpObj.LZ_TP);
+//						tmpTN = parseFloat(tmpObj.LZ_TN);
+//						tmpN3 = parseFloat(tmpObj.LZ_NH4N);
+//						tmpCOD = parseFloat(tmpObj.LZ_COD);
+//					}
+					//initialWaterQChart([tmpTP,tmpTN,tmpN3,tmpCOD]);					
+				}
+			});
+			
+			refreshWaterQDataFromServer();
+		}		
+		
+		function refreshWaterQDataFromServer()
+		{
+			var stcdt = $('#sectionSlID option:selected').val();
+			var m_StationS = "12021220";
+			if(stcdt == 1)
+       		{
+       			m_StationS = "12021220";
+       		}
+       		else if(stcdt == 2){
+       			m_StationS = "12021225";
+       		}
+       		else if(stcdt){
+       			m_StationS = "12021222";
+       		}
+       		else if(stcdt == 4){
+       			m_StationS = "12021226";
+       		}
+       		else if(stcdt == 5){
+       			m_StationS = "12021227";
+       		}
+       		
+			RunWebServiceJSON(true, "getWaterqualitydatalast", "/pms/Base", "/doreaddata/getdata", "STCDT", m_StationS, function(data) {
+				data = $(data).children().text();
+				data = JSON.parse(data);
+				if(data.length>0){
+					var PH = data[5].AVGV;
+					var DO = data[4].AVGV;
+					var COD = data[1].AVGV;
+					var TN = data[3].AVGV;
+					var TP = data[0].AVGV;
+					var NH = data[2].AVGV;
+					
+					initialWaterQChart([TP,TN,NH,COD]);
+				}
+			});
+		}
+		
+		var tmpSSSSSSS = 0;
+		
+		 //把new Date出来的时间格式转换为data123中的日期格式
+        function riqigeshi(now){
+            return now.toLocaleDateString() + ' ' + now.getHours() + now.toLocaleTimeString().substr(-6,6)
+        }
+		/**
+		 * 初始化水质控件
+		 */
+		function initialWaterQChart(values)
+		{
+		    var dom = document.getElementById("container03");
+		    var myChart = echarts.init(dom);
+		    var app = {};
+		    option = null;
+		    option = {		        
+		        legend: {
+		            x : 'center',
+		            y : 'bottom',
+		            itemWidth: 8,
+		            itemHeight: 8,
+		            textStyle:{
+		                color:'#fff',
+		                fontSize:16
+		            },
+		            data:['总磷','总氮','氨氮','COD']
+		        },
+		        tooltip : {
+			        trigger: 'item',
+			        formatter: "{a} <br/>{b} : {c} ({d}%)"
+			    },
+		        calculable : true,
+		        series : [
+		            {
+		                name:'水质情况',
+		                type:'pie',
+		                radius : [30, 90],
+		                center : ['50%', '45%'],
+		                roseType : 'area',
+		                label: {
+			                normal: {
+			                    show: true,
+			                    textStyle: {
+						          fontSize: '16'
+			                    }
+			                },
+			                emphasis: {
+			                    show: true
+			                }
+			            },
+		                data:[
+		                    {value:values[0], name:'总磷',itemStyle:{normal:{color:'#ff7800'}}},
+		                    {value:values[1], name:'总氮',itemStyle:{normal:{color:'#23eb6a'}}},
+		                    {value:values[2], name:'氨氮',itemStyle:{normal:{color:'#7627cb'}}},
+		                    {value:values[3], name:'COD',itemStyle:{normal:{color:'#fffc00'}}}
+		                ]
+		            }
+		        ]
+		    };
+		    ;
+		    if (option && typeof option === "object") {
+		        myChart.setOption(option, true);
+		    }			
+		}
+		/**
+		 * 初始化位移位置显示控件
+		 * @param {Object} data
+		 */
+		function initialDispChart(data)
+		{
+			var myChart = echarts.init(document.getElementById('container04'));
+			var option = {
+				grid: {
+			        left: 10,
+			        right: 10,
+			        bottom: 10,
+			        top:10,
+			        containLabel: true
+			    },
+				xAxis: {
+					axisLine: {
+						lineStyle: {
+							color: '#fff'
+						}
+					},
+					max: 0.04,
+					min: -0.04,
+					splitLine: {
+						show: true,
+						lineStyle: {
+							color: ['red'],
+							width: 1,
+							type: 'solid'
+						}
+					},
+					axisLabel: {
+			            show: true,
+			            textStyle: {
+			                color: '#FFF',
+			                fontSize:12
+			            }
+			        }
+				},
+				yAxis: {
+					axisLine: {
+						lineStyle: {
+							color: '#fff'
+						}
+					},
+					max: 0.04,
+					min: -0.04,
+					splitLine: {
+						show: true,
+						lineStyle: {
+							color: ['red'],
+							width: 1,
+							type: 'solid'
+						}
+					},axisLabel: {
+			            show: true,
+			            textStyle: {
+			                color: '#FFF',
+			                fontSize:12
+			            }
+			        }
+				},
+				series: [{
+					symbolSize: 10,
+					data: [data],
+					type: 'scatter'
+				}]
+			};
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option);
+		}
+		
+		var m_DispXArray = [], m_DispYArray = [], m_DispZArray = [];		
+		var myDispChart = null;		
+		initialDispChart2([m_DispXArray,m_DispYArray,m_DispZArray]);
+		
+		/**
+		 * 初始化位移过程线控件
+		 * @param {Object} data
+		 */
+		function initialDispChart2(array)
+		{
+			myDispChart = echarts.init(document.getElementById('container05'));
+			var option = {
+				grid: {
+			        left: 20,
+			        right: 50,
+			        bottom: 20,
+			        top:30,
+			        containLabel: true
+			    },
+			    //animation:false,
+				xAxis: {
+			        type: 'time',
+			        splitLine: {
+			            show: false
+			        },
+			        //splitNumber:24,
+			        axisLine:{
+					    lineStyle:{
+					        color:'#0087ED',
+					        width:1,//这里是为了突出显示加上的
+					    }
+					},
+			        axisLabel: {
+			            show: true,
+			            textStyle: {
+			                color: '#FFF',
+			                fontSize:12
+			            }
+			        }	
+			    },
+			    yAxis: {
+			        type: 'value',
+			        //boundaryGap: [0, '100%'],
+			        splitNumber:2,
+			        splitLine: {
+			            show: false
+			        },
+			        axisLine:{
+					    lineStyle:{
+					        color:'#0087ED',
+					        width:1,//这里是为了突出显示加上的
+					    }
+					},
+			        axisLabel: {
+			            show: true,
+			            textStyle: {
+			                color: '#FFF',
+			                fontSize:12
+			            }
+			        }	
+			    },
+			    tooltip: {
+		            trigger: 'axis'
+		        },
+			    color:['#BF00A5','#80C7D6','#FF8923'],
+				legend: {
+				        orient: 'horizontal',
+				        x: 'center',
+				        y: 'top',
+				        textStyle: {
+				            color:'#FFF',
+			            	fontSize:12
+				        }
+				    },			    
+			    series: [
+				    {
+				        name: 'X',
+				        type: 'line',
+				        showSymbol: false,
+				        hoverAnimation: false,
+				        data: array[0]
+				    },
+				    {
+				        name: 'Y',
+				        type: 'line',
+				        showSymbol: false,
+				        hoverAnimation: false,
+				        data: array[2]
+				    },
+				    {
+				        name: 'Z',
+				        type: 'line',
+				        showSymbol: false,
+				        hoverAnimation: false,
+				        data: array[1]
+				    }
+			    ]
+			};
+			// 使用刚指定的配置项和数据显示图表。
+			myDispChart.setOption(option);
+		}
+				
+        $("input:radio[name='slopeStationRadio']").change(function (){
+            var opt=$("input:radio[name='slopeStationRadio']:checked").val();
+            $("#dispImgID").attr("src", "images/tupian_"+opt+".png"); 
+            refreshDispData();
+        });
+        
+         $("input:radio[name='stationRadio']").change(function (){
+         	refreshLastWaterLevelAndRainData();
+        });
+        
+        var m_patrolListInterval = null;
+        var m_patrolListAnimEnable = true;
+		/**
+		 * 河道管养消息列表动画
+		 */
+		function patrolListAnimation()
+		{
+			var html2=$(".patrolList ul").html();
+			$(".patrolList ul").append(html2);
+			var ls2=$(".patrolList li").length/2+1;
+			a=0;
+			if(m_patrolListInterval!=null)
+				clearInterval(m_patrolListInterval);
+			m_patrolListAnimEnable = true;
+			m_patrolListInterval = setInterval(function(){
+				if(m_patrolListAnimEnable == false)
+					return;
+				a++;
+				if(a==ls2){
+					a=0;
+					$(".patrolList ul").css({marginTop:0});
+					//$(".patrolList ul").animate({marginTop:-'30'*a+'px'},800);
+					return;
+				}
+		    	$(".patrolList ul").animate({marginTop:-'40'*a+'px'},800);
+			},1000);
+		}
+		
+		$("#patrolListDiv").on("mouseover",function(){
+			m_patrolListAnimEnable = false;
+		})
+		$("#patrolListDiv").on("mouseout",function(){
+			m_patrolListAnimEnable = true;
+		})
+		
+		var m_WeatherReportList = [];
+		/**
+		 * 刷新天气预报数据
+		 */
+		function refreshWeatherReportData() {
+			// 增加 获取当前时间格式的不同拼接 作为筛选条件
+			var dateTime = new Date();
+			var year = dateTime.getFullYear(); 
+			year = year.toString();
+			var month = dateTime.getMonth() + 1;
+			month = month.toString();
+			month = month < 10 ? "0" + month : month;
+			var day =dateTime. getDate();
+			var nextDay = day - 1; 
+			day = day.toString();
+			day = day < 10 ? "0" + day : day;
+			nextDay = nextDay.toString();
+			nextDay = nextDay < 10 ? "0" + nextDay : nextDay;
+			// 拼接startDate endDate 格式为yyyymmdd
+			var startDate = year + month + nextDay;
+			// startDate = '20230406'
+			var endDate = year + month + day;
+			// endDate = '20230407'
+			
+			var hour = dateTime.getHours() + 1;
+			hour = hour.toString();
+			hour = hour < 10 ? "0" + hour : hour;
+			// 拼接currentDatetime 格式为yyyy--mm--dd hh:mm:ss
+			var currentDatetime = `${year}-${month}-${day} ${hour}:00:00`;
+
+
+			var dataObj = {
+				Type: "1",
+				appid: "1551959314900",
+				appKey: "700beaf5aed5418795cd40d3dbd2bf22",
+				startDate: startDate,
+				endDate: endDate,
+			}
+		    $.ajax({
+		        url: myURL + "/ActionContrllerWebService.asmx/RunSZWeather"
+		        ,type: "post"
+		        ,data: dataObj
+		        ,contentType: "application/x-www-form-urlencoded;charset=utf-8" //"application/json",
+		        ,traditional: true
+		        ,dataType: "xml"
+		        ,success: function(data) {
+					data = $(data).children().text();
+					data = JSON.parse(data);
+					data = data.data;
+					// 增加 筛选气象地区为罗湖区
+					data = data.filter(currentData => currentData.AREANAME === "罗湖区")
+
+					var tmpLen = data.length;
+					if(tmpLen > 0){	       
+						m_WeatherReportList = [];
+			            var tmpTTTid = 0;			            
+			            for(i = 0; i < data.length; i++) {
+			            	var tmpRowData = data[i];
+							var tmpisFontW = "";
+							if(i==0) {
+								tmpisFontW = "font-weight:bold";
+								// 增加 筛选第一行为当前小时日期
+								// var currentDatetime = "2023-04-06 15:00:00";
+								tmpRowData = data.filter(currentData => currentData.FORECASTTIME === currentDatetime);
+								tmpRowData = tmpRowData[0];
+							}
+								
+							tmpRowData.time = tmpRowData.FORECASTTIME.substr(10,6);
+							var tmpColor = '#2FEDA5';
+							if(tmpRowData.WEATHERSTATUS.indexOf("暴雨")>=0)//如果是大雨及以上
+								tmpColor = '#FF0000';
+							
+							// if(i==0)  
+							// 	tmpisFontW = "font-weight:bold";
+							// // 	// 增加 筛选第一行为当前小时日期
+								
+							var tmpRowHTML = '<tr class="aaa" style="font-size: 16px;'+tmpisFontW+';" align="center" >'
+								+'<td style="color: '+tmpColor+'; font-size: 18px; padding: 5px 0;">'+tmpRowData.time
+								+'</td><td style="color: '+tmpColor+'; font-size: 18px; padding: 5px 0;">'+tmpRowData.RAIN
+	                        	+'</td><td style="color: '+tmpColor+'; font-size: 18px; padding: 5px 0;">'+tmpRowData.TEMPERATURE
+	                        	+'</td><td style="color: '+tmpColor+'; font-size: 18px; padding: 5px 0;">'+tmpRowData.WINDSPEED
+	                        	+'</td><td style="color: '+tmpColor+'; font-size: 18px; padding: 5px 0;">'+tmpRowData.WINDDIRECT
+	                         	+'</td></tr>';
+	                         m_WeatherReportList[i] = tmpRowHTML;
+						}
+			            m_WeatherReportCurrentIndex = 1;			            
+					}
+				}
+		        ,error: function (XMLHttpRequest, textStatus, errorThrown) {   
+		        }
+		    });
+		}
+		
+		var m_WeatherReportCurrentIndex = 0;
+		/**
+		 * 气象预报的列表动画
+		 */
+		function WeatherReportListAnimation()
+		{
+			try{
+				var tmpLen = m_WeatherReportList.length;
+				var tmpTotalHTML = '<tbody><tr class="aaa" align="center">';
+	            //列头
+	            tmpTotalHTML += '<td style="color: #00fcff; font-size: 18px; font-weight:bold; padding: 5px 0;">时间</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">小时雨量</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">温度</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">风速等级</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">风向</td>'
+	                         	+'</tr>';	
+	            if(tmpLen<=5)
+	            {
+	            	for(var i = 0; i < tmpLen; i++)
+		            {        	
+		            	tmpTotalHTML+=m_WeatherReportList[i];
+		            }
+		            $("#qixiangTable").html(tmpTotalHTML);
+	            }
+	            else{
+	            	tmpTotalHTML+=m_WeatherReportList[0];	            	
+	            	for(var i = m_WeatherReportCurrentIndex; i < m_WeatherReportCurrentIndex + 5; i++)
+		            {
+		            	var tmpRowHTML = null;
+		            	if(i>=tmpLen)
+		            	{
+		            		tmpRowHTML = m_WeatherReportList[i-tmpLen];
+		            	}
+		            	else{
+		            		tmpRowHTML = m_WeatherReportList[i];
+		            	}            	
+		            	tmpTotalHTML+=tmpRowHTML;
+		            }
+		            m_WeatherReportCurrentIndex++; 
+		            if(m_WeatherReportCurrentIndex >= tmpLen)
+		            	m_WeatherReportCurrentIndex = 1;
+					$("#qixiangTable").html(tmpTotalHTML);
+	            }
+			
+			}catch(e){
+				//TODO handle the exception
+			}
+            setTimeout(WeatherReportListAnimation, 3000);
+		}
+		
+		var m_WaterReportList = [];
+		/**
+		 * 刷新水文预报数据
+		 */
+		function refreshWaterReportData(planID) {
+			
+			RunWebServiceJSON(true, "getselplandetail", 
+					"/pms/Base", "/doreaddata/getdata", 
+					"plantcode#plancode", '100003'+ "#" + planID, function (data) {
+						var jqueryObj = $(data);
+						var message = jqueryObj.children();
+						var text = message.text();
+						var tmpObjs = eval("(" + text + ")");						
+						if(tmpObjs!=null && tmpObjs.length>0)
+						{
+							m_WaterReportList = [];
+							var tmpLen = tmpObjs.length;       
+				            var tmpTTTid = 0;	
+				            var tmpStartTimeStr = tmpObjs[0].begintime;
+				            //tmpStartTimeStr = tmpStartTimeStr.substring(9,11);
+				            //var tmpStartHourInt = parseInt(tmpStartTimeStr);
+				            for(i = 0; i < tmpLen; i++) {
+				            	var tmpRowData = tmpObjs[i];
+				            	//var tmphourInt = tmpStartHourInt+i;
+				            	//if(tmphourInt >= 24)
+				            	//	tmphourInt = tmphourInt - 24;
+				            	//if(tmphourInt<10)
+				            	//	tmphourInt = "0"+tmphourInt;
+								//tmpRowData.time = ""+tmphourInt+":00";
+                                var tmpHour=new Date((new Date(tmpStartTimeStr).getTime()+i*15*60*1000));
+								tmpRowData.time = tmpHour.Format("HH:mm:00");
+								var tmpColor = '#2FEDA5';
+								
+								var tmpisFontW = "";
+								if(i==0)
+									tmpisFontW = "font-weight:bold";
+								
+								var tmpRowHTML = '<tr class="aaa" style="font-size: 16px;'+tmpisFontW+'" align="center" >'
+									+'<td style="color: '+tmpColor+'; font-size: 18px; padding: 5px 0;">'+tmpRowData.time
+									+'</td><td style="color: '+tmpColor+'; font-size: 18px; padding: 5px 0;">'+tmpRowData.LevelList
+		                        	+'</td><td style="color: '+tmpColor+'; font-size: 18px; padding: 5px 0;">'+tmpRowData.inFlowList
+		                        	+'</td><td style="color: '+tmpColor+'; font-size: 18px; padding: 5px 0;">'+tmpRowData.outputFlowList
+		                         	+'</td></tr>';
+		                         m_WaterReportList[i] = tmpRowHTML;
+							}
+				            m_WaterReportCurrentIndex = 1;				            					
+						}
+			});
+		}
+		
+		var m_WaterReportCurrentIndex = 0;
+		/**
+		 * 水文预报的列表动画
+		 */
+		function WaterReportListAnimation()
+		{
+			try{
+				var tmpLen = m_WaterReportList.length;
+				var tmpTotalHTML = '<tbody><tr class="aaa" align="center">';
+	            //列头
+	            tmpTotalHTML += '<td style="color: #00fcff; font-size: 18px; font-weight:bold; padding: 5px 0;">时间</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">水位</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">入库流量</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">出库流量</td>'
+	                         	+'</tr>';	
+	            if(tmpLen<=5)
+	            {
+	            	for(var i = 0; i < tmpLen; i++)
+		            {        	
+		            	tmpTotalHTML+=m_WaterReportList[i];
+		            }
+		            $("#shuiwenTable").html(tmpTotalHTML);
+	            }
+	            else{
+	            	tmpTotalHTML+=m_WaterReportList[0];
+	            	for(var i = m_WaterReportCurrentIndex; i < m_WaterReportCurrentIndex + 5; i++)
+		            {
+		            	var tmpRowHTML = null;
+		            	if(i>=tmpLen)
+		            	{
+		            		tmpRowHTML = m_WaterReportList[i-tmpLen];
+		            	}
+		            	else{
+		            		tmpRowHTML = m_WaterReportList[i];
+		            	}            	
+		            	tmpTotalHTML+=tmpRowHTML;
+		            }
+		            m_WaterReportCurrentIndex++; 
+		            if(m_WaterReportCurrentIndex >= tmpLen)
+		            {
+		            	m_WaterReportCurrentIndex = 1;
+						var option1 = m_SectionChart.getOption();
+						m_SectionChart.clear();
+						m_SectionChart.setOption(option1);
+		            }	
+					$("#shuiwenTable").html(tmpTotalHTML);
+	            } 				
+			}catch(e){
+				//TODO handle the exception
+			}
+            setTimeout(WaterReportListAnimation, 2000);
+		}
+		
+		var m_SectionChart = null;
+		
+		/**
+		 * 初始化河道断面及水面
+		 * @param {Object} dataArray
+		 */
+		function initialSectionChartControl(dataArray)
+		{
+			var dom = document.getElementById("centerBotDiv");
+			var myChart = echarts.init(dom);
+			var app = {};
+			option = null;	
+			
+			var tmpXData = [];
+			for(var tmpI = 1; tmpI < 58;tmpI++)
+				tmpXData[tmpI-1] = String(tmpI)+"#";
+			
+			option = {
+			    tooltip: {
+			        trigger: 'axis'
+			    },
+			    legend: {
+			    	//orient: 'vertical',
+					left: 'right',
+					y: 'top',
+			        data:['水面高程','河床高程','河堤高程'],
+			        textStyle:{//图例文字的样式
+			            color:'#ccc',
+			            fontSize:16
+			        }
+			    },
+			    grid: {
+			        left: 30,
+			        right: 30,
+			        bottom: 10,
+			        top:10,
+			        containLabel: true
+			    },		
+			    color:['#BF00A5','#80C7D6','#FF8923'],
+			    xAxis: {
+			        type: 'category',
+			        boundaryGap: false,
+			        data: tmpXData,
+			        splitLine:{show:false},
+			        axisLine:{
+					    lineStyle:{
+					        color:'#0087ED',
+					        width:1,//这里是为了突出显示加上的
+					    }
+					},
+			        axisLabel: {
+			            show: true,
+			            textStyle: {
+			                color: '#0087ED',
+			                fontSize:16
+			            }
+			        }		
+			    },
+			    yAxis: {
+			        type: 'value',
+			        name: '高程(m)',
+        			nameLocation:'center', 
+        			nameGap: 30,//与轴线间距
+			        nameTextStyle:{ //文字样式
+			          color: '#0087ED',
+			          fontSize: 16
+			        },
+			        max: 80,
+					min: 20,
+			        splitLine:{show:false},
+			        axisLine:{
+					    lineStyle:{
+					        color:'#0087ED',
+					        width:1,//这里是为了突出显示加上的
+					    }
+					},
+					axisLabel: {
+			            show: true,
+			            formatter: '{value}',
+			            textStyle: {
+			                color: '#0087ED',
+			                fontSize:16
+			            }
+			        }
+			    },
+			    series: [
+			        {
+			            name:'水面高程',
+			            type:'line',			            
+			            //stack: '总量',
+			            symbol: 'circle',  //这句就是去掉点的  
+			            symbolSize: 5,
+        				showSymbol: false,
+			            smooth: true,
+			            areaStyle: {
+				            normal: {
+				                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+				                    offset: 0,
+				                    color: 'rgba(1, 132, 213, 0.2)'
+				                }, {
+				                    offset: 0.8,
+				                    color: 'rgba(1, 132, 213, 0.1)'
+				                }], false),
+				                shadowColor: 'rgba(0, 0, 0, 0.1)',
+				            }
+				        },
+						itemStyle: {
+							normal: {
+								color: '#0184d5',
+								borderColor: 'rgba(221, 220, 107, .1)',
+								borderWidth: 12
+							}
+						},
+						
+			            data:dataArray[0]
+			        },
+			        {
+			            name:'河床高程',
+			            type:'line',
+			            symbol: 'circle',  //这句就是去掉点的  
+			            symbolSize: 5,
+        				showSymbol: false,
+			            smooth: true,
+			            areaStyle: {
+				            normal: {
+				                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+				                    offset: 0,
+				                    color: 'rgba(0, 216, 135, 0.2)'
+				                }, {
+				                    offset: 0.8,
+				                    color: 'rgba(0, 216, 135, 0.1)'
+				                }], false),
+				                shadowColor: 'rgba(0, 0, 0, 0.1)',
+				            }
+				        },
+						itemStyle: {
+							normal: {
+								color: '#00d887',
+								borderColor: 'rgba(221, 220, 107, .1)',
+								borderWidth: 12
+							}
+						},
+			            data:dataArray[1]
+			        },
+			        {
+			            name:'河堤高程',
+			            type:'line',
+			            symbol: 'circle',  //这句就是去掉点的  
+			            symbolSize: 5,
+        				showSymbol: false,
+			            smooth: true,
+			            areaStyle: {
+				            normal: {
+				                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+				                    offset: 0,
+				                    color: 'rgba(255, 0, 0, 0.2)'
+				                }, {
+				                    offset: 0.8,
+				                    color: 'rgba(255, 0, 0, 0.1)'
+				                }], false),
+				                shadowColor: 'rgba(0, 0, 0, 0.1)',
+				            }
+				        },
+						itemStyle: {
+							normal: {
+								color: '#FF0000',
+								borderColor: 'rgba(221, 220, 107, .1)',
+								borderWidth: 12
+							}
+						},						
+			            data:dataArray[2]
+			        }			        
+			    ]
+			};
+			if (option && typeof option === "object") {
+			    myChart.setOption(option, true);
+			}
+			m_SectionChart = myChart;
+		}
+		
+		var m_LastQueryTime = '';
+		
+		function refreshPlanIDData() { //加载横沥口数据
+		    var now = new Date();
+		    now.setFullYear('2019') //新加入
+			if(now.getMinutes()<7)
+				now = new Date(now.getTime() - 30*60*1000);
+			var queryDataTime = now.Format("yyyy/MM/dd HH:00:00");			
+			if(m_LastQueryTime == queryDataTime)
+				return;
+			
+			RunWebServiceJSON(true, "getTSDBLevelAutodata", 
+					"/pms/Base", "/doreaddata/getdata", 
+					"timeindex", queryDataTime, function (data) {
+						var jqueryObj = $(data);
+						var message = jqueryObj.children();
+						var text = message.text();
+						var tmpObjs = eval("(" + text + ")");
+						if(tmpObjs!=null && tmpObjs.length>0)
+						{
+							var tmpPlanID = tmpObjs[0].planID;
+							//测试
+							tmpPlanID=28181
+							//if(tmpPlanID!=null)
+							//{
+								m_LastQueryTime = (new Date()).Format("yyyy/MM/dd HH:00:00");
+								refreshSectionElvData(tmpPlanID);
+								refreshWaterReportData(tmpPlanID);
+							//}							
+						}
+						else
+							m_LastQueryTime = "";
+						
+			});
+		}
+		
+		var m_RiverSectionVDataArray = [];
+		/**
+		 * 刷新断面的高程及水面高程数据
+		 * @param {Object} planID
+		 */
+		function refreshSectionElvData(planID){
+			RunWebServiceJSON(true, "getTSDBLeveldata", "/pms/Base", "/doreaddata/getdata",
+			        "guid#timeindex", String(planID)+"#-1", function (data) {
+				var jqueryObj = $(data);
+				var message = jqueryObj.children();
+				var text = message.text();
+				var tmpObjs = eval("(" + text + ")");
+				if(tmpObjs!=null && tmpObjs.length>0)
+				{
+					var tmpArray = [],tmpArray2 = [],tmpArray3 = [],tmpArray4 = [];
+					for(var i in tmpObjs)
+					{
+						var tmpObj = tmpObjs[i];
+						tmpArray[i] = parseFloat(tmpObj.V);
+						tmpArray2[i] = parseFloat(tmpObj.MAXV);
+						tmpArray3[i] = parseFloat(tmpObj.MINV);
+						tmpArray4[i] = tmpArray[i] - tmpArray2[i];
+						if(tmpArray4[i] < 0)
+							tmpArray4[i] = 0;
+					}
+					//initialSectionChartControl([tmpArray,tmpArray2,tmpArray3]);	
+					
+					m_RiverSectionVDataArray = [tmpArray,tmpArray2,tmpArray3,tmpArray4];
+					refreshMapRiverShow();
+				}
+			});
+		}
+		
+		/**
+		 * 刷新位移数据
+		 */
+		function refreshDispData(){
+			var tmpSecID = "12023000";
+			var tmpOpt02=$("input:radio[name='slopeStationRadio']:checked").val();
+			if(tmpOpt02==2)
+				tmpSecID = "12023010";//12023010-横沥口边坡
+			else if(tmpOpt02==2)
+				tmpSecID = "12023020";//12023020-彩虹桥
+				
+			RunWebServiceJSON(true, "getRealtimeDiffData", "/pms/Base",
+       			"/doreaddata/getdata", "ptcode", tmpSecID,function (data) {
+				var jqueryObj = $(data);
+				var message = jqueryObj.children();
+				var text = message.text();
+				var tmpObjs = eval("(" + text + ")");
+				if(tmpObjs!=null && tmpObjs.length>0)
+				{
+					var tmpObj = tmpObjs[0];
+					//位移
+					var tmpDispX = 0, tmpDispY = 0, tmpDispZ = 0;
+					tmpDispX = parseFloat(tmpObj.DisX);
+					tmpDispY = parseFloat(tmpObj.DisY);
+					tmpDispZ = parseFloat(tmpObj.DisZ);
+					
+					initialDispChart([tmpDispX,tmpDispY]);
+					
+					var now = new Date();
+					//tmpDispX = Math.random();
+					tmpSSSSSSS++;
+					if(tmpSSSSSSS > 10)
+					{						
+						m_DispXArray.shift();
+						m_DispYArray.shift();
+						m_DispZArray.shift();
+						
+						tmpDispX += Math.random()*1*tmpDispX;
+						tmpDispY += Math.random()*1*tmpDispY;
+						tmpDispZ += Math.random()*1*tmpDispZ;
+					}
+					var tmpTimeStr01 = riqigeshi(now);
+					m_DispXArray.push({value:[tmpTimeStr01,tmpDispX]});
+					m_DispYArray.push({value:[tmpTimeStr01,tmpDispY]});
+					m_DispZArray.push({value:[tmpTimeStr01,tmpDispZ]});
+					
+					//initialDispChart2([m_DispXArray,m_DispYArray,m_DispZArray]);
+					myDispChart.setOption({
+				        series: [{
+				        	hoverAnimation: false,
+				            data: m_DispXArray
+				        },
+				        {
+				        	hoverAnimation: false,
+				            data: m_DispYArray
+				        },
+				        {
+				        	hoverAnimation: false,
+				            data: m_DispZArray
+				        }
+				        ]
+				    });
+				}
+			});
+		}
+		
+		/**
+		 * 刷新河道管养的事件与工单数量
+		 */
+		function refreshGuanYangCountData() {
+			var now = new Date();
+			var tmpMonth = now.getMonth()+1;
+			var tmpMonthStr = ""+tmpMonth;
+			if(tmpMonth<10)
+				tmpMonthStr = "0"+tmpMonth;
+			var tmpStartTime = now.getFullYear()+"-"+tmpMonthStr+"-01 00:00:00";
+			tmpMonth++;
+			var tmpEndTime = "";
+			if(tmpMonth>12)
+			{
+				tmpEndTime = (now.getFullYear()+1)+"-01-01 00:00:00";
+			}
+			else{
+				tmpMonthStr = ""+tmpMonth;
+				if(tmpMonth<10)
+					tmpMonthStr = "0"+tmpMonth;
+				tmpEndTime = now.getFullYear()+"-"+tmpMonthStr+"-01 00:00:00";
+			}
+			//刷新本月工单
+			var dataObj = {
+				method:"getjobscount",
+				projectid:CurrentProjectID,
+				starttime: tmpStartTime,
+				endtime: tmpEndTime,
+			}
+			$.ajax({
+				type: "post",
+				url: ServerURL + "/ServiceHandler/BigDataHandler.ashx",
+				async: true,
+				data:dataObj,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {						
+						var tmpObj = joResult.msg;
+						var tmpStr = tmpObj.undocount +"/"+tmpObj.totalcount;
+						$('#gy_Label01').text(tmpStr);
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					
+				}
+			});				
+			
+			dataObj = {
+				method:"geteventscount",
+				projectid:CurrentProjectID,
+				starttime: tmpStartTime,
+				endtime: tmpEndTime,
+			}
+			$.ajax({
+				type: "post",
+				url: ServerURL + "/ServiceHandler/BigDataHandler.ashx",
+				async: true,
+				data:dataObj,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {						
+						var tmpObj = joResult.msg;
+						var tmpStr = tmpObj.totalcount;
+						$('#gy_Label02').text(tmpStr);
+						if(tmpStr!=m_CurrentGYEventInfoStr)
+						{
+							if(m_CurrentGYEventInfoStr != "")//获取最新事件
+							{
+								refreshGYEventsInfoByTime();
+							}
+							m_CurrentGYEventInfoStr = tmpStr;
+						}
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					
+				}
+			});	
+		}
+		
+		var m_LastGYEventQueryTimeStr = "";
+		
+		var m_CurrentGYEventInfoStr = "";
+		
+		/**
+		 * 获取最近的事件
+		 */
+		function refreshLastGYEventsInfo()
+		{
+			m_LastGYEventQueryTimeStr = (new Date()).Format("yyyy/MM/dd HH:mm:ss");
+			var dataObj = {
+				method:"geteventslastinfo",
+				projectid:CurrentProjectID,
+				count: "10"
+			}
+			$.ajax({
+				type: "post",
+				url: ServerURL + "/ServiceHandler/BigDataHandler.ashx",
+				async: true,
+				data:dataObj,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {						
+						var tmpObjs = joResult.data;
+						var tmpTotalHTML = '<ul class="clearfix">';
+						for(var tmpI in tmpObjs)
+						{
+									var tmpObj = tmpObjs[tmpI];
+									var tmpLClass = "lableRC_Blue";
+									if(tmpObj.EmergencyType.indexOf("重要")>=0)
+										tmpLClass = "lableRC_Yellow";
+									else if(tmpObj.EmergencyType.indexOf("十分重要")>=0)
+										tmpLClass = "lableRC_Red";
+									var tmpStr = tmpObj.EventName + " " + tmpObj.UploadTime;
+									if(tmpStr.length > 20)	
+										tmpStr = tmpStr.substring(0,20);							
+									if(tmpObj.X == '')
+										tmpObj.X = '114.1817251111';
+									if(tmpObj.Y == '')
+										tmpObj.Y = '22.5951098889';
+										
+									addGYEventPoint(tmpObj.X, tmpObj.Y, tmpObj);
+									tmpTotalHTML+='<li class="clearfix" onClick="centerOnMapAndAnim('+tmpObj.X+','+tmpObj.Y+');"><label class="'
+										+tmpLClass+'">'+tmpObj.EmergencyType+'</label> '+tmpObj.EventType
+										+'|'+tmpStr+'</li>';
+						}						
+						tmpTotalHTML+="</ul>";
+						$('#patrolListDiv').html(tmpTotalHTML);
+						patrolListAnimation();
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					
+				}
+			});		
+		}		
+		/**
+		 * 获取最近的事件
+		 */
+		function refreshGYEventsInfoByTime()
+		{
+			var tmpCurrentTime = (new Date()).Format("yyyy/MM/dd HH:mm:ss");
+			var dataObj = {
+				method:"geteventsinfobytime",
+				prjectid:CurrentProjectID,
+				starttime: m_LastGYEventQueryTimeStr,
+				endtime: tmpCurrentTime,
+			}
+			$.ajax({
+				type: "post",
+				url: ServerURL + "/ServiceHandler/BigDataHandler.ashx",
+				async: true,
+				data:dataObj,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {
+						var tmpObjs = joResult.data;
+						var tmpLen = tmpObjs.length;
+						if(tmpLen > 0)
+						{
+							m_patrolListAnimEnable = false;
+							var tmpTotalHTML = '<ul class="clearfix">';
+							
+							var tmpPatrolListLi = $(".patrolList li");
+							var tmpHasCount = tmpPatrolListLi.length/2;
+							var tmpTotalCount = tmpLen + tmpHasCount;
+							if(tmpTotalCount > 10)//超过10个事件
+							{
+								for(var tmpI in tmpObjs)
+								{
+									if(tmpI > 10)
+										break;
+									var tmpObj = tmpObjs[tmpI];
+									var tmpLClass = "lableRC_Blue";
+									if(tmpObj.EmergencyType.indexOf("重要")>=0)
+										tmpLClass = "lableRC_Yellow";
+									else if(tmpObj.EmergencyType.indexOf("十分重要")>=0)
+										tmpLClass = "lableRC_Red";
+									var tmpStr = tmpObj.EventName + " " + tmpObj.UploadTime;
+									if(tmpStr.length > 20)	
+										tmpStr = tmpStr.substring(0,20);							
+									if(tmpObj.X == '')
+										tmpObj.X = '114.1817251111';
+									if(tmpObj.Y == '')
+										tmpObj.Y = '22.5951098889';
+										
+									addGYEventPoint(tmpObj.X, tmpObj.Y, tmpObj);
+									tmpTotalHTML+='<li class="clearfix" onClick="centerOnMapAndAnim('+tmpObj.X+','+tmpObj.Y+');"><label class="'
+										+tmpLClass+'">'+tmpObj.EmergencyType+'</label> '+tmpObj.EventType
+										+'|'+tmpStr+'</li>';
+								}
+								if(tmpLen < 10)//不足10个前面的来凑
+								{
+									var tmpI02 = 0;
+									while(tmpI02 + tmpLen < 10)
+									{
+										var tmpHTML01 = tmpPatrolListLi[tmpI02].outerHTML;
+										tmpTotalHTML+=tmpHTML01;
+										tmpI02++;
+									}
+								}
+							}
+							else{
+								for(var tmpI in tmpObjs)
+								{
+									var tmpObj = tmpObjs[tmpI];
+									var tmpLClass = "lableRC_Blue";
+									if(tmpObj.EmergencyType.indexOf("重要")>=0)
+										tmpLClass = "lableRC_Yellow";
+									else if(tmpObj.EmergencyType.indexOf("十分重要")>=0)
+										tmpLClass = "lableRC_Red";
+									var tmpStr = tmpObj.EventName + " " + tmpObj.UploadTime;
+									if(tmpStr.length > 20)	
+										tmpStr = tmpStr.substring(0,20);							
+									if(tmpObj.X == '')
+										tmpObj.X = '114.1817251111';
+									if(tmpObj.Y == '')
+										tmpObj.Y = '22.5951098889';
+										
+									addGYEventPoint(tmpObj.X, tmpObj.Y, tmpObj);
+									tmpTotalHTML+='<li class="clearfix" onClick="centerOnMapAndAnim('+tmpObj.X+','+tmpObj.Y+');"><label class="'
+										+tmpLClass+'">'+tmpObj.EmergencyType+'</label> '+tmpObj.EventType
+										+'|'+tmpStr+'</li>';
+								}
+								var tmpI02 = 0;
+								while(tmpI02  < tmpHasCount)
+								{
+									var tmpHTML01 = tmpPatrolListLi[tmpI02].outerHTML;
+									tmpTotalHTML+=tmpHTML01;
+									tmpI02++;
+								}
+							}
+							tmpTotalHTML+="</ul>";
+							$('#patrolListDiv').html(tmpTotalHTML);
+							patrolListAnimation();
+							//地图缩放到第一个事件
+							{
+								var tmpObj01 = tmpObjs[0];
+								centerOnMapAndAnim(tmpObj01.lng,tmpObj01.lat);
+							}							
+						}
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					
+				}
+			});	
+			m_LastGYEventQueryTimeStr = tmpCurrentTime;
+		}
+		
+		/**
+		 * 刷新台风数据
+		 */
+		function refreshTyphoonData()
+		{
+			$.ajax({
+				type: "GET",
+				url: ServerURL + "/ServiceHandler/BigDataHandler.ashx?method=gettyphoondata",
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult!=null && joResult.length > 0) {	
+						var tmpTotalHTML = '<tbody><tr class="aaa" align="center">';	            
+	            		tmpTotalHTML += '<td style="color: #00fcff; font-size: 18px; font-weight:bold; padding: 5px 0;">选择</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">名称</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">编号</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">英文名称</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">等级</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">开始时间</td>'
+	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">结束时间</td>'
+	                         	+'</tr>';
+						for(var tmpI in joResult)
+						{
+							var tmpRowData = joResult[tmpI];
+							var tmpStartTimeStr = tmpRowData.StartTime;
+							if(tmpStartTimeStr!="")
+							{
+								var tmpI01 = tmpStartTimeStr.indexOf('(');
+								var tmpI02 = tmpStartTimeStr.indexOf(')');
+								if(tmpI01>=0 && tmpI02 >= 0)
+								{
+									var tmpStr = tmpStartTimeStr.substring(tmpI01+1,tmpI02);
+									var tmpTime01 = new Date(parseInt(tmpStr));
+									tmpStartTimeStr = tmpTime01.Format("yyyy-MM-dd HH:mm:ss");
+								}
+							}
+							var tmpEndTimeStr = tmpRowData.EndTime;
+							if(tmpEndTimeStr!="")
+							{
+								var tmpI01 = tmpEndTimeStr.indexOf('(');
+								var tmpI02 = tmpEndTimeStr.indexOf(')');
+								if(tmpI01>=0 && tmpI02 >= 0)
+								{
+									var tmpStr = tmpEndTimeStr.substring(tmpI01+1,tmpI02);
+									var tmpTime01 =new Date(parseInt(tmpStr));
+									tmpEndTimeStr = tmpTime01.Format("yyyy-MM-dd HH:mm:ss");
+								}
+							}
+							
+							var tmpRowHTML = '<tr class="aaa" style="font-size: 16px;" align="center" >'
+								+'<td style="color: #FFF; font-size: 18px; padding: 5px 0;"><input name="TyphoonSelectRadio" type="radio" value="'+tmpRowData.TCIDX+'" />'
+								+'</td><td style="color: #FFF; font-size: 18px; padding: 5px 0;">'+tmpRowData.CName
+								+'</td><td style="color: #FFF; font-size: 18px; padding: 5px 0;">'+tmpRowData.TCIDX
+								+'</td><td style="color: #FFF; font-size: 18px; padding: 5px 0;">'+tmpRowData.EName
+	                        	+'</td><td style="color: #FFF; font-size: 18px; padding: 5px 0;">'+tmpRowData.TCLEVEL
+	                        	+'</td><td style="color: #FFF; font-size: 18px; padding: 5px 0;">'+tmpStartTimeStr
+	                        	+'</td><td style="color: #FFF; font-size: 18px; padding: 5px 0;">'+tmpEndTimeStr
+	                         	+'</td></tr>';
+	                        tmpTotalHTML+=tmpRowHTML;
+						}
+						$("#pop3_tableID").html(tmpTotalHTML);
+						$('.bgPop3,.pop3').show();		
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					
+				}
+			});				
+		}
+		
+		function refreshTyphoonGISData(TCIDX)
+		{
+			$.ajax({
+				type: "GET",
+				url: ServerURL + "/ServiceHandler/BigDataHandler.ashx?method=gettyphoongisdata&id="+TCIDX,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult!=null && joResult.length > 0) {	
+						addTyphoonData(joResult);
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					
+				}
+			});				
+		}
+
+		$("#mapBottomControlBtnHome").click(function(){			
+			gotoHome();
+  		});
+  		
+  		$("#mapBottomControlBtnTurb").click(function(){			
+			refreshTyphoonData();
+  		});
+  		
+		var m_Layer_User_Vis = true;
+		$("#mapBottomControlBtnUser").click(function(){			
+			if(m_Layer_User_Vis)
+			{
+				$("#mapBottomControlBtnUser").attr("src","images/layer_user_off.png");
+				m_Layer_User_Vis = false;	
+				clearGPSTrackLayers();
+			}
+            else{
+            	$("#mapBottomControlBtnUser").attr("src","images/layer_user_on.png");
+				m_Layer_User_Vis = true;
+            }
+            UserGPSLayer.setVisible(m_Layer_User_Vis);
+            GPSTrackLayer.setVisible(m_Layer_User_Vis);
+            GPSTrackPointLayer.setVisible(m_Layer_User_Vis);
+  		});
+  		var m_Layer_Camera_Vis = true;
+		$("#mapBottomControlBtnCamera").click(function(){			
+			if(m_Layer_Camera_Vis)
+			{
+				$("#mapBottomControlBtnCamera").attr("src","images/layer_camera_off.png");
+				m_Layer_Camera_Vis = false;				
+			}
+            else{
+            	$("#mapBottomControlBtnCamera").attr("src","images/layer_camera_on.png");
+				m_Layer_Camera_Vis = true;
+            }
+            CameraLayer.setVisible(m_Layer_Camera_Vis);
+  		}); 
+  		
+  		var m_Layer_SheShi_Vis = true;
+		$("#mapBottomControlBtnSheShi").click(function(){	
+			if(m_Layer_SheShi_Vis)
+			{
+				$("#mapBottomControlBtnSheShi").attr("src","images/layer_sheshi_off.png");
+				m_Layer_SheShi_Vis = false;				
+			}
+            else{
+            	$("#mapBottomControlBtnSheShi").attr("src","images/layer_sheshi_on.png");
+				m_Layer_SheShi_Vis = true;
+            }
+            StationLayer.setVisible(m_Layer_SheShi_Vis);
+  		}); 
+  		
+  		var m_Layer_Event_Vis = true;
+		$("#mapBottomControlBtnEvent").click(function(){			
+			if(m_Layer_Event_Vis)
+			{
+				$("#mapBottomControlBtnEvent").attr("src","images/layer_event_off.png");
+				m_Layer_Event_Vis = false;				
+			}
+            else{
+            	$("#mapBottomControlBtnEvent").attr("src","images/layer_event_on.png");
+				m_Layer_Event_Vis = true;
+            }
+            GYEventLayer.setVisible(m_Layer_Event_Vis);
+  		});
+  		
+		var m_Layer_River_ShowMode = 0;
+		$("#mapBottomControlBtnRiver").click(function(){			
+			if(m_Layer_River_ShowMode == 0)
+			{
+				$("#mapBottomControlBtnRiver").attr("src","images/layer_river_off.png");
+				m_Layer_River_ShowMode = 1;				
+			}
+            else{
+            	$("#mapBottomControlBtnRiver").attr("src","images/layer_river_on.png");
+				m_Layer_River_ShowMode = 0;
+            }
+            refreshMapRiverShow();
+  		});
+  		
+  		var m_Layer_Radar_Vis = true;
+		$("#mapBottomControlBtnRadarMap").click(function(){			
+			if(m_Layer_Radar_Vis)
+			{
+				$("#mapBottomControlBtnRadarMap").attr("src","images/layer_radar_off.png");
+				m_Layer_Radar_Vis = false;				
+			}
+            else{
+            	$("#mapBottomControlBtnRadarMap").attr("src","images/layer_radar_on.png");
+				m_Layer_Radar_Vis = true;
+            }
+            RadarTrackLayer.setVisible(m_Layer_Radar_Vis);
+  		});
+  		
+  		var m_Layer_Sal_Vis = false;
+		$("#mapBottomControlBtnSalMap").click(function(){
+            if(m_Layer_Sal_Vis)
+			{
+				$("#mapBottomControlBtnSalMap").attr("src","images/layer_salmap_off.png");
+				m_Layer_Sal_Vis = false;				
+			}
+            else{
+            	$("#mapBottomControlBtnSalMap").attr("src","images/layer_salmap_on.png");
+				m_Layer_Sal_Vis = true;
+            }
+            TianDitu_Val_Layer.setVisible(m_Layer_Sal_Vis);
+  		});
+  		
+  		function refreshMapRiverShow()
+  		{
+  			if(m_RiverSectionVDataArray!=null && m_RiverSectionVDataArray.length>0)
+  			{
+  				if(m_Layer_River_ShowMode == 0)//显示水位
+  				{
+  					DefaultMapTipParaName = "水位(m)";
+  					setRiverSectionsValue(m_RiverSectionVDataArray[0]);
+  				}
+  				else if(m_Layer_River_ShowMode == 1)//显示水深
+  				{
+  					DefaultMapTipParaName = "水深(m)";
+  					setRiverSectionsValue(m_RiverSectionVDataArray[3]);
+  				}
+  			}
+  		}
+  		
+  		var m_StartTime = new Date();
+		var m_EndTime = new Date();
+		m_StartTime = new Date(m_EndTime.getTime() - 60*60*1000); //1小时前
+			
+  		function refreshCameraEventData()
+		{
+			if(m_Layer_Camera_Vis)
+			{
+				m_EndTime = new Date();
+			var tmpRequestURL = ServerURL + "/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=queryevents&starttime="
+				+m_StartTime.Format('yyyy-MM-dd HH:mm:ss')+"&endtime="+m_EndTime.Format('yyyy-MM-dd HH:mm:ss');			
+			$.ajax({
+				type: "GET",
+				url: tmpRequestURL,
+				async: true,
+				dataType: "json",
+				success: function(joResult) {
+					if(joResult.success == true) {
+						var tmpTotalHTML = "";
+						var tmpDatas = joResult.data;
+						
+						for(var tmpI in tmpDatas)
+						{
+							var tmpData = tmpDatas[tmpI];		
+							var tmpCID = tmpData.cameraID;
+							var tmpEventType = tmpData.eventType;
+							var tmpTitle = "摄像头["+tmpData.cameraID+"]"+tmpEventType+" "+tmpData.startTime;
+							if(tmpCID == "103")
+							{
+								Camera01Feature.set("imgtitle",tmpTitle,false);
+								Camera01Feature.set("imgid",tmpData.ID,false);
+								centerOnMapAndAnim(Camera01Coord[0], Camera01Coord[1]);
+							}
+							else if(tmpCID == "203")
+							{
+								Camera02Feature.set("imgtitle",tmpTitle,false);
+								Camera02Feature.set("imgid",tmpData.ID,false);
+								centerOnMapAndAnim(Camera02Coord[0], Camera02Coord[1]);
+							}
+							break;
+						}						
+					} else {
+								
+					}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+							//swal("未知错误");
+				}
+			});				
+			m_StartTime = m_EndTime;
+			}
+		}
+		
+		function openCameraImg(title, eventID)
+			{
+				$('.bgPop4,.pop4').show();
+				$("#camaraTitleID").text(title);
+				var tmpURL = ServerURL + '/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=geteventfile&eventid='+eventID;
+				$("#cameraEventImg").attr("src",tmpURL);
+			}
+			
+		function startqueryusertrack(username, nickname, startTime, endTime)
+		{
+			$("#queryUserTrackID").val(username);
+			$("#queryUserTrackID2").val(nickname);
+			var tmpStrs = startTime.split('-');
+			$("#dateYearSelectID").val(parseInt(tmpStrs[0]));
+			$("#dateMonthSelectID").val(parseInt(tmpStrs[1]));
+			$("#dateDaySelectID").val(parseInt(tmpStrs[2]));
+			$("#dateHourSelectID").val(parseInt(tmpStrs[3]));
+			$("#dateMinSelectID").val(parseInt(tmpStrs[4]));
+			$("#dateSecSelectID").val(parseInt(tmpStrs[5]));
+			tmpStrs = endTime.split('-');
+			$("#dateYearSelectID2").val(parseInt(tmpStrs[0]));
+			$("#dateMonthSelectID2").val(parseInt(tmpStrs[1]));
+			$("#dateDaySelectID2").val(parseInt(tmpStrs[2]));
+			$("#dateHourSelectID2").val(parseInt(tmpStrs[3]));
+			$("#dateMinSelectID2").val(parseInt(tmpStrs[4]));
+			$("#dateSecSelectID2").val(parseInt(tmpStrs[5]));
+			
+			$("#page_querytrack_Title").text('【'+nickname+'】轨迹查询');
+			
+			$('.bgPop5,.pop5').show();	
+		}
+		
+//		function showDateSelect()
+//		{//queryUserTrackID
+//			var tmpStrs = m_CurrentQueryData.split('-');
+//			$("#dateYearSelectID").val(parseInt(tmpStrs[0]));
+//			$("#dateMonthSelectID").val(parseInt(tmpStrs[1]));
+//			$("#dateDaySelectID").val(parseInt(tmpStrs[2]));
+//			$('.bgPop5,.pop5').show();			
+//		}
+			
+		var tmpArray = [10,20,30,50];
+		initialWaterQChart(tmpArray);
+		var tmpArray2 = [0,0];
+		initialDispChart(tmpArray2);		
+		
+		//系统启动时
+		refreshLastWaterLevelAndRainData();
+		refreshDispData();
+		setInterval(refreshLastWaterLevelAndRainData, 5000);//刷新当前水位雨量以及位移数据
+		setInterval(refreshDispData, 60000);//位移数据
+		
+		refreshWeatherReportData();
+		WeatherReportListAnimation();
+		setInterval(refreshWeatherReportData, 60000);//气象预报数据
+		
+		refreshPlanIDData();
+		WaterReportListAnimation();
+		setInterval(refreshPlanIDData, 60000);//河道断面、水文预报
+		
+		//patrolListAnimation();//巡护动画
+		
+		refreshGuanYangCountData();
+		setInterval(refreshGuanYangCountData, 10000);//刷新管养工单及事件数量
+		
+		refreshLastGYEventsInfo();//刷新最后一次的河道管养事件
+		
+		refreshCameraEventData();
+		setInterval(refreshCameraEventData, 10000);//刷新摄像头抓拍事件
+		
+	</script>
+		
+		
+	</body>
+</html>
