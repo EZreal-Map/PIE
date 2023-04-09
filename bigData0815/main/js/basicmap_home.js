@@ -720,6 +720,7 @@ function loadStationLayers() { //加载断面站点
 	
 	//刷新设施位置信息
 	$.ajax({
+		// ServerURL = "../../SZRiverSys/" 在common.js中定义
 		url: ServerURL + "/ServiceHandler/BigDataHandler.ashx?method=getfacilitiesinfobyprojectid&projectid="+CurrentProjectID+"&token="+defaultToken,
 		type: "GET",
 		dataType: "json",
