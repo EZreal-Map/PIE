@@ -1,50 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
-    <style>
-      html,
-      body {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-      }
 
-      #globe {
-        width: 100%;
-        height: 100%;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>PIE Earth Demo</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
 
-      #canvas {
-        width: 100%;
-        height: 100%;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="globe">
-      <canvas id="canvas"></canvas>
+    #globe {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #mapContainer {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .left-top-tools {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+
+    .right-top-tools {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .left-bottom-tools {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+    }
+
+    button {
+      height: 40px;
+      font-size: 20px;
+      padding: 0 12px;
+      line-height: 38px;
+      margin-right: 10px;
+      cursor: pointer;
+      border-radius: 10px;
+      border: #ffffff 2px solid;
+      /* background-color: white; */
+    }
+
+    .zoomIn,
+    .zoomOut {
+      display: block;
+      width: 40px;
+      margin-bottom: 10px;
+    }
+
+    .zoomIn {
+      background: url(./images/zoom-in.png) no-repeat center #efefef;
+      background-size: 80% 80%;
+    }
+
+    .zoomOut {
+      background: url(./images/zoom-out.png) no-repeat center #efefef;
+      background-size: 80% 80%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="globe">
+    <div class="left-top-tools">
+      <button type="button" class="tool" onclick="IsaddLayerShow()">切换底图（功能废除）</button>
+      <button type="button" class="tool" onclick="FlyTargetLocation()">聚焦研究区域</button>
+      <button type="button" class="tool" onclick="ChangeSceneMode()">2D/3D（功能废除）</button>
     </div>
-    <script type="text/javascript" src="PIEWrapperWeb.js"></script>
-    <script type="text/javascript" src="Earth.js"></script>
-    <script>
-      createEarthModule().then(function () {
-        const viewer = new Earth.Viewer('canvas', {
-          sceneMode: Earth.SceneMode.SCENE3D, //Earth.SceneMode.SCENE2D
-          center: [116.4, 39.9], //初始中心点
-          zoom: 3, //初始层级
-          cameraSmooth: false, //是否开启相机缓冲效果
-          imageryProvider: new Earth.UrlTemplateImageryProvider({
-            url: 'https://webst03.is.autonavi.com/appmaptile?style=6&z={z}&y={y}&x={x}',
-          }),
-          terrainProvider: new Earth.EngineTerrainProvider({
-            url: 'https://pie-engine-test.s3.cn-northwest-1.amazonaws.com.cn/earthdata/mapdata/sichuandem/_alllayers/{z}/{y}/{x}.terrain',
-          }),
-        });
+    <div class="right-top-tools">
+      <button class="zoomIn"></button>
+      <button class="zoomOut"></button>
+    </div>
+    <canvas id="mapContainer" oncontextmenu="return false"></canvas>
+  </div>
+  <div class="left-bottom-tools">
+    <button class="measureLength">测距</button>
+    <button class="clearMeasureLength" style="display: none;">清除测距</button>
+  </div>
+  <script type="text/javascript" src="PIEWrapperWeb.js"></script>
+  <script type="text/javascript" src="Earth.js"></script>
+  <script>
+    createEarthModule().then(function () {
+      const viewer = new Earth.Viewer('mapContainer', {
+        sceneMode: Earth.SceneMode.SCENE2D, //Earth.SceneMode.SCENE2D
+        center: [114.187336, 22.595030], //初始中心点
+        zoom: 16, //初始层级
+        cameraSmooth: false, //是否开启相机缓冲效果
+        imageryProvider: new Earth.TileMapServiceImageryProvider({
+          url: 'tiles/nightmap/{z}/{x}/{y}.png',
+        }),
       });
-    </script>
-  </body>
+
+      let tmsImageryProvider_nightmap = new Earth.TileMapServiceImageryProvider({
+        url: 'tiles/nightmap/{z}/{x}/{y}.png'
+      })
+      const layer_nightmap = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_nightmap);
+
+      const tmsImageryProvider_basemap = new Earth.TileMapServiceImageryProvider({
+        url: 'tiles/basemap/L{z}/{y}-{x}.png',
+      });
+      const tmsImageryProvider_basemapTxt = new Earth.TileMapServiceImageryProvider({
+        url: 'tiles/basemapTxt/L{z}/{y}-{x}.png'
+      })
+      const layer_basemap = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemap);
+      const layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
+
+      // // 添加geojson
+      // const line = viewer.dataSources.add(
+      //   Earth.GeoJsonDataSource.load('./riverzone.geojson', {
+      //     stroke: Earth.Color.White,
+      //     strokeWidth: 3,
+      //   }))
+
+
+      // const imageryLayerCollection = new Earth.ImageryLayerCollection(layer_basemap)
+      // console.log(imageryLayerCollection);
+
+
+      IsaddLayerShow = function () {
+        layer.show = !layer.show
+        // viewer.imageryLayers.remove(layer);
+      }
+
+      FlyTargetLocation = function () {
+        viewer.camera.flyTo({
+          destination: Earth.Cartesian3.fromDegrees(114.187336, 22.595030, 3000.0),
+
+          orientation: {
+            heading: Earth.Math.toRadians(0),
+            pitch: Earth.Math.toRadians(0),
+            roll: 0.0,
+          },
+          duration: 3,
+          complete: () => {
+            console.log('complete');
+          },
+        });
+      }
+
+      ChangeSceneMode = function () {
+        if (viewer.scene.mode === 3) {
+          viewer.scene.mode = 2;
+        } else {
+          viewer.scene.mode = 3;
+        }
+      }
+
+
+      document.querySelector('.zoomIn').addEventListener('click', () => viewer.camera.zoomIn());
+      document.querySelector('.zoomOut').addEventListener('click', () => viewer.camera.zoomOut());
+
+      const measureLength = document.querySelector('.measureLength');
+      const clearMeasureLength = document.querySelector('.clearMeasureLength');
+
+      measureLength.addEventListener('click', function () {
+        viewer.scene.globe.setGlobeTool(Earth.GlobeToolType.MeasureLength);
+        const measureTool = viewer.scene.globe.getGlobeTool();
+        console.log(measureTool);
+        measureLength.innerHTML = '测距中... （鼠标左键增加节点，鼠标右键结束测距）';
+        measureTool.getResultEvent().addEventListener(() => {
+          measureLength.innerHTML = '重新测距';
+          clearMeasureLength.style.display = 'inline-block';
+        });
+
+        clearMeasureLength.addEventListener('click', () => {
+          viewer.scene.globe.setGlobeTool(Earth.GlobeToolType.Pan);
+          measureLength.innerHTML = '测距';
+          clearMeasureLength.style.display = 'none';
+        });
+      })
+    });
+
+
+    // if (typeof SharedArrayBuffer === 'function') {
+    //   console.log('SharedArrayBuffer is supported!');
+    // } else {
+    //   console.log('SharedArrayBuffer is not supported!');
+    // }
+  </script>
+</body>
+
 </html>
