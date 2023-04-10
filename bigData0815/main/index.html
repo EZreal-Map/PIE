@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
   <title>PIE Earth Demo</title>
   <style>
     html,
@@ -102,8 +103,8 @@
         zoom: 16, //初始层级
         cameraSmooth: false, //是否开启相机缓冲效果
         imageryProvider: new Earth.TileMapServiceImageryProvider({
-          url: 'tiles/nightmap/{z}/{x}/{y}.png',
-        }),
+          url: 'tiles/basemap/L{z}/{y}-{x}.png'
+        })
       });
 
       let tmsImageryProvider_nightmap = new Earth.TileMapServiceImageryProvider({
