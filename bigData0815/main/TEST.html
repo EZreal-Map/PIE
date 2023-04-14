@@ -1,51 +1,349 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
-    <script type="text/javascript" src="js/common.js"></script>
-
-    <title>TEST</title>
-</head>
-<body>
-    <p>测试使用</p>
-    <script>
-
-                $.ajax({
-    url: ServerURL + "/ServiceHandler/BigDataHandler.ashx?method=getfacilitiesinfobyprojectid&projectid="+CurrentProjectID+"&token="+defaultToken,
-    type: "GET",
-    dataType: "json",
-    success: function(joResult) {
-        if(joResult.success == true) {
-            console.log(joResult)
-            var tmpObjs = joResult.data;
-            // 将数据转换为JSON字符串
-            const data = JSON.stringify(joResult.data);
-            // 创建blob对象
-            const blob = new Blob([data], { type: 'application/json' });
-            // 获取blob对象URL
-            const url = URL.createObjectURL(blob);
-            // 创建a标签
-            const link = document.createElement('a');
-            // 设置a标签href属性为blob URL
-            link.href = url;
-            // 设置下载文件的名称
-            link.download = 'data.json';
-            // 将a标签添加到DOM中
-            document.body.appendChild(link);
-            // 模拟a标签的点击事件来下载文件
-            link.click();
-            // 从DOM中删除a标签
-            document.body.removeChild(link);
-            // 释放blob对象URL
-            URL.revokeObjectURL(url);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="stylesheet" type="text/css" href="css/style_home.css">
+  <title>PIE Earth Demo</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
     }
-});
 
-    </script>
+    #globe {
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #mapContainer {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .left-top-tools {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+    }
+
+    .right-top-tools {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .left-bottom-tools {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+    }
+
+    button {
+      height: 40px;
+      font-size: 20px;
+      padding: 0 12px;
+      line-height: 38px;
+      margin-right: 10px;
+      cursor: pointer;
+      border-radius: 10px;
+      border: #ffffff 2px solid;
+      /* background-color: white; */
+    }
+
+    .zoomIn,
+    .zoomOut {
+      display: block;
+      width: 40px;
+      margin-bottom: 10px;
+    }
+
+    .zoomIn {
+      background: url(./images/zoom-in.png) no-repeat center #efefef;
+      background-size: 80% 80%;
+    }
+
+    .zoomOut {
+      background: url(./images/zoom-out.png) no-repeat center #efefef;
+      background-size: 80% 80%;
+    }
+
+
+    .stationPop {
+      width: 242px;
+      background-color: #00000000;
+      padding: 10px;
+      border: 2px solid white;
+      border-radius: 10px;
+    }
+
+    .stationPopHeader {
+      text-align: center;
+      width: 220px;
+      margin: 0 auto;
+      Font: 18px 微软雅黑;
+      margin-bottom: 5px;
+      color: #6FFF6F;
+    }
+
+    .stationPopBody {
+      margin: 0 auto;
+      Font: 15px 微软雅黑;
+      width: 220px;
+      color: white;
+    }
+
+    .stationPopBody .stationPopFirstColTd {
+      width: 70px;
+    }
+
+    .stationPopBody table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .stationPopBody td {
+      word-break: break-all;
+      /* 当单词过长时，强制换行 */
+      white-space: normal;
+      /* 不强制将空格合并成一个 */
+      width: auto;
+      padding: 5px;
+      /* vertical-align: middle; */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="globe">
+    <div class="left-top-tools">
+      <button type="button" class="tool" onclick="IsaddLayerShow()">切换底图（功能废除）</button>
+      <button type="button" class="tool" onclick="FlyTargetLocation()">聚焦研究区域</button>
+      <button type="button" class="tool" onclick="ChangeSceneMode()">2D/3D（功能废除）</button>
+    </div>
+    <div class="right-top-tools">
+      <button class="zoomIn"></button>
+      <button class="zoomOut"></button>
+    </div>
+    <canvas id="mapContainer" oncontextmenu="return false"></canvas>
+  </div>
+  <div class="left-bottom-tools">
+    <button class="measureLength">测距</button>
+    <button class="clearMeasureLength" style="display: none;">清除测距</button>
+  </div>
+  <script type="text/javascript" src="PIEWrapperWeb.js"></script>
+  <script type="text/javascript" src="Earth.js"></script>
+  <script>
+    createEarthModule().then(function () {
+      const viewer = new Earth.Viewer('mapContainer', {
+
+        sceneMode: Earth.SceneMode.SCENE3D, //Earth.SceneMode.SCENE2D
+        center: [114.187336, 22.595030], //初始中心点
+        zoom: 16, //初始层级
+        cameraSmooth: false, //是否开启相机缓冲效果
+        // projection: new Earth.Projection.WebMercator(),
+        imageryProvider: new Earth.TileMapServiceImageryProvider({
+          url: 'tiles/nightmap/{z}/{x}/{y}.png',
+          // tilingScheme: new Earth.EPSG3857TilingScheme(),
+          // tilingScheme: tilingScheme,
+          // tilingScheme: new PIE.WebMercatorTilingScheme(),
+        }),
+      });
+      // viewer.entityCollection.removeAll();
+
+      // let translate = new Earth.ReferenceTranslator();
+      // let srcSpatialReference = viewer.scene.globe.spatialReference.fromEpsg(4326); //创建4546空间参考系对象
+      // let destSpatialReference = viewer.scene.globe.spatialReference.fromEpsg(3857); //创建4326空间参考系对象
+      // translate.setCoordSysSrc(srcSpatialReference); //设置源空间参考系 成功返回 ture
+      // translate.setCoordSysDes(destSpatialReference); //设置目标空间参考系
+      // console.log(translate.translatePoint([114.191, 22.592]))
+
+      // let tmsImageryProvider_nightmap = new Earth.TileMapServiceImageryProvider({
+      //   url: 'tiles/nightmap/{z}/{x}/{y}.png'
+      // })
+      // const layer_nightmap = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_nightmap);
+
+      const tmsImageryProvider_basemap = new Earth.TileMapServiceImageryProvider({
+        url: 'tiles/basemap/L{z}/{y}-{x}.png',
+      });
+      const tmsImageryProvider_basemapTxt = new Earth.TileMapServiceImageryProvider({
+        url: 'tiles/basemapTxt/L{z}/{y}-{x}.png'
+      })
+      const layer_basemap = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemap);
+      const layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
+
+      IsaddLayerShow = function () {
+        layer.show = !layer.show
+        // viewer.imageryLayers.remove(layer);
+      }
+
+      FlyTargetLocation = function () {
+        viewer.camera.flyTo({
+          destination: Earth.Cartesian3.fromDegrees(114.187336, 22.595030, 3000.0),
+
+          orientation: {
+            heading: Earth.Math.toRadians(0),
+            pitch: Earth.Math.toRadians(0),
+            roll: 0.0,
+          },
+          duration: 3,
+          complete: () => {
+            console.log('complete');
+          },
+        });
+      }
+
+      ChangeSceneMode = function () {
+        if (viewer.scene.mode === 3) {
+          viewer.scene.mode = 2;
+        } else {
+          viewer.scene.mode = 3;
+        }
+      }
+
+
+      document.querySelector('.zoomIn').addEventListener('click', () => viewer.camera.zoomIn());
+      document.querySelector('.zoomOut').addEventListener('click', () => viewer.camera.zoomOut());
+
+      const measureLength = document.querySelector('.measureLength');
+      const clearMeasureLength = document.querySelector('.clearMeasureLength');
+
+      measureLength.addEventListener('click', function () {
+        viewer.scene.globe.setGlobeTool(Earth.GlobeToolType.MeasureLength);
+        const measureTool = viewer.scene.globe.getGlobeTool();
+        console.log(measureTool);
+        measureLength.innerHTML = '测距中... （鼠标左键增加节点，鼠标右键结束测距）';
+        measureTool.getResultEvent().addEventListener(() => {
+          measureLength.innerHTML = '重新测距';
+          clearMeasureLength.style.display = 'inline-block';
+        });
+
+        clearMeasureLength.addEventListener('click', () => {
+          viewer.scene.globe.setGlobeTool(Earth.GlobeToolType.Pan);
+          measureLength.innerHTML = '测距';
+          clearMeasureLength.style.display = 'none';
+        });
+      })
+      function loadData(callback) {
+        fetch('data.json')
+          .then(response => response.json())
+          .then(jsonData => {
+            callback(jsonData);
+          })
+      }
+
+      const entityCollection = viewer.entities;
+      console.log(entityCollection)
+      // entityCollection.removeAll();
+
+      loadData(data => {
+        console.log(data);
+        // 在这里处理数据
+        //2、获取entityCollection
+        // var tmpObjs = joResult.data;
+        var tmpObjs = data;
+
+        for (var i in tmpObjs) {
+          tmpObj = tmpObjs[i];
+          var tmpX = parseFloat(tmpObj.X),
+            tmpY = parseFloat(tmpObj.Y);
+          // tmpXY = translate.translatePoint([114.191, 22.592]);
+          // tmpX = tmpXY[0]
+          // tmpY = tmpXY[1]
+          var tmpNickName = tmpObj.Name;
+          var tmpStationType = tmpObj.FacilitiesType;
+          var tmpMsg = tmpObj.Info;
+          //1、创建贴地点
+          const entity = new Earth.Entity({
+            name: 'point',
+            show: false,
+            position: Earth.Cartesian3.fromDegrees(tmpX, tmpY), //经度，纬度，高度
+            point: new Earth.Point({
+              show: false,
+              pixelSize: 0,
+              color: Earth.Color.BLUE.withAlpha(0),
+              heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
+              outlineColor: undefined, //不支持
+              outlineWidth: undefined, //不支持
+              distanceDisplayCondition: undefined, //暂不支持
+            }),
+            billboard: {
+              show: false,
+              image: 'images/' + tmpStationType + '.png',
+              scale: 1,
+              horizontalOrigin: Earth.HorizontalOrigin.CENTER,
+              verticalOrigin: Earth.VerticalOrigin.CENTER
+            },
+            label: {
+              show: false,
+              text: viewer.camera.zoom < 10 ? "" : tmpNickName,
+              fillColor: Earth.Color.BLUE.withAlpha(0.8),//可设置透明度
+            },
+            labelBox: {
+              show: false,
+              type: Earth.LabelBoxType.box10,
+              scale: 0.8,
+              offset: { x: -85, y: 25 },
+              maxHeight: 20000000,
+              maxWigth: 20,
+              style: {
+                html: `
+            <div class="stationPop">
+                <div class="stationPopHeader">
+                    <font>【${tmpNickName}】</font>
+                </div>
+                <div class="stationPopBody">
+                    <table>
+                        <tr>
+                            <td class="stationPopFirstColTd">设备类型 :</td>
+                            <td>${tmpStationType}</td>
+                        </tr>
+                        <tr>
+                            <td class="stationPopFirstColTd">设施信息 :</td>
+                            <td>${tmpMsg}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>`,
+                color: 'black',
+                backgroundColor: '#0000004D'
+              },
+            },
+          });
+          // console.log(`设置labelBox.show为false之前,labelBox的值${entity.labelBox.show}`)
+          // entity.labelBox.show = false
+          console.log(`entity.show:${entity.show}`)
+          console.log(`entity.labelBox.show:${entity.labelBox.show}`)
+          //3、添加
+          entityCollection.add(entity);
+          console.log(`entityCollection._entities[${i}].show:${entityCollection._entities[i].show}`)
+        }
+        entityCollection.show = false;
+
+        entityCollection._entities.forEach(function (entity) {
+          entity.show = false;
+        });
+      });
+
+      const handler = new Earth.ScreenSpaceEventHandler(viewer.scene.canvas);
+      handler.setInputAction(function (movement) {
+        const pickObj = viewer.scene.pick(movement.position);
+        if (pickObj) {
+          console.log(pickObj.labelBox.show)
+          pickObj.labelBox.show = !pickObj.labelBox.show;
+        }
+      }, Earth.ScreenSpaceEventType.LEFT_CLICK);
+
+
+    });
+  </script>
+
 </body>
+
 </html>

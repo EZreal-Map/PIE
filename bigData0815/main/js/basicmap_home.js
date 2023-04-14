@@ -711,7 +711,8 @@ function loadStationLayers() { //加载断面站点
 //						tmpFeature.set("msg", tmpMsg, false);
 //						tmpFeature.set("stationtype", 3, false);
 //						StationLayerVectorSource.addFeature(tmpFeature);
-//					}
+				StationLayerVectorSource.clear();
+				//					}
 //				};
 //				
 //			}
