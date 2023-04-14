@@ -1646,6 +1646,29 @@
 		function refreshSectionElvData(planID){
 			RunWebServiceJSON(true, "getTSDBLeveldata", "/pms/Base", "/doreaddata/getdata",
 			        "guid#timeindex", String(planID)+"#-1", function (data) {
+// 						 // 将获取到的数据data转换成JSON字符串
+//   var jsonData = JSON.stringify(data);
+  
+//   // 创建一个Blob对象，表示二进制数据
+//   var blob = new Blob([jsonData], {type: "application/json"});
+  
+//   // 创建一个a标签，设置download属性为data.json
+//   var a = document.createElement("a");
+//   a.download = "data_riverSection.json";
+  
+//   // 将Blob对象转换成URL
+//   var url = URL.createObjectURL(blob);
+  
+//   // 设置a标签的href属性为Blob URL
+//   a.href = url;
+  
+//   // 模拟点击a标签进行下载
+//   a.click();
+  
+//   // 释放Blob URL
+//   URL.revokeObjectURL(url);
+
+
 				var jqueryObj = $(data);
 				var message = jqueryObj.children();
 				var text = message.text();
@@ -1666,6 +1689,22 @@
 					//initialSectionChartControl([tmpArray,tmpArray2,tmpArray3]);	
 					
 					m_RiverSectionVDataArray = [tmpArray,tmpArray2,tmpArray3,tmpArray4];
+
+					           // 下载保存数据为JSON文件
+							   var jsonData = JSON.stringify(m_RiverSectionVDataArray);
+            var blob = new Blob([jsonData], {type: "application/json"});
+            var fileName = "data_RiverSwctionVArray.json";
+            if (window.navigator.msSaveOrOpenBlob) {
+                window.navigator.msSaveBlob(blob, fileName);
+            } else {
+                var elem = window.document.createElement('a');
+                elem.href = window.URL.createObjectURL(blob);
+                elem.download = fileName;
+                document.body.appendChild(elem);
+                elem.click();
+                document.body.removeChild(elem);
+            }
+			
 					refreshMapRiverShow();
 				}
 			});
@@ -2063,7 +2102,32 @@
 				url: ServerURL + "/ServiceHandler/BigDataHandler.ashx?method=gettyphoongisdata&id="+TCIDX,
 				dataType: "json",
 				success: function(joResult) {
-					if(joResult!=null && joResult.length > 0) {	
+					if(joResult!=null && joResult.length > 0) {
+
+						// 禁用:此处是下载后台数据 好像不知道怎么调用到台风数据，干脆不要算了
+			// 	console.log(joResult)
+            // var tmpObjs = joResult.data;
+            // // 将数据转换为JSON字符串
+            // const data = JSON.stringify(joResult.data);
+            // // 创建blob对象
+            // const blob = new Blob([data], { type: 'application/json' });
+            // // 获取blob对象URL
+            // const url = URL.createObjectURL(blob);
+            // // 创建a标签
+            // const link = document.createElement('a');
+            // // 设置a标签href属性为blob URL
+            // link.href = url;
+            // // 设置下载文件的名称
+            // link.download = 'data_Typhon.json';
+            // // 将a标签添加到DOM中
+            // document.body.appendChild(link);
+            // // 模拟a标签的点击事件来下载文件
+            // link.click();
+            // // 从DOM中删除a标签
+            // document.body.removeChild(link);
+            // // 释放blob对象URL
+            // URL.revokeObjectURL(url);
+
 						addTyphoonData(joResult);
 					}
 				},
