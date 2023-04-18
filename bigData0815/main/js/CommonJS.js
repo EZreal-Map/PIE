@@ -367,15 +367,18 @@ function RunWebService(async,keys,action,dispatch,paramNames,paramValues,func)
                   success: func,
                   error: function (XMLHttpRequest, textStatus, errorThrown)
                       {
+                        console.log('wenti1')
                           //Ext.Msg.alert('提示2', textStatus);
-                          layer.msg(textStatus, {icon: 1});
+                        //   layer.msg(textStatus, {icon: 1}); 此处注释了，先没有找到layer
                       }
                   });
               }
           catch(err)
               {
+                console.log('wenti2')
+
                    //Ext.Msg.alert('提示1',err);
-                   layer.msg(textStatus, {icon: 1});
+                //    layer.msg(textStatus, {icon: 1});
               }
           }
 function GetPTCodeResult(xml)

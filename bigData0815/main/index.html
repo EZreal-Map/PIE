@@ -7,6 +7,14 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <link rel="stylesheet" type="text/css" href="css/style_home.css">
   <title>PIE Earth Demo</title>
+
+  <script type="text/javascript" src="PIEWrapperWeb.js"></script>
+  <script type="text/javascript" src="Earth.js"></script>
+  <!-- RunWebServiceJSON等函数的定义 -->
+  <script type="text/javascript" src="js/CommonJS.js"></script>
+  <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+  <script type="text/javascript" src="js/common.js"></script>
+  
   <style>
     html,
     body {
@@ -121,42 +129,43 @@
     }
 
     /*断面弹窗的样式 */
-    .waterSectionPop {
-      width: 142px;
+    .riverSectionPop {
+      width: 162px;
       background-color: #00000000;
       padding: 10px;
       border: 2px solid white;
       border-radius: 10px;
     }
 
-    .waterSectionPopHeader {
+    .riverSectionPopHeader {
       text-align: center;
-      width: 120px;
+      width: 140px;
       margin: 0 auto;
       Font: 20px 微软雅黑;
       margin-bottom: 5px;
       color: yellow;
     }
 
-    .waterSectionPopBody {
+    .riverSectionPopBody {
       margin: 0 auto;
       Font: 18px 微软雅黑;
-      width: 120px;
+      width: 140px;
       color: white;
     }
 
-    .waterSectionPopBody .waterSectionPopFirstColTd {
+    .riverSectionPopBody .riverSectionPopFirstColTd {
       width: 50px;
       vertical-align: top;
       font-weight: 700;
     }
 
-    .waterSectionPopBody table {
+    .riverSectionPopBody table {
       width: 100%;
       border-collapse: collapse;
     }
 
-    .waterSectionPopBody td {
+    .riverSectionPopBody td {
+      /* text-align: right; */
       word-break: break-all;
       /* 当单词过长时，强制换行 */
       white-space: normal;
@@ -185,8 +194,7 @@
     <button class="measureLength">测距</button>
     <button class="clearMeasureLength" style="display: none;">清除测距</button>
   </div>
-  <script type="text/javascript" src="PIEWrapperWeb.js"></script>
-  <script type="text/javascript" src="Earth.js"></script>
+
   <script>
     createEarthModule().then(function () {
       const viewer = new Earth.Viewer('mapContainer', {
@@ -380,14 +388,14 @@
 
 
       // 加载geojson数据
-      // const line = viewer.dataSources.add(
-      //   Earth.GeoJsonDataSource.load('./riverzone.geojson', {
-      //     stroke: Earth.Color.RED,
-      //     strokeWidth: 2,
-      //     fill: Earth.Color.BLACK.withAlpha(0.2),
-      //     // fill: "rgba(0, 128, 128, 0.2)",
-      //   })
-      // );
+      const line = viewer.dataSources.add(
+        Earth.GeoJsonDataSource.load('./riverzone.geojson', {
+          stroke: Earth.Color.RED,
+          strokeWidth: 2,
+          fill: Earth.Color.BLACK.withAlpha(0.2),
+          // fill: "rgba(0, 128, 128, 0.2)",
+        })
+      );
       // console.log(line.entities)
 
       // const riversection = viewer.dataSources.add(
@@ -399,6 +407,8 @@
       //   })
       // );
       // console.log(riversection.entities)
+
+      refreshSectionElvData(28181)
 
       fetch('riversection.geojson')
         .then(response => response.json())
@@ -421,8 +431,8 @@
             // console.log(polygonCentroid);
 
             // 80写死了，待处理
-            var tmpRiverSectionWaterLevel = 80;
-            var tmpRiverSectionWaterDepth = 20;
+            var tmpRiverSectionWaterLevel = m_RiverSectionVDataArray[0][i].toFixed(2);
+            var tmpRiverSectionWaterDepth = m_RiverSectionVDataArray[3][i].toFixed(2);
 
 
 
@@ -454,19 +464,19 @@
                 maxHeight: 20000000,
                 style: {
                   html: `
-                                      <div class="waterSectionPop">
-                                          <div class="waterSectionPopHeader">
+                                      <div class="riverSectionPop">
+                                          <div class="riverSectionPopHeader">
                                               <font>【${tmpNickName}】</font>
                                           </div>
-                                          <div class="waterSectionPopBody">
+                                          <div class="riverSectionPopBody">
                                               <table>
                                                   <tr>
-                                                      <td class="waterSectionPopFirstColTd">水位:</td>
-                                                      <td>${tmpRiverSectionWaterLevel}m</td>
+                                                    <td class="riverSectionPopFirstColTd">水深:</td>
+                                                      <td>${tmpRiverSectionWaterDepth} m</td>
                                                   </tr>
                                                   <tr>
-                                                      <td class="waterSectionPopFirstColTd">水深:</td>
-                                                      <td>${tmpRiverSectionWaterDepth}m</td>
+                                                    <td class="riverSectionPopFirstColTd">水位:</td>
+                                                      <td>${tmpRiverSectionWaterLevel} m</td>
                                                   </tr>
                                               </table>
                                           </div>
@@ -491,12 +501,14 @@
           pickObj.labelBox.show = !pickObj.labelBox.show;
           if (pickObj.polygon) {
             if (pickObj.labelBox.show) {
-              // pickObj.polygon.color = Earth.Color.fromBytes(255, 0, 0, 200);
+              pickObj.polygon.color = Earth.Color.fromBytes(255, 0, 0, 200);
             }
             else {
-              // pickObj.polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
+              pickObj.polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
             }
           }
+
+
         }
       }, Earth.ScreenSpaceEventType.LEFT_CLICK);
     });
@@ -519,6 +531,40 @@
       let y = sumY / (3 * sumArea);
       return [x, y];
     }
+
+    var m_RiverSectionVDataArray = [];
+		/**
+		 * 刷新断面的高程及水面高程数据
+		 * @param {Object} planID
+		 */
+		function refreshSectionElvData(planID){
+			RunWebServiceJSON(true, "getTSDBLeveldata", "/pms/Base", "/doreaddata/getdata",
+			        "guid#timeindex", String(planID)+"#-1", function (data) {
+				var jqueryObj = $(data);
+				var message = jqueryObj.children();
+				var text = message.text();
+				var tmpObjs = eval("(" + text + ")");
+				if(tmpObjs!=null && tmpObjs.length>0)
+				{
+					var tmpArray = [],tmpArray2 = [],tmpArray3 = [],tmpArray4 = [];
+					for(var i in tmpObjs)
+					{
+						var tmpObj = tmpObjs[i];
+						tmpArray[i] = parseFloat(tmpObj.V);
+						tmpArray2[i] = parseFloat(tmpObj.MAXV);
+						tmpArray3[i] = parseFloat(tmpObj.MINV);
+						tmpArray4[i] = tmpArray[i] - tmpArray2[i];
+						if(tmpArray4[i] < 0)
+							tmpArray4[i] = 0;
+					}
+					//initialSectionChartControl([tmpArray,tmpArray2,tmpArray3]);	
+					
+					m_RiverSectionVDataArray = [tmpArray,tmpArray2,tmpArray3,tmpArray4];
+          console.log(m_RiverSectionVDataArray)
+					// refreshMapRiverShow();
+				}
+			});
+		}
   </script>
 
 </body>
