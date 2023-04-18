@@ -1332,18 +1332,18 @@
 						var message = jqueryObj.children();
 						var text = message.text();
 						var tmpObjs = eval("(" + text + ")");
-						// 禁用 此处把后端tmpObj数据导出下载成本地.json数据	
-						if (tmpObjs != null && tmpObjs.length > 0) {
-      var dataStr = JSON.stringify(tmpObjs);
-      var blob = new Blob([dataStr], { type: "application/json" });
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement("a");
-      a.href = url;
-      a.download = "data_WaterReport.json";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }					
+	// 					// 禁用 此处把后端tmpObj数据导出下载成本地.json数据	
+	// 					if (tmpObjs != null && tmpObjs.length > 0) {
+    //   var dataStr = JSON.stringify(tmpObjs);
+    //   var blob = new Blob([dataStr], { type: "application/json" });
+    //   var url = URL.createObjectURL(blob);
+    //   var a = document.createElement("a");
+    //   a.href = url;
+    //   a.download = "data_WaterReport.json";
+    //   document.body.appendChild(a);
+    //   a.click();
+    //   document.body.removeChild(a);
+    // }					
 						if(tmpObjs!=null && tmpObjs.length>0)
 						{
 							m_WaterReportList = [];

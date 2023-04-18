@@ -76,7 +76,7 @@
 
 
     .stationPop {
-      width: 242px;
+      width: 202px;
       background-color: #00000000;
       padding: 10px;
       border: 2px solid white;
@@ -85,7 +85,7 @@
 
     .stationPopHeader {
       text-align: center;
-      width: 220px;
+      width: 190px;
       margin: 0 auto;
       Font: 18px 微软雅黑;
       margin-bottom: 5px;
@@ -95,12 +95,14 @@
     .stationPopBody {
       margin: 0 auto;
       Font: 15px 微软雅黑;
-      width: 220px;
+      width: 190px;
       color: white;
     }
 
     .stationPopBody .stationPopFirstColTd {
       width: 70px;
+      vertical-align: top;
+      font-weight: 700;
     }
 
     .stationPopBody table {
@@ -109,6 +111,52 @@
     }
 
     .stationPopBody td {
+      word-break: break-all;
+      /* 当单词过长时，强制换行 */
+      white-space: normal;
+      /* 不强制将空格合并成一个 */
+      width: auto;
+      padding: 5px;
+      /* vertical-align: middle; */
+    }
+
+    /*断面弹窗的样式 */
+    .waterSectionPop {
+      width: 142px;
+      background-color: #00000000;
+      padding: 10px;
+      border: 2px solid white;
+      border-radius: 10px;
+    }
+
+    .waterSectionPopHeader {
+      text-align: center;
+      width: 120px;
+      margin: 0 auto;
+      Font: 20px 微软雅黑;
+      margin-bottom: 5px;
+      color: yellow;
+    }
+
+    .waterSectionPopBody {
+      margin: 0 auto;
+      Font: 18px 微软雅黑;
+      width: 120px;
+      color: white;
+    }
+
+    .waterSectionPopBody .waterSectionPopFirstColTd {
+      width: 50px;
+      vertical-align: top;
+      font-weight: 700;
+    }
+
+    .waterSectionPopBody table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .waterSectionPopBody td {
       word-break: break-all;
       /* 当单词过长时，强制换行 */
       white-space: normal;
@@ -139,10 +187,6 @@
   </div>
   <script type="text/javascript" src="PIEWrapperWeb.js"></script>
   <script type="text/javascript" src="Earth.js"></script>
-  
-  <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
-  <script type="text/javascript" src="js/common.js"></script>
-
   <script>
     createEarthModule().then(function () {
       const viewer = new Earth.Viewer('mapContainer', {
@@ -234,213 +278,247 @@
           clearMeasureLength.style.display = 'none';
         });
       })
-      // function loadData(callback) {
-      //   fetch('data.json')
-      //     .then(response => response.json())
-      //     .then(jsonData => {
-      //       callback(jsonData);
-      //     })
-      // }
-
+      function loadData(callback) {
+        fetch('data.json')
+          .then(response => response.json())
+          .then(jsonData => {
+            callback(jsonData);
+          })
+      }
+      // const entityCollectionStation = new viewer.EntityCollection();
       const entityCollection = viewer.entities;
-      console.log(entityCollection)
+      // console.log(entityCollection)
       // entityCollection.removeAll();
-      // 刷新设施位置信息
-	$.ajax({
-		url: ServerURL + "/ServiceHandler/BigDataHandler.ashx?method=getfacilitiesinfobyprojectid&projectid=" + CurrentProjectID + "&token=" + defaultToken,
-		type: "GET",
-		dataType: "json",
-		success: function (joResult) {
-			if (joResult.success == true) {
-				var tmpObjs = joResult.data;
-				// StationLayerVectorSource.clear();
-			        var tmpObjs = joResult.data;
-              // var tmpObjs = data;
 
-for (var i in tmpObjs) {
-  tmpObj = tmpObjs[i];
-  var tmpX = parseFloat(tmpObj.X),
-    tmpY = parseFloat(tmpObj.Y);
-  // tmpXY = translate.translatePoint([114.191, 22.592]);
-  // tmpX = tmpXY[0]
-  // tmpY = tmpXY[1]
-  var tmpNickName = tmpObj.Name;
-  var tmpStationType = tmpObj.FacilitiesType;
-  var tmpMsg = tmpObj.Info;
-  //1、创建贴地点
-  const entity = new Earth.Entity({
-    name: 'point',
-    show: false,
-    position: Earth.Cartesian3.fromDegrees(tmpX, tmpY), //经度，纬度，高度
-    point: new Earth.Point({
-      show: false,
-      pixelSize: 0,
-      color: Earth.Color.BLUE.withAlpha(0),
-      heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
-      outlineColor: undefined, //不支持
-      outlineWidth: undefined, //不支持
-      distanceDisplayCondition: undefined, //暂不支持
-    }),
-    billboard: {
-      show: false,
-      image: 'images/' + tmpStationType + '.png',
-      scale: 1,
-      horizontalOrigin: Earth.HorizontalOrigin.CENTER,
-      verticalOrigin: Earth.VerticalOrigin.CENTER
-    },
-    label: {
-      show: false,
-      text: viewer.camera.zoom < 10 ? "" : tmpNickName,
-      fillColor: Earth.Color.BLUE.withAlpha(0.8),//可设置透明度
-    },
-    labelBox: {
-      show: false,
-      type: Earth.LabelBoxType.box10,
-      scale: 0.8,
-      offset: { x: -85, y: 25 },
-      maxHeight: 20000000,
-      maxWigth: 20,
-      style: {
-        html: `
-    <div class="stationPop">
-        <div class="stationPopHeader">
-            <font>【${tmpNickName}】</font>
-        </div>
-        <div class="stationPopBody">
-            <table>
-                <tr>
-                    <td class="stationPopFirstColTd">设备类型 :</td>
-                    <td>${tmpStationType}</td>
-                </tr>
-                <tr>
-                    <td class="stationPopFirstColTd">设施信息 :</td>
-                    <td>${tmpMsg}</td>
-                </tr>
-            </table>
-        </div>
-    </div>`,
-        color: 'black',
-        backgroundColor: '#0000004D'
-      },
-    },
-  });
-  // console.log(`设置labelBox.show为false之前,labelBox的值${entity.labelBox.show}`)
-  // entity.labelBox.show = false
-  console.log(`entity.show:${entity.show}`)
-  console.log(`entity.labelBox.show:${entity.labelBox.show}`)
-  //3、添加
-  entityCollection.add(entity);
-  console.log(`entityCollection._entities[${i}].show:${entityCollection._entities[i].show}`)
-}
-entityCollection.show = false;
+      loadData(data => {
+        // console.log(data);
+        // 在这里处理数据
+        //2、获取entityCollection
+        // var tmpObjs = joResult.data;
+        var tmpObjs = data;
 
-entityCollection._entities.forEach(function (entity) {
-  entity.show = false;
-});
-			}
-		}
-	});
+        for (var i in tmpObjs) {
+          tmpObj = tmpObjs[i];
+          var tmpX = parseFloat(tmpObj.X),
+            tmpY = parseFloat(tmpObj.Y);
+          // tmpXY = translate.translatePoint([114.191, 22.592]);
+          // tmpX = tmpXY[0]
+          // tmpY = tmpXY[1]
+          var tmpNickName = tmpObj.Name;
+          var tmpStationType = tmpObj.FacilitiesType;
+          var tmpMsg = tmpObj.Info;
+          //1、创建贴地点
+          const entity = new Earth.Entity({
+            name: 'point',
+            show: true,
+            // zIndex: 10,
+            position: Earth.Cartesian3.fromDegrees(tmpX, tmpY), //经度，纬度，高度
+            point: new Earth.Point({
+              show: false,
+              pixelSize: 1,
+              color: Earth.Color.BLUE.withAlpha(1),
+              heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
+              outlineColor: undefined, //不支持
+              outlineWidth: undefined, //不支持
+              distanceDisplayCondition: undefined, //暂不支持
+            }),
+            billboard: {
+              show: true,
+              image: 'images/' + tmpStationType + '.png',
+              scale: 1,
+              horizontalOrigin: Earth.HorizontalOrigin.CENTER,
+              verticalOrigin: Earth.VerticalOrigin.CENTER
+            },
+            label: {
+              show: true,
+              text: viewer.camera.zoom < 10 ? "" : tmpNickName,
+              fillColor: Earth.Color.BLUE.withAlpha(0.8),//可设置透明度
+            },
+            labelBox: {
+              show: false,
+              type: Earth.LabelBoxType.box10,
+              scale: 0.8,
+              offset: { x: -85, y: 25 },
+              maxHeight: 20000000,
+              style: {
+                html: `
+                        <div class="stationPop">
+                            <div class="stationPopHeader">
+                                <font>【${tmpNickName}】</font>
+                            </div>
+                            <div class="stationPopBody">
+                                <table>
+                                    <tr>
+                                        <td class="stationPopFirstColTd">设备类型 :</td>
+                                        <td>${tmpStationType}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="stationPopFirstColTd">设施信息 :</td>
+                                        <td>${tmpMsg}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>`,
+                color: 'black',
+                backgroundColor: '#0000004D'
+              },
+            },
 
-      // loadData(data => {
-      //   console.log(data);
-      //   // 在这里处理数据
-      //   //2、获取entityCollection
-      //   // var tmpObjs = joResult.data;
-      //   var tmpObjs = data;
+          });
+          // console.log(`设置labelBox.show为false之前,labelBox的值${entity.labelBox.show}`)
+          // entity.labelBox.show = false
+          // console.log(`entity.show:${entity.show}`)
+          // console.log(`entity.labelBox.show:${entity.labelBox.show}`)
+          //3、添加
+          entityCollection.add(entity);
+          // console.log(`entityCollection._entities[${i}].show:${entityCollection._entities[i].show}`)
+        }
 
-      //   for (var i in tmpObjs) {
-      //     tmpObj = tmpObjs[i];
-      //     var tmpX = parseFloat(tmpObj.X),
-      //       tmpY = parseFloat(tmpObj.Y);
-      //     // tmpXY = translate.translatePoint([114.191, 22.592]);
-      //     // tmpX = tmpXY[0]
-      //     // tmpY = tmpXY[1]
-      //     var tmpNickName = tmpObj.Name;
-      //     var tmpStationType = tmpObj.FacilitiesType;
-      //     var tmpMsg = tmpObj.Info;
-      //     //1、创建贴地点
-      //     const entity = new Earth.Entity({
-      //       name: 'point',
-      //       show: false,
-      //       position: Earth.Cartesian3.fromDegrees(tmpX, tmpY), //经度，纬度，高度
-      //       point: new Earth.Point({
-      //         show: false,
-      //         pixelSize: 0,
-      //         color: Earth.Color.BLUE.withAlpha(0),
-      //         heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
-      //         outlineColor: undefined, //不支持
-      //         outlineWidth: undefined, //不支持
-      //         distanceDisplayCondition: undefined, //暂不支持
-      //       }),
-      //       billboard: {
-      //         show: false,
-      //         image: 'images/' + tmpStationType + '.png',
-      //         scale: 1,
-      //         horizontalOrigin: Earth.HorizontalOrigin.CENTER,
-      //         verticalOrigin: Earth.VerticalOrigin.CENTER
-      //       },
-      //       label: {
-      //         show: false,
-      //         text: viewer.camera.zoom < 10 ? "" : tmpNickName,
-      //         fillColor: Earth.Color.BLUE.withAlpha(0.8),//可设置透明度
-      //       },
-      //       labelBox: {
-      //         show: false,
-      //         type: Earth.LabelBoxType.box10,
-      //         scale: 0.8,
-      //         offset: { x: -85, y: 25 },
-      //         maxHeight: 20000000,
-      //         maxWigth: 20,
-      //         style: {
-      //           html: `
-      //       <div class="stationPop">
-      //           <div class="stationPopHeader">
-      //               <font>【${tmpNickName}】</font>
-      //           </div>
-      //           <div class="stationPopBody">
-      //               <table>
-      //                   <tr>
-      //                       <td class="stationPopFirstColTd">设备类型 :</td>
-      //                       <td>${tmpStationType}</td>
-      //                   </tr>
-      //                   <tr>
-      //                       <td class="stationPopFirstColTd">设施信息 :</td>
-      //                       <td>${tmpMsg}</td>
-      //                   </tr>
-      //               </table>
-      //           </div>
-      //       </div>`,
-      //           color: 'black',
-      //           backgroundColor: '#0000004D'
-      //         },
-      //       },
-      //     });
-      //     // console.log(`设置labelBox.show为false之前,labelBox的值${entity.labelBox.show}`)
-      //     // entity.labelBox.show = false
-      //     console.log(`entity.show:${entity.show}`)
-      //     console.log(`entity.labelBox.show:${entity.labelBox.show}`)
-      //     //3、添加
-      //     entityCollection.add(entity);
-      //     console.log(`entityCollection._entities[${i}].show:${entityCollection._entities[i].show}`)
-      //   }
-      //   entityCollection.show = false;
+      });
 
-      //   entityCollection._entities.forEach(function (entity) {
-      //     entity.show = false;
-      //   });
-      // });
+
+
+
+      // 加载geojson数据
+      // const line = viewer.dataSources.add(
+      //   Earth.GeoJsonDataSource.load('./riverzone.geojson', {
+      //     stroke: Earth.Color.RED,
+      //     strokeWidth: 2,
+      //     fill: Earth.Color.BLACK.withAlpha(0.2),
+      //     // fill: "rgba(0, 128, 128, 0.2)",
+      //   })
+      // );
+      // console.log(line.entities)
+
+      // const riversection = viewer.dataSources.add(
+      //   Earth.GeoJsonDataSource.load('./riversection.geojson', {
+      //     stroke: Earth.Color.RED,
+      //     strokeWidth: 1,
+      //     fill: Earth.Color.BLACK.withAlpha(0.2),
+      //     // fill: "rgba(0, 128, 128, 0.2)",
+      //   })
+      // );
+      // console.log(riversection.entities)
+
+      fetch('riversection.geojson')
+        .then(response => response.json())
+        .then(data => {
+          // console.log(data.features); // data为JSON对象
+          var tmpObjs = data.features;
+
+          for (var i in tmpObjs) {
+            tmpObj = tmpObjs[i];
+            // console.log(tmpObj)
+            tmpNickName = tmpObj.properties.name;
+            var tmpCoordinates = [];
+            tmpCoordinatesbigArray = tmpObj.geometry.coordinates[0];
+            tmpCoordinatesbigArray.forEach(function (arr) {
+              tmpCoordinates = tmpCoordinates.concat(arr);
+            });
+
+            // 通过自己定义的函数 getPolygonCentroid获取polygon的重心点
+            polygonCentroid = getPolygonCentroid(tmpCoordinatesbigArray)
+            // console.log(polygonCentroid);
+
+            // 80写死了，待处理
+            var tmpRiverSectionWaterLevel = 80;
+            var tmpRiverSectionWaterDepth = 20;
+
+
+
+            const polygon = new Earth.Entity({
+              name: tmpNickName,
+              show: true,
+              // zIndex: 5,
+              position: Earth.Cartesian3.fromDegrees(polygonCentroid[0], polygonCentroid[1]), //经度，纬度，高度
+
+              polygon: new Earth.Polygon({
+                show: true,
+                hierarchy: Earth.Cartesian3.fromDegreesArray(tmpCoordinates),
+                color: Earth.Color.fromBytes(0, 0, 255, 200),
+                heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
+                outline: true, //好像暂时不支持
+                outlineColor: Earth.Color.RED, //好像暂时不支持
+              }),
+              // label: {
+              //     show: true,
+              //     text: viewer.camera.zoom < 10 ? "" : tmpNickName,
+              //     fillColor: Earth.Color.BLUE.withAlpha(0.8),//可设置透明度
+              // }
+
+              labelBox: {
+                show: false,
+                type: Earth.LabelBoxType.box10,
+                scale: 0.8,
+                offset: { x: -85, y: 25 },
+                maxHeight: 20000000,
+                style: {
+                  html: `
+                                      <div class="waterSectionPop">
+                                          <div class="waterSectionPopHeader">
+                                              <font>【${tmpNickName}】</font>
+                                          </div>
+                                          <div class="waterSectionPopBody">
+                                              <table>
+                                                  <tr>
+                                                      <td class="waterSectionPopFirstColTd">水位:</td>
+                                                      <td>${tmpRiverSectionWaterLevel}m</td>
+                                                  </tr>
+                                                  <tr>
+                                                      <td class="waterSectionPopFirstColTd">水深:</td>
+                                                      <td>${tmpRiverSectionWaterDepth}m</td>
+                                                  </tr>
+                                              </table>
+                                          </div>
+                                      </div>`,
+                  color: 'black',
+                  backgroundColor: '#0000004D'
+                },
+              },
+
+            });
+
+            entityCollection.add(polygon);
+          }
+        });
 
       const handler = new Earth.ScreenSpaceEventHandler(viewer.scene.canvas);
       handler.setInputAction(function (movement) {
         const pickObj = viewer.scene.pick(movement.position);
+        // pickObj && alert('拾取成功：' + pickObj.name);
         if (pickObj) {
-          console.log(pickObj.labelBox.show)
+          // console.log(pickObj.labelBox.show)
           pickObj.labelBox.show = !pickObj.labelBox.show;
+          if (pickObj.polygon) {
+            if (pickObj.labelBox.show) {
+              // pickObj.polygon.color = Earth.Color.fromBytes(255, 0, 0, 200);
+            }
+            else {
+              // pickObj.polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
+            }
+          }
         }
       }, Earth.ScreenSpaceEventType.LEFT_CLICK);
-
-
     });
+
+
+
+    function getPolygonCentroid(points) {
+      let sumX = 0;
+      let sumY = 0;
+      let sumArea = 0;
+      for (let i = 0; i < points.length; i++) {
+        let point1 = points[i];
+        let point2 = i === points.length - 1 ? points[0] : points[i + 1];
+        let area = point1[0] * point2[1] - point2[0] * point1[1];
+        sumX += (point1[0] + point2[0]) * area;
+        sumY += (point1[1] + point2[1]) * area;
+        sumArea += area;
+      }
+      let x = sumX / (3 * sumArea);
+      let y = sumY / (3 * sumArea);
+      return [x, y];
+    }
   </script>
 
 </body>
