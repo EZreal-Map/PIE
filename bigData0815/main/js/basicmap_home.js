@@ -828,7 +828,7 @@ function refreshUserGPSInfo() {
 
 						var tmpIsOnline = false;
 						var tmpTime01 = Date.parse(tmpObj.gpsTime);
-						if(dateNow - tmpTime01 < 300000) //5分钟之内都表示在线
+						if(dateNow - tmpTime01 > 300000) //5分钟之内都表示在线  此处修改，让所有人员上线
 						{
 							tmpIsOnline = "true";
 							tmpOnlineUsersCount++;
