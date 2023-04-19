@@ -306,7 +306,7 @@
                     // tilingScheme: tilingScheme,
                 }),
             });
-            // viewer.entityCollection.removeAll();
+            entityCollection = viewer.entities;
 
             // let translate = new Earth.ReferenceTranslator();
             // let srcSpatialReference = viewer.scene.globe.spatialReference.fromEpsg(4326); //创建4546空间参考系对象
@@ -436,7 +436,7 @@
                     })
             }
 
-            entityCollection = viewer.entities;
+           
 
             /**
             * 刷新用户定位信息

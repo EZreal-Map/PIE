@@ -586,7 +586,7 @@
 			</div>
 		</div>
 		<script>
-			var entityCollection;
+			// var entityCollection;
 	
 			createEarthModule().then(function () {
 				const viewer = new Earth.Viewer('mapContainer', {
@@ -603,7 +603,7 @@
 					}),
 				});
 
-				entityCollection = viewer.entities;
+				var entityCollection = viewer.entities;
 				// viewer.entityCollection.removeAll();
 	
 				// let translate = new Earth.ReferenceTranslator();
@@ -2904,7 +2904,7 @@
 									if(tmpObj.Y == '')
 										tmpObj.Y = '22.5951098889';
 										
-									addGYEventPoint(tmpObj.X, tmpObj.Y, tmpObj);
+									// addGYEventPoint(tmpObj.X, tmpObj.Y, tmpObj);
 									tmpTotalHTML+='<li class="clearfix" onClick="centerOnMapAndAnim('+tmpObj.X+','+tmpObj.Y+');"><label class="'
 										+tmpLClass+'">'+tmpObj.EmergencyType+'</label> '+tmpObj.EventType
 										+'|'+tmpStr+'</li>';
@@ -3145,7 +3145,8 @@
 		}
 
 		$("#mapBottomControlBtnHome").click(function(){			
-			gotoHome();
+			// gotoHome(); 替换原来的openlayer方法，使用新的PIE方法
+			FlyTargetLocation()
   		});
   		
   		$("#mapBottomControlBtnTurb").click(function(){			
@@ -3182,7 +3183,7 @@
             CameraLayer.setVisible(m_Layer_Camera_Vis);
   		}); 
   		
-  		var m_Layer_SheShi_Vis = true;
+  		// var m_Layer_SheShi_Vis = true;
 		$("#mapBottomControlBtnSheShi").click(function(){	
 			if(m_Layer_SheShi_Vis)
 			{
@@ -3193,7 +3194,7 @@
             	$("#mapBottomControlBtnSheShi").attr("src","images/layer_sheshi_on.png");
 				m_Layer_SheShi_Vis = true;
             }
-            StationLayer.setVisible(m_Layer_SheShi_Vis);
+            // StationLayer.setVisible(m_Layer_SheShi_Vis);
   		}); 
   		
   		var m_Layer_Event_Vis = true;
