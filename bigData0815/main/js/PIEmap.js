@@ -1,5 +1,6 @@
 let entityCollection;
 let viewer;
+let layer_basemapTxt;
 createEarthModule().then(function () {
     viewer = new Earth.Viewer('mapContainer', {
 
@@ -32,7 +33,7 @@ createEarthModule().then(function () {
     const tmsImageryProvider_basemapTxt = new Earth.TileMapServiceImageryProvider({
         url: 'tiles/basemapTxt/L{z}/{y}-{x}.png'
     })
-    let layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
+    layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
 
     // 原来index.html中的button方法，已经整合到page_home中去了，无用，待删除  clearLabelBox暂时还有用
     // （已经转移clearLabelBox）
@@ -419,28 +420,23 @@ createEarthModule().then(function () {
     }, Earth.ScreenSpaceEventType.LEFT_CLICK);
 
 
-    // 需要放在PIEmap.js里面，因为没有定义全局变量tmsImageryProvider_basemapTxt
-    var m_Layer_Sal_Vis = true;
-    $("#mapBottomControlBtnSalMap").click(function () {
-        if (m_Layer_Sal_Vis) {
-            $("#mapBottomControlBtnSalMap").attr("src", "images/layer_salmap_off.png");
-            m_Layer_Sal_Vis = false;
-            viewer.imageryLayers.remove(layer_basemapTxt)
-        }
-        else {
-            $("#mapBottomControlBtnSalMap").attr("src", "images/layer_salmap_on.png");
-            m_Layer_Sal_Vis = true;
-            layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
-        }
-        // TianDitu_Val_Layer.setVisible(m_Layer_Sal_Vis);
-    });
-
-
     // 一些更新地图的函数的调用
     refreshUserGPSInfo()
     refreshSectionElvData(28181)
     // refreshMapRiverShow();
     MyrefreshGYEventsInfo()
+
+    setTimeout(function() {
+        // 解决labelBox .show false的bug
+        for (var i in entityCollection._entities) {
+            entityCollection._entities[i].labelBox.show = false;
+            if (entityCollection._entities[i].polygon){
+                entityCollection._entities[i].polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
+            }
+        }
+        console.log('最初的clearLabelBox')
+      }, 1000);
+
 
 });// createEarthModule结束 new Earth
 
