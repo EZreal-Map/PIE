@@ -529,7 +529,7 @@
                     <img id="mapBottomControlBtnRadarMap" class="mapBottomControlBtn" src="images/layer_radar_on.png"
                         title="雷达监测 无效" />
                     <img id="mapBottomControlBtnSalMap" class="mapBottomControlBtn" src="images/layer_salmap_on.png"
-                        title="卫星地图 " />
+                        title="地图标注 " />
                     <img id="mapBottomControlBtnRiver" class="mapBottomControlBtn" src="images/layer_river_on.png"
                         title="河道地图切换" />
                     <img id="mapBottomControlBtnTurb" class="mapBottomControlBtn" src="images/layer_turb_on.png"
@@ -637,8 +637,8 @@
             viewer = new Earth.Viewer('mapContainer', {
 
                 sceneMode: Earth.SceneMode.SCENE3D, //Earth.SceneMode.SCENE2D
-                center: [114.187336, 22.595030], //初始中心点
-                zoom: 16, //初始层级
+                center: [114.181236, 22.598030], //初始中心点
+                zoom: 13.5, //初始层级
                 cameraSmooth: false, //是否开启相机缓冲效果
                 // projection: new Earth.Projection.WebMercator(),
                 imageryProvider: new Earth.TileMapServiceImageryProvider({
@@ -648,6 +648,7 @@
                 }),
             });
 
+			viewer.scene.skyBox.show = false;
             entityCollection = viewer.entities;
             // viewer.entityCollection.removeAll();
 
@@ -661,7 +662,7 @@
             let tmsImageryProvider_nightmap = new Earth.TileMapServiceImageryProvider({
                 url: 'tiles/nightmap/{z}/{x}/{y}.png'
             })
-            let layer_nightmap = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_nightmap,0);
+            const layer_nightmap = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_nightmap,0);
 
             // const tmsImageryProvider_basemap = new Earth.TileMapServiceImageryProvider({
             //     url: 'tiles/basemap/L{z}/{y}-{x}.png',
@@ -671,7 +672,7 @@
             const tmsImageryProvider_basemapTxt = new Earth.TileMapServiceImageryProvider({
                 url: 'tiles/basemapTxt/L{z}/{y}-{x}.png'
             })
-            const layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
+            let layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
 
             // 原来index.html中的button方法，已经整合到page_home中去了，无用，待删除  clearLabelBox暂时还有用
 			// （已经转移clearLabelBox）
@@ -1059,12 +1060,12 @@
                 if (m_Layer_Sal_Vis) {
                     $("#mapBottomControlBtnSalMap").attr("src", "images/layer_salmap_off.png");
                     m_Layer_Sal_Vis = false;
-                    viewer.imageryLayers.remove(layer_nightmap)
+                    viewer.imageryLayers.remove(layer_basemapTxt)
                 }
                 else {
                     $("#mapBottomControlBtnSalMap").attr("src", "images/layer_salmap_on.png");
                     m_Layer_Sal_Vis = true;
-                    layer_nightmap = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_nightmap,0);
+                    layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
                 }
                 // TianDitu_Val_Layer.setVisible(m_Layer_Sal_Vis);
             });
@@ -3166,7 +3167,7 @@
         $("#mapBottomControlBtnHome").click(function () {
             // gotoHome(); 替换原来的openlayer方法，使用新的PIE方法
             viewer.camera.flyTo({
-                destination: Earth.Cartesian3.fromDegrees(114.187336, 22.595030, 3000.0),
+                destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 2800.0),
 
                 orientation: {
                     heading: Earth.Math.toRadians(0),
@@ -3187,6 +3188,9 @@
 		$("#mapBottomControlBtnClearLabelBox").click(function () {
 			for (var i in entityCollection._entities) {
                     entityCollection._entities[i].labelBox.show = false;
+					if (entityCollection._entities[i].polygon){
+						entityCollection._entities[i].polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
+					}
                 }
 		});
 
