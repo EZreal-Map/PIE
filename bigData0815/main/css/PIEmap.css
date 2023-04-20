@@ -1,0 +1,241 @@
+#globe {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+/* #mapContainer {
+    width: 950px; 
+    height: 550px; 
+} */
+
+.left-top-tools {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.right-top-tools {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.left-bottom-tools {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+button {
+    height: 40px;
+    font-size: 20px;
+    padding: 0 12px;
+    line-height: 38px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    border: #ffffff 2px solid;
+    /* background-color: white; */
+}
+
+.zoomIn,
+.zoomOut {
+    display: block;
+    width: 40px;
+    margin-bottom: 10px;
+}
+
+.zoomIn {
+    background: url(./images/zoom-in.png) no-repeat center #efefef;
+    background-size: 80% 80%;
+}
+
+.zoomOut {
+    background: url(./images/zoom-out.png) no-repeat center #efefef;
+    background-size: 80% 80%;
+}
+
+
+.stationPop {
+    width: 202px;
+    background-color: #00000000;
+    padding: 10px;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+.stationPopHeader {
+    text-align: center;
+    width: 190px;
+    margin: 0 auto;
+    Font: 18px 微软雅黑;
+    margin-bottom: 5px;
+    color: #6FFF6F;
+}
+
+.stationPopBody {
+    margin: 0 auto;
+    Font: 15px 微软雅黑;
+    width: 190px;
+    color: white;
+}
+
+.stationPopBody .stationPopFirstColTd {
+    width: 70px;
+    vertical-align: top;
+    font-weight: 700;
+}
+
+.stationPopBody table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.stationPopBody td {
+    word-break: break-all;
+    /* 当单词过长时，强制换行 */
+    white-space: normal;
+    /* 不强制将空格合并成一个 */
+    width: auto;
+    padding: 5px;
+    /* vertical-align: middle; */
+}
+
+/*断面弹窗的样式 */
+.riverSectionPop {
+    width: 162px;
+    background-color: #00000000;
+    padding: 10px;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+.riverSectionPopHeader {
+    text-align: center;
+    width: 140px;
+    margin: 0 auto;
+    Font: 20px 微软雅黑;
+    margin-bottom: 5px;
+    color: yellow;
+}
+
+.riverSectionPopBody {
+    margin: 0 auto;
+    Font: 18px 微软雅黑;
+    width: 140px;
+    color: white;
+}
+
+.riverSectionPopBody .riverSectionPopFirstColTd {
+    width: 50px;
+    vertical-align: top;
+    font-weight: 700;
+}
+
+.riverSectionPopBody table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.riverSectionPopBody td {
+    /* text-align: right; */
+    word-break: break-all;
+    /* 当单词过长时，强制换行 */
+    white-space: normal;
+    /* 不强制将空格合并成一个 */
+    width: auto;
+    padding: 5px;
+    /* vertical-align: middle; */
+}
+
+.userGPSPop {
+    width: 222px;
+    background-color: #00000000;
+    padding: 10px;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+.userGPSPopHeader {
+    text-align: center;
+    width: 210px;
+    margin: 0 auto;
+    Font: 18px 微软雅黑;
+    margin-bottom: 5px;
+    color: #6FFF6F;
+}
+
+.userGPSPopBody {
+    margin: 0 auto;
+    Font: 16px 微软雅黑;
+    width: 210px;
+    color: white;
+}
+
+.userGPSPopBody .userGPSPopFirstColTd {
+    width: 40px;
+    vertical-align: top;
+    font-weight: 700;
+}
+
+.userGPSPopBody table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.userGPSPopBody td {
+    word-break: break-all;
+    /* 当单词过长时，强制换行 */
+    white-space: normal;
+    /* 不强制将空格合并成一个 */
+    width: auto;
+    padding: 5px;
+    /* vertical-align: middle; */
+}
+
+.GYEventPop {
+    width: 242px;
+    background-color: #00000000;
+    padding: 10px;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+.GYEventPopHeader {
+    text-align: center;
+    width: 230px;
+    margin: 0 auto;
+    Font: 18px 微软雅黑;
+    margin-bottom: 5px;
+    color: #6FFF6F;
+}
+
+.GYEventPopBody {
+    margin: 0 auto;
+    Font: 15px 微软雅黑;
+    width: 230px;
+    color: white;
+}
+
+.GYEventPopBody .GYEventPopFirstColTd {
+    width: 70px;
+    vertical-align: top;
+    font-weight: 700;
+}
+
+.GYEventPopBody table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.GYEventPopBody td {
+    word-break: break-all;
+    /* 当单词过长时，强制换行 */
+    white-space: normal;
+    /* 不强制将空格合并成一个 */
+    width: auto;
+    padding: 5px;
+    /* vertical-align: middle; */
+}

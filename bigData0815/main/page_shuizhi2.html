@@ -1,0 +1,1680 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>水质预警</title>
+		<link rel="stylesheet" href="css/style_waterquality.css" />
+		<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<!--<script src="layuiadmin/layui/layui.js"></script>-->
+		<link rel="stylesheet" href="css/stlye_shuizhi.css" />
+		<!--<link rel="stylesheet" href="layuiadmin/layui/css/layui.css" media="all">-->
+	</head>
+
+	<style type="text/css">
+		@font-face {
+			font-family: 'yejing';
+			src: url('font/yejing5.ttf') format('truetype');
+		}
+		
+		select.sty1 {
+			/*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+			border: solid 0px #000;
+			border: none;
+			color: #00F6FF;
+			font-size: 16pt;
+			height: 38px;
+			line-height: 38px;
+			/*很关键：将默认的select选择框样式清除*/
+			appearance: none;
+			-moz-appearance: none;
+			-webkit-appearance: none;
+			/*在选择框的最右侧中间显示小箭头图片*/
+			background: no-repeat scroll right center transparent;
+		}
+		
+		.selectoptionbg {
+			background-color: #0E1C3B;
+			color: #00F6FF;
+		}
+		/*.ol-overlaycontainer-stopevent
+		{
+			display:none;
+		} */
+		/*横条样式*/
+		
+		input[type=range] {
+			-webkit-appearance: none;
+			/*清除系统默认样式*/
+			width: 100%;
+			background: -webkit-linear-gradient(#0087ED, #0087ED) no-repeat, #ddd;
+			/*设置左边颜色为#61bd12，右边颜色为#ddd*/
+			background-size: 100% 100%;
+			/*设置左右宽度比例*/
+			/*height: 3px;/*横条的高度*/
+			*/
+		}
+		/*拖动块的样式*/
+		
+		input[type=range]::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			/*清除系统默认样式*/
+			height: 15px;
+			/*拖动块高度*/
+			width: 15px;
+			/*拖动块宽度*/
+			background: #fff;
+			/*拖动块背景*/
+			border-radius: 50%;
+			/*外观设置为圆形*/
+			border: solid 5px #ddd;
+			/*设置边框*/
+		}
+		
+		.swal-modal {
+			background-color: #00FCFF;
+		}
+		
+		.ol-control {
+			display: none;
+		}
+		/**地图提示框*/
+		
+		.ol-popup {
+			position: absolute;
+			background-color: rgba(0, 0, 0, .3);
+			-webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+			filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
+			/*padding: 5px 7px;*/
+			border-radius: 5px;
+			border: 1px solid #cccccc;
+			/*border: none;*/
+			padding: 10px;
+			color: white;
+			bottom: 12px;
+			left: -50px;
+			min-width: 220px;
+		}
+		
+		.ol-popup:after,
+		.ol-popup:before {
+			top: 100%;
+			border: solid transparent;
+			content: " ";
+			height: 0;
+			width: 0;
+			position: absolute;
+			pointer-events: none;
+		}
+		
+		.ol-popup:after {
+			border-top-color: white;
+			border-width: 10px;
+			left: 48px;
+			margin-left: -10px;
+		}
+		
+		.ol-popup:before {
+			border-top-color: #cccccc;
+			border-width: 11px;
+			left: 48px;
+			margin-left: -11px;
+		}
+		
+		.ol-popup-closer {
+			text-decoration: none;
+			position: absolute;
+			top: 2px;
+			right: 8px;
+		}
+		
+		.ol-popup-closer:after {
+			content: "✖";
+			color: #00FCFF;
+		}
+		/*************************************/
+		
+		#shuiwei_biao {
+			width: 400px;
+			height: 298px;
+			margin-left: -28px;
+			margin-top: 20px;
+			float: left;
+			position: absolute;
+			z-index: -99;
+			/*background-color: red;*/
+		}
+		
+		.zhedan_dandanyige_tu {
+			width: 385px;
+			height: 255px;
+			margin-left: 0px;
+			margin-top: 60px;
+			float: left;
+			position: absolute;
+			z-index: -9;
+			background-image: url(images/zhedan_beijing.png);
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		
+		.danqian_shuiwei {
+			width: 300px;
+			height: 30px;
+			position: absolute;
+			z-index: 10;
+			/*background-color: red;*/
+			margin-top: 259px;
+			margin-left: 95px;
+		}
+		
+		.shuiwei_baozhen {
+			width: 350px;
+			height: 20px;
+			position: absolute;
+			z-index: -10;
+			/*background-color: red;*/
+			margin-top: 88px;
+			/*margin-top: 86px;*/
+			margin-left: 0px;
+		}
+		
+		.baozhen_xian {
+			width: 340px;
+			height: 2px;
+			background-color: red;
+		}
+		
+		.baozhen_zi {
+			z-index: 100;
+			margin-left: 120px;
+			margin-top: -22px;
+			font-size: 1em;
+			color: red;
+		}
+		
+		.shuiwei_jingjie {
+			width: 350px;
+			height: 10px;
+			position: absolute;
+			z-index: -10;
+			/*background-color: red;*/
+			margin-top: 107px;
+			/*margin-top: 107px;*/
+			margin-left: 0px;
+		}
+		
+		.jingjie_xian {
+			width: 340px;
+			height: 2px;
+			background-color: yellow;
+		}
+		
+		.jingjie_zi {
+			z-index: 100;
+			margin-left: 120px;
+			margin-top: -22px;
+			font-size: 1em;
+			color: yellow;
+		}
+		
+		#sectionSlID {
+			font-size: 1em;
+		}
+		
+		.shuiqin_jianbao {
+			/*width: 170px;
+			height: 80px;
+			/*background-color: red;
+			background-image: url(images/anniu.png);
+			margin-top: -109px;
+			margin-left:200px;
+			float: left;
+			text-align: center;
+			line-height: 75px;
+			background-repeat: no-repeat;
+			background-size: cover;
+			font-size: 1em;*/
+		}
+		
+		.shuiqin_dianjitanchu {
+			width: 1280px;
+			height: 920px;
+			background-image: url(images/a_tanchuan.png);
+			position: absolute;
+			margin-top: -100px;
+			margin-left: -1200px;
+			z-index: 99999;
+			display: none;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		
+		.shuiqin_dianjitanchu h4 {
+			color: white;
+			text-align: center;
+			padding-top: 30px;
+			font-size: 2.5em;
+			padding-bottom: 50px;
+			margin-left: 450px;
+			float: left;
+			text-shadow: 5px 2px 6px #000;
+		}
+		
+		.shuiqin_riqi {
+			color: white;
+			text-align: center;
+			padding-left: 550px;
+			font-size: 1.5em;
+			padding-bottom: 0px;
+			position: absolute;
+			margin-top: 140px;
+			/*background-color: wheat;*/
+			float: left;
+			text-shadow: 5px 2px 6px #000;
+		}
+		
+		.shuiqin_qianzi1 {
+			text-indent: 2em;
+		}
+		
+		.shuiqin_qianzi {
+			text-indent: 1.5em;
+		}
+		
+		.shuiqin_dianjitanchu li {
+			color: white;
+			padding-left: 100px;
+			font-size: 1.5em;
+			width: 1100px;
+			list-style-type: none;
+			float: left;
+			text-shadow: 5px 2px 6px #000;
+			font-family: "宋体";
+		}
+		
+		.shuiiqn_logo {
+			width: 75px;
+			height: 50px;
+			/*background-color: black;*/
+			margin-left: 160px;
+			margin-top: 85px;
+			z-index: 999;
+			position: absolute;
+			background-image: url(images/a_logo.png);
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+		
+		.sszxgs_xiabiao {
+			position: absolute;
+			/*width: 100px;
+			height: 100px;
+			background-color: red;*/
+			top: 700px;
+			right: 200px;
+			font-size: 2em;
+			font-family: "宋体";
+			text-shadow: 5px 2px 6px #000;
+		}
+		/******************新增***************************/
+		
+		.center_top_shuiqin {
+			height: 540px;
+		}
+		
+		
+			.layui-table {
+		background-color: rgba(0, 0, 0, 0) !important;
+		color: #FFFFFF;
+	}
+
+	.layui-table thead tr {
+		background-color: rgba(0, 0, 0, 0) !important;
+		background: rgba(0, 0, 0, 0) !important;
+		color: #00f6ff;
+	}
+
+	.layui-table,
+	.layui-table-view {
+		margin: 0px 0;
+	}
+
+	.layui-table-view,
+	.layui-table-box {
+		height: 100%;
+		width: 98%;
+		margin-top: 15px;
+		margin-left: 5px;
+	}
+
+	.layui-table-body {
+		height: 100%;
+		overflow-y: scroll;
+	}
+
+	.layui-table-view,
+	.layui-table th,
+	.layui-table td {
+		border: 0px solid #20558b;
+		text-align: center;
+	}
+
+	.layui-table-header {
+		border-bottom: 1px solid #20558b;
+	}
+
+	.layui-table-body::-webkit-scrollbar {
+		width: 0px;
+	}
+
+	.layui-form-radio {
+		margin: 0;
+		margin-left: 20px;
+	}
+
+	.layui-table-page {
+		display: none;
+	}
+	.bottomPanel{
+		overflow:hidden
+	}
+	.yuo_xia{
+		overflow:hidden
+	}
+	table,td,tr{
+		border: none;
+	}
+	/*******************************水质***********************************************/
+
+		@keyframes myfirst {
+			to {
+				transform: scale(2);
+				background: rgba(0, 0, 0, 0);
+			}
+		}
+		
+
+
+
+		#popup font {
+			display: inline-block;
+			width: 80px;
+			float: left;
+		}
+
+		#popup span {
+			display: inline-block;
+			float: left;
+		}
+
+		.ol-popup label {
+			text-align: left;
+			color: #01FFFF;
+			padding: 0 !important;
+			font-weight: bold;
+			padding: 0px !important;
+		}
+
+
+
+		.layui-table thead tr {
+			background-color: rgba(0, 0, 0, 0) !important;
+			background: rgba(0, 0, 0, 0) !important;
+			color: #00f6ff;
+		}
+
+
+
+		.layui-table td {
+			position: inherit;
+		}
+		.info-title .layui-input{
+			background: none;
+			border: none;
+			color: white;
+			text-align: center;
+		}
+		.layui-form-select dl {
+			background: #0089FF;
+			border: 1px solid #20558b;
+			border: none;
+		}
+		.layui-form-select dl dd:hover{
+			background:#5FB878;
+		}
+		
+	.shuizhi_xinzen{
+		height: 925px;
+		width: 440px;
+		/*background-color: red;*/
+		float: left;
+		margin-left: 20px;
+		margin-top: 22px;
+		
+	}
+	.shuizhi_shang{
+		height: 290px;
+		width: 100%;
+		/*background-color: red;*/
+		background-image: url(images/zuoyi.png);
+			background-repeat: no-repeat;
+			/*background-size: cover;*/
+	}
+	.shuizhi_zhong{
+		height: 305px;
+		width: 100%;
+		/*background-color: black;*/
+		margin-top: 20px;
+		background-image: url(images/shuizhi_zuo_zhong.png);
+	}
+	.shuizhi_xia{
+		height: 200px;
+		width: 100%;
+		/*background-color: white;*/
+		margin-top: 18px;
+		background-image: url(images/zuoxia_shuizhi.png);
+		background-repeat: no-repeat;
+	}
+	
+	.info-img{
+		background-image: url(images/info-text.png);
+		background-repeat: no-repeat;
+		margin-bottom: 10px;
+		height: 52px;
+	}
+	.info-text{
+		margin-left: 120px;
+		margin-top: -78px;
+		position: absolute;
+	}
+	.shuizhi_zhong{
+	}
+	.shuizhi_zhong_xia{
+		font-size: 16pt;
+		border: 1px #0089FF solid;
+	}
+	.centerTabTitle{
+	width: 900px;}
+	.beijin_tupian{
+        background-image: url(images/jianbian.jpg);
+			background-repeat: no-repeat;
+			background-size: cover;
+    }
+    .center_bot_shuiqin th,.center_bot_shuiqin tr{
+    	border: 1px #0c2857 solid;
+    }
+    .shuizhi_xia tr,.shuizhi_xia td{
+    	border: 1px #0c2857 solid;    	
+    }
+    .zhengwen_tubiao_5_2 th{
+    	background-color: #0c2857;
+    	height: 33px;
+    }
+    .zhengwen_tubiao_5_2{
+    	font-size: 16pt;
+    }
+    /***********************日历**********/
+	.xuanzhe_riqi{
+		width: 50px;
+		height: 50px;
+		margin-left: 300px;
+		margin-top: -15px;
+		position: absolute;
+		/*background-color: navy;*/
+	}
+	.rili_tubiao{
+		width: 50px;
+		height: 50px;
+		/*background-color: yellow;*/
+		float: left;
+		background-image: url(images/rili.png);
+			background-repeat: no-repeat;
+			background-size: cover;
+	}
+	.xuanzhe_jutiriqi{
+		width: 50px;
+		/*height: 50px;*/
+		 /*background-color: red;*/ 
+		 border: none;
+		float: left;
+		margin-top: -50px;
+	}
+	select option { font-size:16pt;} 
+	</style>
+
+	<body>
+		<header>
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 50px; top:-5px;width:600px;height: 50px; display:inline;">
+				<img src="images/pie.png" style="width: 100px; height: 50px;" />
+			</div>
+			<div class="masked1" style="font-weight: bold;">水 质 预 警</div>
+
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;z-index: 9999;">
+				<ul class="menu">
+					<li>
+						<a href="page_home.html">管控大屏</a>
+					</li>
+					<li>
+						<a style="color:#00FCFF" href="#">水务预警</a>
+						<ul class="submenu">
+							<li><a href="page_shuiqing.html">水情预警</a></li>
+							<li><a style="color:#00FCFF" href="page_shuizhi.html">水质预警</a></li>
+							<li><a href="page_weiyi.html">工程安全</a></li>
+							<li>
+								<a href="page_videocenter.html">视频预警</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">流域调度</a>
+						<ul class="submenu">
+							<li>
+								<a href="page_waterFloodScheduling.html">防洪调度</a>
+							</li>
+							<li>
+								<a href="page_waterscheduling.html">水质模拟</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="page_guanyang.html">河道管养</a>
+					</li>
+				</ul>
+			</div>
+		</header>
+		<canvas id="canvas" style="position: absolute; left: 680px; top:0px; width: 580px; height: 80px;"></canvas>
+
+		<div class="shuizhi_xinzen">
+			<div class="shuizhi_shang" style="font-size: 16pt;">
+				
+							<div class="data-content">
+						
+						
+						
+						<div class="con-left fl">
+							<div class="left-top">
+								<div class="info bjt_zuoshang">
+									<div class="info-title">
+										<form class="layui-form" style="display: inline;">
+											<div class="layui-select-title" style="width:158px;height: 40px;margin-left: 130px;">
+												<select name="site" lay-filter="site" id="site" style="height: 40px;width: 160px;font-size: 16pt;background-color: #0e1e3f;color: #FFF;border: none;padding-left: 10px;">
+													<option value="1" style="background-color: #0e1e3f;color: #FFF;border: none;">横沥口</option>
+													<option value="2" style="background-color: #0e1e3f;color: #FFF;border: none;">茂仔水</option>
+													<option value="3" style="background-color: #0e1e3f;color: #FFF;border: none;">赤水洞水</option>
+													<option value="4" style="background-color: #0e1e3f;color: #FFF;border: none;">新田仔</option>
+													<option value="5" style="background-color: #0e1e3f;color: #FFF;border: none;">深圳水库</option>
+												</select>
+											</div>
+										</form>
+									</div>
+									<div class="info-main">
+										<div class="info-1">
+											<div class="info-img fl" style="padding-left: 25px;">
+												<img src="images/o2.png" alt="">
+											</div>
+											<div class="info-text fl">
+												<p>需氧量(COD)</p>
+												<p id="COD1" style="margin-top: -24px;"></p>
+											</div>
+										</div>
+										<div class="info-2">
+											<div class="info-img fl" style="padding-left: 25px;">
+												<img src="images/N.png" alt="">
+											</div>
+											<div class="info-text fl">
+												<p>总氮(TN)</p>
+												<p id="TN1" style="margin-top: -24px;"></p>
+											</div>
+										</div>
+										<div class="info-3">
+											<div class="info-img fl" style="padding-left: 25px;">
+												<img src="images/P.png" alt="">
+											</div>
+											<div class="info-text fl">
+												<p>总磷(TP)</p>
+												<p id="TP1" style="margin-top: -24px;"></p>
+											</div>
+										</div>
+										<div class="info-4">
+											<div class="info-img fl" style="padding-left: 25px;">
+												<img src="images/nh3.png" alt="">
+											</div>
+											<div class="info-text fl">
+												<p>氨氮(NH₃-N)</p>
+												<p id="NH1" style="margin-top: -30px;"></p>
+											</div>
+										</div>
+									</div>
+								</div>
+		
+							</div>
+						</div>
+		
+						</div>
+				
+				
+			</div>
+			<div class="shuizhi_zhong">
+				<div class="left-top" style="padding-top: 10px;">
+						<div class="top-bottom">
+						
+							<div id="echarts_1" class="charts" style="width: 400px;height: 295px;"></div>
+						</div>
+					</div>
+				
+			</div>
+			<div class="shuizhi_xia" style="padding-top: 29px;font-size: 16pt;">
+				<div class="zhengwen_tubiao_5_2">
+                	
+                	<table class="layui-table" style=" height:100%;width: 94%;margin-left: 0px;>
+								<colgroup>
+									<col width="150"></col>
+									<col width="150"></col>
+									<col></col>
+								</colgroup>
+								<thead>
+									<tr>
+										<th>当前水质</th>
+										<th>当前水质等级</th>		
+									</tr>							
+								</thead>
+								<tbody>
+									<tr>
+										<td id="PH" height="35.5">1</td>
+										<td bgcolor="#348f50" rowspan="6" class="colordiv3 " style="font-size:2rem !important;margin: 0; ">Ⅱ类</td>																				
+									</tr>
+									<tr>
+										<td id="DO" height="35.5">2</td>								
+									</tr>
+									<tr>
+										<td id="COD" height="35.5">3</td>										
+									</tr>							
+									<tr>
+										<td id="TN" height="35.5">4</td>
+									</tr>
+									<tr>
+										<td id="TP" height="35.5">5</td>									
+									</tr>
+									<tr>
+										<td id="NH" height="35.5">6</td>
+									</tr>									
+								</tbody>
+							</table>
+                	
+            </div>
+
+			</div>
+				
+			</div>
+		</div>
+
+
+		<div id="content">
+			<div class="content_center_shuizhi" style="width: 400px;">
+				<div class="center_top_shuiqin" style="width: 980px;">
+					<div class="centerTabTitle"><img src="images/icon03.png" /> 地图</div>
+					<span id="localtime" style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 475px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<span id="localtime2" style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 578px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="180" height="150" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute; left: 1140px; top:140px; z-index: 9990;"></iframe>
+					<div class="xuanzhe_riqi">
+						<div class="rili_tubiao" onclick="showDateSelect();"></div>
+					</div>
+					<div class="center_top_shuiqin_con" id="distribution_map" style="height: 510px;margin-top: 35px;margin-left: 30px;width: 905px;">
+					</div>
+					<div id="popup" class="ol-popup">
+						<a href="#" id="popup-closer" class="ol-popup-closer"></a>
+						<div id="popup-content"></div>
+					</div>
+				</div>
+				<div class="center_bot_shuiqin" style="width: 919px;font-size: 16pt;">
+						<div class="" style="margin-left: 15px;margin-top: -10px;">水质指标参数表</div>
+								<div class="zhengwen_tubiao_5">
+			                <table style="border: 1px #0c2857 solid;margin-left: 8px;">
+			                    <tr height="37" style="border: 1px #0c2857 solid;">
+			                        <th  width="200" bgcolor="#0c2857">因子</th>
+			                        <th  width="40" bgcolor="#0c2857"></th>
+			                        <th  width="130" bgcolor="#0c2857">Ⅰ类</th>
+			                        <th  width="130" bgcolor="#0c2857">Ⅱ类</th>
+			                        <th  width="130" bgcolor="#0c2857">Ⅲ类</th>
+			                        <th  width="130" bgcolor="#0c2857">Ⅳ类</th>
+			                        <th  width="130" bgcolor="#0c2857">V类</th>
+			                    </tr>
+			                    <tr height="37" style="border: 1px #0c2857 solid;">
+			                        <th>PH</th>
+			                        <th></th>
+			                        <th  width="80" colspan="5" class="beijin_tupian">6~9</th>
+			
+			                    </tr>
+			                    <tr height="37" style="border: 1px #0c2857 solid;">
+			                        <th>DO</th>
+			                        <th>&nbsp;≤&nbsp;</th>
+			                        <th bgcolor="#57acec">7.5</th>
+			                        <th bgcolor="#088f06">6</th>
+			                        <th bgcolor="#86771a">5</th>
+			                        <th bgcolor="#68341c">3</th>
+			                        <th bgcolor="#26072e">2</th>
+			                    </tr>
+			                    <tr height="37" style="border: 1px #0c2857 solid;">
+			                        <th>COD</th>
+			                        <th>&nbsp;≥&nbsp;</th>
+			                        <th bgcolor="#57acec">15</th>
+			                        <th bgcolor="#088f06">15</th>
+			                        <th bgcolor="#86771a">20</th>
+			                        <th bgcolor="#68341c">30</th>
+			                        <th bgcolor="#26072e">40</th>
+			                    </tr>
+			                    <tr height="37" style="border: 1px #0c2857 solid;">
+			                        <th>TN</th>
+			                        <th>&nbsp;≥&nbsp;</th>
+			                        <th bgcolor="#57acec">0.2</th>
+			                        <th bgcolor="#088f06">0.5</th>
+			                        <th bgcolor="#86771a">1</th>
+			                        <th bgcolor="#68341c">1.5</th>
+			                        <th bgcolor="#26072e">2</th>
+			                    </tr>
+			                    <tr height="37" style="border: 1px #0c2857 solid;">
+			                        <th>TP</th>
+			                        <th>&nbsp;≥&nbsp;</th>
+			                        <th bgcolor="#57acec">0.02</th>
+			                        <th bgcolor="#088f06">0.1</th>
+			                        <th bgcolor="#86771a">0.2</th>
+			                        <th bgcolor="#68341c">0.3</th>
+			                        <th bgcolor="#26072e">0.4</th>
+			                    </tr>
+			                    <tr height="37" style="border: 1px #0c2857 solid;">
+			                        <th>NH₃-N</th>
+			                        <th>&nbsp;≥&nbsp;</th>
+			                        <th bgcolor="#57acec">0.15</th>
+			                        <th bgcolor="#088f06">0.5</th>
+			                        <th bgcolor="#86771a">1</th>
+			                        <th bgcolor="#68341c">1.5</th>
+			                        <th bgcolor="#26072e">2</th>
+			                    </tr>
+			                </table>
+            			</div>
+            
+
+				</div>
+			</div>
+			<div class="content_right" style="margin-left: 596px;width: 100px;">
+				<div class="topPanel_shuizhi" style="padding-left: 5px;">
+						<div class="title">指标选择</div>
+						<div id="echarts4" class="charts" style="margin-top: -15px;"></div>
+						<form class="layui-form layui-hide" style="display: none;">
+							<div class="layui-form-item">
+							    <div class="layui-input-inline" style="color: white; width: 100%;" id="target" >
+							      <input type="radio" name="senid" value="10200041,10300041,10400041,10500041,10600041" title="总磷" checked="" lay-filter="target"> 
+							      <input type="radio" name="senid" value="10200042,10300042,10400042,10500042,10600042" title="化学需氧量" lay-filter="target">
+							      <input type="radio" name="senid" value="10200043,10300043,10400043,10500043,10600043" title="氨氮" lay-filter="target">
+							       <input type="radio" name="senid" value="10200044,10300044,10400044,10500044,10600044" title="总氮" lay-filter="target">
+							       <input type="radio" name="senid" value="10200045,10300045,10400045,10500045,10600045" title="水温" lay-filter="target">
+							       <input type="radio" name="senid" value="10200046,10300046,10400046,10500046,10600046" title="EC(电导率)" lay-filter="target">
+							       <input type="radio" name="senid" value="10200047,10300047,10400047,10500047,10600047" title="CHL(叶绿素)" lay-filter="target">
+							       <input type="radio" name="senid" value="10200048,10300048,10400048,10500048,10600048" title="TURB(浊度)" lay-filter="target">
+							       <input type="radio" name="senid" value="10200049,10300049,10400049,10500049,10600049" title="ORP(氧化还原电位)" lay-filter="target">
+							       <input type="radio" name="senid" value="10200050,10300050,10400050,10500050,10600050" title="DO" lay-filter="target">
+							       <input type="radio" name="senid" value="10200051,10300051,10400051,10500051,10600051" title="PC（藻蓝蛋白）" lay-filter="target">
+							       <input type="radio" name="senid" value="10200052,10300052,10400052,10500052,10600052" title="PH" lay-filter="target">
+							    </div>
+							  </div>
+						</form>
+				</div>
+
+				<div class="bottomPanel_shuizi">
+					<div id="echarts_5" class="charts" style="margin-top: 10px;"></div>
+				</div>
+				<div class="yuo_xia_shuizhi">
+					<div id="shuizhi_youxia" style="float: top;margin: 20px;margin-top: 30px !important;height: 250px;width: 100%;">
+				</div>
+			</div></div>
+		</div>
+
+<!--遮罩层-->
+		<div class="bgPop3"></div>
+		<!--弹出框-->
+		<div class="pop3">
+		    <div class="pop-top">
+		        选择日期
+		        <span class="pop-close">Ｘ</span>
+		    </div>
+		    <div class="pop-content">
+		    	<div style="text-align: center;font-size: 40pt;height: 100%;vertical-align: middle;padding-top:60px;">
+		    		<select id="dateYearSelectID" class="sty1" style="font-size: 40pt;">
+						<option class="selectoptionbg" value="2019">2019</option>
+						<option class="selectoptionbg" value="2">2018</option>
+					</select>
+					<label>年</label>
+					<select id="dateMonthSelectID" class="sty1" style="font-size: 40pt;">
+						<option class="selectoptionbg" value="1">01</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>月</label>
+					<select id="dateDaySelectID" class="sty1" style="font-size: 40pt;">
+						<option class="selectoptionbg" value="1">01</option>
+						<option class="selectoptionbg" value="2">02</option>
+					</select>
+					<label>日</label>
+		    	</div>		        
+		    </div>
+		    <div class="pop-foot">
+		        <input id="dataSelectID" type="button" value="确定" class="pop-cancel pop-close">
+		    </div>
+		</div>
+		<script>						
+		    $(document).ready(function () {
+		        $('.pop-close').click(function () {
+		            $('.bgPop3,.pop3').hide();
+		        });
+		        $('.click_pop3').click(function () {
+		            $('.bgPop3,.pop3').show();		            
+		        });
+		        
+		        $("#dateYearSelectID").empty();
+		        for(var tmpI = 2017; tmpI < 2030; tmpI++)
+		        {
+      				$("#dateYearSelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI+"</option>'");
+		        }
+      			$("#dateMonthSelectID").empty();
+		        for(var tmpI = 1; tmpI < 13; tmpI++)
+		        {
+		        	var tmpI2 = tmpI;
+		        	if(tmpI<10)
+		        		tmpI2 = "0"+tmpI;		        		
+      				$("#dateMonthSelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+		        }
+		        $("#dateDaySelectID").empty();
+		        for(var tmpI = 1; tmpI < 32; tmpI++)
+		        {
+		        	var tmpI2 = tmpI;
+		        	if(tmpI<10)
+		        		tmpI2 = "0"+tmpI;
+      				$("#dateDaySelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
+		        }
+		        $('#dataSelectID').click(function () {
+		            var tmpStr = $("#dateYearSelectID").val();
+		            if($("#dateMonthSelectID").val()<10)
+		            	tmpStr += "-0"+$("#dateMonthSelectID").val();
+		            else
+		            	tmpStr += "-"+$("#dateMonthSelectID").val();
+		            if($("#dateDaySelectID").val()<10)
+		            	tmpStr += "-0"+$("#dateDaySelectID").val();	
+		            else
+		            	tmpStr += "-"+$("#dateDaySelectID").val();	
+		            m_CurrentQueryData = tmpStr;
+		            old = m_CurrentQueryData;
+		            refreshDatas();
+		        });		        
+		    })
+		</script>
+		
+		<!--背景动画        -->
+		<script type="text/javascript" src="js/bgannimation.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="js/echarts.min.js"></script>
+		<script type="text/javascript" src="js/vue.min.js"></script>
+		<script type="text/javascript" src="js/times.js"></script>
+		<!--<script type="text/javascript" src="js/index.js"></script>-->
+		<script type="text/javascript" src="js/CommonJS.js"></script>
+
+		<!--调用op库-->
+		<link rel="stylesheet" href="css/ol.css" type="text/css">
+		<script src="js/ol.js" type="text/javascript" charset="utf-8"></script>
+
+		<link rel="stylesheet" type="text/css" href="overlay/popupoverlay.css" />
+		<script type="text/javascript" src="overlay/popupoverlay.js"></script>
+
+		<script src="js/basicmap.js" type="text/javascript" charset="utf-8"></script>
+		<!-- sweet-alert库 -->
+		<link href="css/sweet-alert.css" rel="stylesheet" type="text/css" />
+		<script src="js/sweet-alert.js"></script>
+		<!--<script src="js/echarts.js"></script>-->
+		<script src="js/jquery-2.1.1.min.js"></script>
+		<script src="js/echarts-liquidfill.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="js/map.js" type="text/javascript" charset="utf-8"></script>-->
+		
+	<script type="text/javascript">
+//			renderForm()
+		
+		function getNow(s) {
+			return s < 10 ? '0' + s : s;
+		}
+		var myDate = new Date();
+		var oldDate = new Date(new Date().getTime() - 20*24 * 60 * 60 * 1000)
+		var oldyear = oldDate.getFullYear(); //获取当前年
+		var year = myDate.getFullYear(); //获取当前年
+		var oldmonth = oldDate.getMonth() + 1; //获取当前月
+		var oldmonth = oldDate.getMonth() + 1; //获取当前月
+		var month = myDate.getMonth() + 1; //获取当前月
+		var date = myDate.getDate(); //获取当前日
+		var olddate = oldDate.getDate(); //获取当前日
+
+		var h = myDate.getHours(); //获取当前小时数(0-23)
+		var m = myDate.getMinutes(); //获取当前分钟数(0-59)
+		var s = myDate.getSeconds();
+
+		var oldh = oldDate.getHours(); //获取当前小时数(0-23)
+		var oldm = oldDate.getMinutes(); //获取当前分钟数(0-59)
+		var olds = oldDate.getSeconds();
+		var old = year + '-' + getNow(oldmonth) + "- " + getNow(olddate) + " " + getNow(oldh) + ':' + getNow(oldm) + ": " + getNow(olds);
+		var now = year + '-' + getNow(month) + "- " + getNow(date) + " " + getNow(h) + ':' + getNow(m) + ": " + getNow(s);
+		 
+		 var m_StationS = "12021220", m_StationY = "10200041";
+	
+    		$("select#site").change(function (){
+       		var opt=$('#site option:selected').val()
+       		if(opt == 1)
+       		{
+       			m_StationS = "12021220";
+       			m_StationY = "10200041";
+       			loadEchartData(m_StationS, m_StationY);
+       		}
+       		else if(opt == 2){
+       			m_StationS = "12021225";
+       			m_StationY = "10200041";
+       			loadEchartData(m_StationS, m_StationY);
+       		}
+       		else if(opt == 3){
+       			m_StationS = "12021222";
+       			m_StationY = "10200041";
+       			loadEchartData(m_StationS, m_StationY);
+       		}
+       		else if(opt == 4){
+       			m_StationS = "12021226";
+       			m_StationY = "10200041";
+       			loadEchartData(m_StationS, m_StationY);
+       		}
+       		else if(opt == 5){
+       			m_StationS = "12021227";
+       			m_StationY = "10200041";
+       			loadEchartData(m_StationS, m_StationY);
+       		}
+    });
+		 
+		
+		loadEchartData('12021220','10200041');
+		function loadEchartData(stcdt,senid) {
+			RunWebServiceJSON(true, "getWaterqualitydatalast", "/pms/Base", "/doreaddata/getdata", "STCDT", stcdt, function(data) {
+			data = $(data).children().text();
+			data = JSON.parse(data);
+			if(data.length>0){
+
+				var PH = data[5].AVGV;
+				$("#PH").html(PH);
+				var DO = data[4].AVGV;
+				$("#DO").html(DO);
+				var COD = data[1].AVGV;
+				$("#COD").html(COD);
+				$("#COD1").html(COD);
+				var TN = data[3].AVGV;
+				$("#TN").html(TN);
+				$("#TN1").html(TN);
+				var TP = data[0].AVGV;
+				$("#TP").html(TP);
+				$("#TP1").html(TP);
+				var NH = data[2].AVGV;
+				$("#NH").html(NH);
+				$("#NH1").html(NH);
+				var a=[];
+				a.push(COD);
+				a.push(TN);
+				a.push(TP);
+				a.push(NH);
+				radar(a);
+				
+				
+				
+			}
+			
+
+		})
+//			var senid =$('#target input[name="senid"]:checked').val()
+//				senid =senid.split(",")[0];
+		//不同senid 查不同指标	
+		RunWebServiceJSON(true, "WaterCalcRealtimeData", "/pms/Base", "/doreaddata/getdata", "SENID#starttime#endtime#sortcode", senid + "#" + old + "#" + now + "#" + "MIN", function(data) {
+			data = $(data).children().text();
+			data = JSON.parse(data);
+			
+			var name =$('#target input[name="senid"]:checked').attr("title");
+         	var jsondata =[]; 
+			for(i = 0; i < data.length; i++) {
+				var AVGV = data[i].AVGV;
+				var time = data[i].TIME;
+				jsondata.push(randomData());
+
+			}
+				
+				
+				function randomData() {
+					return {
+						value: 
+							[time,AVGV]
+							
+					
+					}
+				}
+					loadedata(jsondata);
+					
+
+			var tmpCol3 = '';
+			if (senid == 10200041) {
+				tmpCol3 = "总磷";
+			}
+			else if (senid == 10200042) {
+				tmpCol3 = "化学需氧量";
+			}
+			else if (senid == 10200043) {
+				tmpCol3 = "氨氮";
+			}
+			else if (senid == 10200044) {
+				tmpCol3 = "总氮";
+			}
+			else if (senid == 10200045) {
+				tmpCol3 = "水温";
+			}
+			else if (senid == 10200046) {
+				tmpCol3 = "EC(电导率)";
+			}
+			else if (senid == 10200047) {
+				tmpCol3 = "CHL(叶绿素)";
+			}
+			else if (senid == 10200048) {
+				tmpCol3 = "TURB(浊度)";
+			}
+			else if (senid == 10200049) {
+				tmpCol3 = "ORP(氧化还原电位)";
+			}
+			else if (senid == 10200050) {
+				tmpCol3 = "DO";
+			}
+			else if (senid == 10200051) {
+				tmpCol3 = "PC（藻蓝蛋白）";
+			}
+			else if (senid == 10200052) {
+				tmpCol3 = "PH";
+			}
+					
+			
+					
+			var tmpDTUTBHTML = '<tbody>'
+                        	+'<tr class="aaa" align="center">';
+                        //列头
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:250px;background-color:#0b122E;">时间</td>';
+                        tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:120px;background-color:#0b122E;">'+tmpCol3
+			            		+'</td>';
+                        tmpDTUTBHTML+='</tr>';
+			            var tmpTTTid = 0;
+			            var tmpPlanID = '';
+			            var tmpDefaultBtnID = '';	
+			            
+			            for(var tmpI in data){
+							var tmpitem01 = data[tmpI];
+			            	
+							tmpDTUTBHTML+='<tr class="aaa" style="font-size: 16pt; " align="center" >'
+			            		+'<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpitem01.TIME
+			            		+'</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpitem01.AVGV
+			            		+'</td></tr>';
+			            	tmpTTTid++;
+			            	if(tmpTTTid >= 7)
+			            		break;
+			            }
+			            $("#shuizhi_youxia").html(tmpDTUTBHTML);
+
+					
+
+		})	
+		
+		
+		}
+		
+
+		function radar(a) {
+			var myChart = echarts.init(document.getElementById('echarts_1'));
+			option = {
+
+				"normal": {
+					"top": 200,
+					"left": 300,
+					"width": 500,
+					"height": 400,
+					"zIndex": 6,
+					"backgroundColor": ""
+				},
+				"color": ["rgba(245, 166, 35, 1)", "rgba(19, 173, 255, 1)"],
+				"tooltip": {
+					"show": true,
+					"trigger": "item"
+				},
+				"legend": {
+					"show": true,
+					"icon": "circle",
+					"left": "33%",
+					"top": "90%",
+					"orient": "horizontal",
+					"textStyle": {
+						"fontSize": 16,
+						"color": "#fff"
+					},
+					"data": ["正常指标", "实际指标"]
+				},
+				"radar": {
+					"center": ["50%", "45%"],
+					"radius": "65%",
+					"startAngle": 90,
+					"splitNumber": 4,
+					"shape": "polygon",
+					name: {
+						textStyle: {
+							color: '#fff',
+							fontSize: 18
+						}
+					},
+					splitArea: {
+						show: true,
+						areaStyle: {
+							color: '#0d6dba',
+							opacity: 0.1
+						}
+					},
+					"axisLabel": {
+						"show": false,
+						"fontSize": 18,
+						"color": "#fff",
+						"fontWeight": "normal"
+					},
+					axisLine: {
+						show: true,
+						lineStyle: {
+							color: '#4f8bbe',
+							opacity: 1
+						}
+					},
+					splitLine: {
+
+						lineStyle: {
+							color: '#4f8bbe',
+							opacity: 0.5
+						}
+					},
+					"indicator": [{
+						"name": "COD",
+						"max": 40
+					}, {
+						"name": "TN",
+						"max": 2
+					}, {
+						"name": "TP",
+						"max": 1
+					}, {
+						"name": "NH₃N",
+						"max": 2
+					}]
+				},
+				"series": [{
+					"name": "正常指标",
+					"type": "radar",
+					"symbol": "circle",
+					"symbolSize": 10,
+					"areaStyle": {
+						"normal": {
+							"color": "rgba(245, 166, 35, 0.4)"
+						}
+					},
+					itemStyle: {
+						color: 'rgba(245, 166, 35, 1)',
+						borderColor: 'rgba(245, 166, 35, 0.3)',
+						borderWidth: 10,
+					},
+					"lineStyle": {
+						"normal": {
+							"type": "dashed",
+
+							"color": "rgba(245, 166, 35, 1)",
+							"width": 2
+						}
+					},
+					"data": [
+						[15, 0.5, 0.1, 0.5]
+					]
+				}, {
+					"name": "实际指标",
+					"type": "radar",
+					"symbol": "circle",
+					"symbolSize": 10,
+					"itemStyle": {
+						"normal": {
+							color: 'rgba(19, 173, 255, 1)',
+							"borderColor": "rgba(19, 173, 255, 0.4)",
+							"borderWidth": 10
+						}
+					},
+					"areaStyle": {
+						"normal": {
+							"color": "rgba(19, 173, 255, 0.5)"
+						}
+					},
+					"lineStyle": {
+						"normal": {
+							"color": "rgba(19, 173, 255, 1)",
+							"width": 2,
+							"type": "dashed"
+						}
+					},
+					"data": [
+						a
+					]
+				}]
+			};
+
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option);
+			window.addEventListener("resize", function() {
+				myChart.resize();
+			})
+		}
+
+
+
+function loadedata(jsondata) {
+			var name =$('#target input[name="senid"]:checked').attr("title");
+			var myChart = echarts.init(document.getElementById('echarts_5'));
+			var option = {
+
+				title: {
+					text: '实时过程线',
+					textStyle: {
+						fontWeight: 'normal',
+						fontSize: 16,
+						color: '#FFFFFF'
+					},
+					x: 'center',
+					align: 'right'
+				},
+				tooltip: {
+					trigger: 'axis',
+					axisPointer: {
+						type: 'cross',
+						label: {
+							backgroundColor: '#1bb4f6'
+						}
+					},
+					textStyle: {
+						color: 'yellow'
+					}
+				},
+
+				legend: {
+					show: true,
+					x: 'center',
+					y: '35',
+					icon: 'stack',
+					itemWidth: 10,
+					itemHeight: 10,
+					textStyle: {
+						color: '#1bb4f6'
+					},
+					data: [name]
+				},
+
+				xAxis: {
+//					name: '月/日/年',
+					type: 'time',
+					axisLine: {
+						show: true,
+						lineStyle: {
+							color: '#397cbc'
+						}
+					},
+					splitLine: {
+						show: true,
+						lineStyle: {
+							color: '#195384'
+						}
+					}
+				},
+				yAxis: {
+					// name: '次数(/次)',
+					type: 'value',
+					boundaryGap: [0, '100%'],
+					axisLine: {
+						lineStyle: {
+							color: '#27b4c2'
+						}
+					},
+					splitLine: {
+						show: true,
+						lineStyle: {
+							color: '#11366e'
+						}
+					}
+				},
+
+				series: [{
+						name: name,
+						type: 'line',
+						showSymbol: false,
+						hoverAnimation: false,
+						itemStyle: {
+							normal: {
+								color: '#0092f6',
+								lineStyle: {
+									color: "#0092f6",
+									width: 1
+								},
+								areaStyle: {
+									//color: '#94C9EC'
+									color: new echarts.graphic.LinearGradient(0, 1, 0, 0, [{
+										offset: 0,
+										color: 'rgba(7,44,90,0.3)'
+									}, {
+										offset: 1,
+										color: 'rgba(0,146,246,0.9)'
+									}]),
+								}
+							}
+						},
+						markPoint: {
+							itemStyle: {
+								normal: {
+									color: 'red'
+								}
+							}
+						},
+						data:jsondata
+					},
+
+				]
+			};
+
+			// 使用刚指定的配置项和数据显示图表。
+			myChart.setOption(option);
+			window.addEventListener("resize", function() {
+				myChart.resize();
+			})
+
+
+
+		}
+
+option2();
+function option2() {
+			var myChart = echarts.init(document.getElementById('echarts4'));
+			
+			var color = ['#32e3ec', '#6df2c5', '#3da0ff', '#c1f488', '#edc552', '#f38c2a', '#ff6254','#C600C6','#FF0080'];
+	
+			var data = [{
+			    name: '总磷',
+			    value: 35,
+			    senid:[10200041,10300041,10400041,10500041,10600041]
+			}, {
+			    name: '化学需氧量',
+			    value: 35,
+			    senid:[10200042,10300042,10400042,10500042,10600042]
+			}, {
+			    name: '氨氮',
+			    value: 35,
+			    senid:[10200043,10300043,10400043,10500043,10600043]
+			}, {
+			    name: '总氮',
+			    value: 35,
+			    senid:[10200044,10300044,10400044,10500044,10600044]
+			}, {
+			    name: '水温',
+			    value: 35,
+			    senid:[10200045,10300045,10400045,10500045,10600045]
+			}, {
+			    name: 'EC(电导率)',
+			    value: 35,
+			    senid:[10200046,10300046,10400046,10500046,10600046]
+			}, {
+			    name: 'CHL(叶绿素)',
+			    value: 35,
+			    senid:[10200047,10300047,10400047,10500047,10600047]
+			}, {
+			    name: 'TURB(浊度)',
+			    value: 35,
+			    senid:[10200048,10300048,10400048,10500048,10600048]
+			}, {
+			    name: 'ORP(氧化还原电位)',
+			    value: 35,
+			    senid:[10200049,10300049,10400049,10500049,10600049]
+			}, {
+			    name: 'DO',
+			    value: 35,
+			    senid:[10200050,10300050,10400050,10500050,10600050]
+			}, {
+			    name: 'PC(藻蓝蛋白)',
+			    value: 35,
+			    senid:[10200051,10300051,10400051,10500051,10600051]
+			}, {
+			    name: 'PH',
+			    value: 35,
+			    senid:[10200052,10300052,10400052,10500052,10600052]
+			}];
+			
+			const seriesData = [];
+			const seriesData2 = [];
+			
+			data.map((item, idx) => {
+			    seriesData.push({
+			        name: item.name,
+			        value: item.value,
+			        senid:item.senid
+			    });
+			
+			    seriesData2.push({
+			        name: item.name,
+			        value: item.value,
+			        senid:item.senid,
+			        symbolSize: item.value,
+			        itemStyle: {
+			            normal: {
+			                color: color[idx % 7]
+			            }
+			        }
+			    })
+			})
+			
+			function roundDatas(num) {
+			    var datas = [];
+			    for (var i = 0; i < num; i++) {
+			        datas.push({
+			            name: 'circle' + i
+			        });
+			    }
+			    return datas;
+			}
+			
+			option = {
+			    color: color,
+			    animationDurationUpdate: 1500,
+			    animationEasingUpdate: 'quinticInOut',
+			    roam: false, //鼠标缩放及平移
+			    focusNodeAdjacency: false, //是否在鼠标移到节点上的时候突出显示节点以及节点的边和邻接节点
+			    series: [{
+			        name: '',
+			        type: 'pie',
+			        startAngle: 0,
+			        hoverAnimation: false,
+			        radius: ['50%', '50%'],
+			        center: ['50%', '50%'],
+			        data: seriesData,
+			        itemStyle: {
+			            normal: {
+			                borderWidth: 5,
+			                borderColor: 'rgba(0,0,0,0)',
+			                label: {
+			                    show: true,
+			                    color: '#ffffff',
+			                    fontSize: 12,
+			                    //  formatter: '{b}{d}%',
+			                    formatter: function(params) {
+			                        // console.log(params)
+			                        return params.name
+			                    }
+			                },
+			                labelLine: {
+			                    show: true,
+			                    length: 30,
+			                    lineStyle: {
+			                        type: 'dotted'
+			                    }
+			                }
+			            }
+			        }
+			    }, {
+			        type: 'graph',
+			        tooltip: {},
+			        ribbonType: true,
+			        layout: 'circular',
+			        hoverAnimation: false,
+			        width: '50%',
+			        height: '50%',
+			        circular: {
+			            rotateLabel: true
+			        },
+			        symbolSize: 0,
+			        data: roundDatas(20),
+			        itemStyle: {
+			            normal: {
+			                label: {
+			                    show: false
+			                },
+			                color: '#264c7f',
+			            },
+			            emphasis: {
+			                label: {
+			                    show: false,
+			                }
+			            }
+			        },
+			    }, {
+			        type: 'graph',
+			        tooltip: {},
+			        ribbonType: true,
+			        layout: 'circular',
+			        width: '50%',
+			        height: '50%',
+			
+			        circular: {
+			            rotateLabel: true
+			        },
+			        symbolSize: 30,
+			        label: {
+			            normal: {
+			                show: false
+			            }
+			        },
+			
+			        edgeSymbol: ['circle'],
+			        edgeSymbolSize: [8, 30],
+			        edgeLabel: {
+			            normal: {
+			                textStyle: {
+			                    fontSize: 8,
+			                    fontWeight: 'bold',
+			                    fontFamily: '宋体'
+			                }
+			            }
+			        },
+			
+			        itemStyle: {
+			            normal: {
+			                label: {
+			                    rotate: true,
+			                    show: false,
+			                },
+			                borderColor: '#7C9ECD',
+			                borderWidth: 0
+			
+			            },
+			            emphasis: {
+			                label: {
+			                    show: false,
+			                }
+			            }
+			        },
+			
+			        data: seriesData2,
+			    }]
+			};
+							// 使用刚指定的配置项和数据显示图表。
+						myChart.setOption(option);
+						window.addEventListener("resize", function() {
+							myChart.resize();
+						})
+			myChart.on("click", eConsole);
+			function eConsole(param) {
+					console.log(param.name)
+					var  name=param.name.replace(/[\r\n]/g,""); 
+					$('#target input[title="'+name+'"]').attr("checked", "checked");
+//					renderForm();
+					var stcdt =$("#site").val();   
+			    	var site =$("#site").find("option:selected").text();
+			    	if(site=="横沥口"){
+			    		var senid =param.data.senid[0];
+			    		loadEchartData(stcdt,senid);
+			    	}else if(site=="茂仔水"){
+			    		var senid =param.data.senid[1];
+			    		loadEchartData(stcdt,senid);
+			    	}else if(site=="赤水洞水"){
+			    		var senid =param.data.senid[2];
+			    		loadEchartData(stcdt,senid);
+			    	}else if(site=="新田仔"){
+			    		var senid =param.data.senid[3];
+			    		loadEchartData(stcdt,senid);
+			    	}else if(site=="深圳水库"){
+			    		var senid =param.data.senid[4];
+			    		loadEchartData(stcdt,senid);
+			    	}
+    	
+
+					
+							
+			}
+}
+	
+//		refreshDatas();
+//	setInterval(refreshDatas, 60000);
+	
+    		function showDateSelect()
+		{
+			var tmpStrs = m_CurrentQueryData.split('-');
+			$("#dateYearSelectID").val(parseInt(tmpStrs[0]));
+			$("#dateMonthSelectID").val(parseInt(tmpStrs[1]));
+			$("#dateDaySelectID").val(parseInt(tmpStrs[2]));
+			$('.bgPop3,.pop3').show();			
+		}
+		
+		function dateToString(date){ 
+		  var year = date.getFullYear(); 
+		  var month =(date.getMonth() + 1).toString(); 
+		  var day = (date.getDate()).toString();  
+		  if (month.length == 1) { 
+		      month = "0" + month; 
+		  } 
+		  if (day.length == 1) { 
+		      day = "0" + day; 
+		  }
+		  var dateTime = year + "-" + month + "-" + day;
+		  return dateTime; 
+		}
+				
+    function refreshDatas()
+    {
+    	loadEchartData(m_StationS, m_StationY);
+    }
+
+	/**查询的日期*/
+	var m_CurrentQueryData = old;//dateToString(new Date());
+	
+	refreshDatas();
+	setInterval(refreshDatas, 60000);
+	
+	</script>
+
+
+	</body>
+
+</html>
