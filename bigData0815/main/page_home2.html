@@ -59,7 +59,7 @@
         background-size: 100% 100%;
         /*设置左右宽度比例*/
         /*height: 3px;/*横条的高度*/
-        */
+        
     }
 
     /*拖动块的样式*/
@@ -87,23 +87,23 @@
     }
 
     /**地图提示框*/
-    .ol-popup {
+    /* .ol-popup {
         position: absolute;
         background-color: rgba(0, 0, 0, .3);
         -webkit-filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
         filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.2));
-        /*padding: 5px 7px;*/
+
         border-radius: 5px;
         border: 1px solid #cccccc;
-        /*border: none;*/
+ 
         padding: 10px;
         color: white;
         bottom: 12px;
         left: -50px;
         min-width: 220px;
-    }
+    } */
 
-    .ol-popup:after,
+    /* .ol-popup:after,
     .ol-popup:before {
         top: 100%;
         border: solid transparent;
@@ -138,7 +138,7 @@
     .ol-popup-closer:after {
         content: "✖";
         color: #00FCFF;
-    }
+    } */
 
 
     /* index的样式 */
@@ -480,15 +480,14 @@
             <div class="center_top">
                 <div class="centerTabTitle"><img id="switchMapZoomID" src="images/icon03.png" /> 地图</div>
                 <span id="localtime"
-                    style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 460px; top:140px; width:100px;z-index: 9990;">10:00:00</span>
+				style="font-size: 16pt;font-family:yejing;font-weight:bold;position: absolute;left: 534px;top: 108px;width: 104px;z-index: 9990;">10:00:00</span>
                 <span id="localtime2"
-                    style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 580px; top:140px; width:100px;z-index: 9990;">10:00:00</span>
-                <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="180"
-                    height="150" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
-                    style="position: absolute; left: 1120px; top:140px; z-index: 9990;"></iframe>
+                    style="font-size:40pt;font-family:yejing;font-weight:bold;position: absolute;left: 632px;top: 104px;width:100px;z-index: 9990;;">10:00:00</span>
+					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&amp;id=48&amp;color=%232FEDA5" width="180px" height="150px" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute;left: 1358px;top: 87px;z-index: 9990;"></iframe>
+				</iframe>
 
                 <div class="t_mbox t_userbox"
-                    style="text-align: center;position: absolute; left: 450px; top:220px; width:100px;z-index: 9990;">
+                    style="text-align: center;position: absolute;left: 1217px;top: 111px;width: 114px;z-index: 9990;height: 28px;">
                     <i></i>
                     <span>人员信息</span>
                     <h2 id="gy_Label03">-/-</h2>
@@ -513,19 +512,19 @@
                         </div> -->
                         <canvas id="mapContainer" oncontextmenu="return false"></canvas>
                     </div>
-                    <div class="left-bottom-tools">
+                    <!-- <div class="left-bottom-tools">
                         <button class="measureLength">测距</button>
                         <button class="clearMeasureLength" style="display: none;">清除测距</button>
-                    </div>
+                    </div> -->
 
                 </div>
-                <div id="popup" class="ol-popup">
+                <!-- <div id="popup" class="ol-popup">
                     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                     <div id="popup-content"></div>
-                </div>
+                </div> -->
                 <div style="width: 100%; height: 60px;">
                     <img id="mapBottomControlBtnHome" class="mapBottomControlBtn" src="images/map_home.png"
-                        style="margin-right: 20px;" title="地图全图" />
+                        style="margin-right: 42px;" title="地图全图" />
                     <img id="mapBottomControlBtnRadarMap" class="mapBottomControlBtn" src="images/layer_radar_on.png"
                         title="雷达监测 无效" />
                     <img id="mapBottomControlBtnSalMap" class="mapBottomControlBtn" src="images/layer_salmap_on.png"
@@ -754,25 +753,25 @@
             // document.querySelector('.zoomIn').addEventListener('click', () => viewer.camera.zoomIn());
             // document.querySelector('.zoomOut').addEventListener('click', () => viewer.camera.zoomOut());
 
-            const measureLength = document.querySelector('.measureLength');
-            const clearMeasureLength = document.querySelector('.clearMeasureLength');
+            // const measureLength = document.querySelector('.measureLength');
+            // const clearMeasureLength = document.querySelector('.clearMeasureLength');
 
-            measureLength.addEventListener('click', function () {
-                viewer.scene.globe.setGlobeTool(Earth.GlobeToolType.MeasureLength);
-                const measureTool = viewer.scene.globe.getGlobeTool();
-                console.log(measureTool);
-                measureLength.innerHTML = '测距中... （鼠标左键增加节点，鼠标右键结束测距）';
-                measureTool.getResultEvent().addEventListener(() => {
-                    measureLength.innerHTML = '重新测距';
-                    clearMeasureLength.style.display = 'inline-block';
-                });
+            // measureLength.addEventListener('click', function () {
+            //     viewer.scene.globe.setGlobeTool(Earth.GlobeToolType.MeasureLength);
+            //     const measureTool = viewer.scene.globe.getGlobeTool();
+            //     console.log(measureTool);
+            //     measureLength.innerHTML = '测距中... （鼠标左键增加节点，鼠标右键结束测距）';
+            //     measureTool.getResultEvent().addEventListener(() => {
+            //         measureLength.innerHTML = '重新测距';
+            //         clearMeasureLength.style.display = 'inline-block';
+            //     });
 
-                clearMeasureLength.addEventListener('click', () => {
-                    viewer.scene.globe.setGlobeTool(Earth.GlobeToolType.Pan);
-                    measureLength.innerHTML = '测距';
-                    clearMeasureLength.style.display = 'none';
-                });
-            })
+            //     clearMeasureLength.addEventListener('click', () => {
+            //         viewer.scene.globe.setGlobeTool(Earth.GlobeToolType.Pan);
+            //         measureLength.innerHTML = '测距';
+            //         clearMeasureLength.style.display = 'none';
+            //     });
+            // })
 
             // function loadData(callback) {
             // 	fetch('data.json')
@@ -908,7 +907,7 @@
                                     }
                                 }
                             }
-                            // $('#gy_Label03').text(tmpOnlineUsersCount + "/" + tmpTotalUsersCount);		暂时没有gy-LABEL03		
+                            $('#gy_Label03').text(tmpOnlineUsersCount + "/" + tmpTotalUsersCount);		暂时没有gy-LABEL03		
                         }
                     }
                 })
@@ -1036,6 +1035,10 @@
             const handler = new Earth.ScreenSpaceEventHandler(viewer.scene.canvas);
             handler.setInputAction(function (movement) {
                 const pickObj = viewer.scene.pick(movement.position);
+				// console.log(pickObj.id)
+				// 还没有drillPick函数
+                // const pickObjs = viewer.scene.drillPick(movement.position);
+
                 // pickObj && alert('拾取成功：' + pickObj.name);
                 if (pickObj && pickObj.show) {
                     // console.log(pickObj.labelBox.show)
@@ -1700,8 +1703,8 @@
     <link rel="stylesheet" href="css/ol.css" type="text/css">
     <script src="js/ol.js" type="text/javascript" charset="utf-8"></script>
 
-    <link rel="stylesheet" type="text/css" href="overlay/popupoverlay.css" />
-    <script type="text/javascript" src="overlay/popupoverlay.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="overlay/popupoverlay.css" />
+    <script type="text/javascript" src="overlay/popupoverlay.js"></script> -->
 
     <!--
         	作者：xwebsite@163.com
@@ -3174,7 +3177,7 @@
                     pitch: Earth.Math.toRadians(0),
                     roll: 0.0,
                 },
-                duration: 3,
+                duration: 1,
                 complete: () => {
                     console.log('complete');
                 },
