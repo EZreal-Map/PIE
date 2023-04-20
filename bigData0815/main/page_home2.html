@@ -480,14 +480,14 @@
             <div class="center_top">
                 <div class="centerTabTitle"><img id="switchMapZoomID" src="images/icon03.png" /> 地图</div>
                 <span id="localtime"
-				style="font-size: 16pt;font-family:yejing;font-weight:bold;position: absolute;left: 534px;top: 108px;width: 104px;z-index: 9990;">10:00:00</span>
+				style="font-size: 16pt;line-height:1.1;font-family:yejing;font-weight:bold;position: absolute;left: 444px;top: 112px;width: 104px;z-index: 9990;">10:00:00</span>
                 <span id="localtime2"
-                    style="font-size:40pt;font-family:yejing;font-weight:bold;position: absolute;left: 632px;top: 104px;width:100px;z-index: 9990;;">10:00:00</span>
-					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&amp;id=48&amp;color=%232FEDA5" width="180px" height="150px" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute;left: 1358px;top: 87px;z-index: 9990;"></iframe>
+                    style="font-size:40pt;font-family:yejing;font-weight:bold;position: absolute;left: 543px;top: 104px;width:100px;z-index: 9990;;">10:00:00</span>
+					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&amp;id=48&amp;color=%232FEDA5" width="180px" height="150px" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute;left: 1264px;top: 87px;z-index: 9990;"></iframe>
 				</iframe>
 
                 <div class="t_mbox t_userbox"
-                    style="text-align: center;position: absolute;left: 1217px;top: 111px;width: 114px;z-index: 9990;height: 28px;">
+                    style="text-align: center;position: absolute;left: 1117px;top: 111px;width: 114px;z-index: 9990;height: 28px;">
                     <i></i>
                     <span>人员信息</span>
                     <h2 id="gy_Label03">-/-</h2>
@@ -907,7 +907,8 @@
                                     }
                                 }
                             }
-                            $('#gy_Label03').text(tmpOnlineUsersCount + "/" + tmpTotalUsersCount);		暂时没有gy-LABEL03		
+							// 暂时没有gy-LABEL03 加入page_home后有了gy-LABEL03   20230420
+                            $('#gy_Label03').text(tmpOnlineUsersCount + "/" + tmpTotalUsersCount);				
                         }
                     }
                 })
