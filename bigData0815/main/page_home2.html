@@ -402,7 +402,8 @@
         <div scrolling="no" allowtransparency="true"
             style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;">
             <ul class="menu">
-                <li><a href="page_home.html" style="color:#00FCFF">管控大屏</a></li>
+				<!-- 临时修改为page_home2.HTML -->
+                <li><a href="page_home2.html" style="color:#00FCFF">管控大屏</a></li>
                 <li><a href="#">水务预警</a>
                     <ul class="submenu">
                         <li><a href="page_shuiqing.html">水情预警</a></li>
@@ -541,15 +542,15 @@
                         title="事件地图" />
                     <img id="mapBottomControlBtnUser" class="mapBottomControlBtn" src="images/layer_user_on.png"
                         title="人员" />
-					<img id="mapBottomControlBtnClearLabelBox" class="mapBottomControlBtn" src="images/layer_user_on.png"
+					<img id="mapBottomControlBtnClearLabelBox" class="mapBottomControlBtn" src="images/layer_clear_on.png"
                         title="清除标签" />
                 </div>
             </div>
             <div class="center_bot">
-                <div class="centerTabTitle"><img src="images/icon03.png" /> 流域概况</div>
+                <div class="centerTabTitle"><img src="images/icon03.png" /> 流域水位概况</div>
                 <div id="centerBotDiv" class="chartpanel">
-
-                    <p>
+					<!-- 被echats替代了 initialSectionChartControl()-->
+                    <!-- <p>
                         <font color="#FFD000"><strong>梧桐山河流域简介：</strong></font>
                         梧桐山河发源于梧桐山北麓，流经横沥口、坑背等7个村注入深圳水库，沿线五条支流汇入梧桐山河，全流域属东深供水水系，为饮用水源保护区。河道上游建有横沥口水库，属小2型。
                         河道长度为3.87km，流域面积12.53平方公里，管理范围面积14.34万平方米，河道防洪标准50年一遇，河道水质为2类，是一条融景观性、功能性、生态理念于一体的河域生态景观带。
@@ -558,7 +559,7 @@
                         <font color="#FFD000"><strong>管养情况简介：</strong></font>
                         深圳水库入库河道目前已纳入管养的包括一级支流梧桐山河、正坑水、二级支流新田仔水、兰科中心排洪渠、赤水洞水、坑背村排洪渠、茂仔水等；其中梧桐山河全长3.87km，流域面积12.53平方公里,水域面积8.3万平方米，陆域面积5.9万平方米,行洪断面最宽40m，草皮绿化共3.3万平方米，管养级别为2级。梧桐山河在综合整治后于2013年正式纳入管养。
                         正坑水、新田仔水、兰科中心排洪渠、赤水洞水、坑背村排洪渠、茂仔水等6条河流，总长度为14.03km。其中正坑水属于深圳水库的一级支流，其余5条河渠均属深圳水库的二级支流，汇入梧桐山河后再入库。此6条支流于2016年4月正式纳入管养。
-                    </p>
+                    </p> -->
 
                 </div>
             </div>
@@ -1102,38 +1103,38 @@
             return [x, y];
         }
 
-        var m_RiverSectionVDataArray = [];
-        /**
-         * 刷新断面的高程及水面高程数据
-         * @param {Object} planID
-         */
-        function refreshSectionElvData(planID) {
-            RunWebServiceJSON(true, "getTSDBLeveldata", "/pms/Base", "/doreaddata/getdata",
-                "guid#timeindex", String(planID) + "#-1", function (data) {
-                    var jqueryObj = $(data);
-                    var message = jqueryObj.children();
-                    var text = message.text();
-                    var tmpObjs = eval("(" + text + ")");
-                    if (tmpObjs != null && tmpObjs.length > 0) {
-                        var tmpArray = [], tmpArray2 = [], tmpArray3 = [], tmpArray4 = [];
-                        for (var i in tmpObjs) {
-                            var tmpObj = tmpObjs[i];
-                            tmpArray[i] = parseFloat(tmpObj.V);
-                            tmpArray2[i] = parseFloat(tmpObj.MAXV);
-                            tmpArray3[i] = parseFloat(tmpObj.MINV);
-                            tmpArray4[i] = tmpArray[i] - tmpArray2[i];
-                            if (tmpArray4[i] < 0)
-                                tmpArray4[i] = 0;
-                        }
-                        //initialSectionChartControl([tmpArray,tmpArray2,tmpArray3]);	
+        // var m_RiverSectionVDataArray = [];
+        // /**
+        //  * 刷新断面的高程及水面高程数据
+        //  * @param {Object} planID
+        //  */
+        // function refreshSectionElvData(planID) {
+        //     RunWebServiceJSON(true, "getTSDBLeveldata", "/pms/Base", "/doreaddata/getdata",
+        //         "guid#timeindex", String(planID) + "#-1", function (data) {
+        //             var jqueryObj = $(data);
+        //             var message = jqueryObj.children();
+        //             var text = message.text();
+        //             var tmpObjs = eval("(" + text + ")");
+        //             if (tmpObjs != null && tmpObjs.length > 0) {
+        //                 var tmpArray = [], tmpArray2 = [], tmpArray3 = [], tmpArray4 = [];
+        //                 for (var i in tmpObjs) {
+        //                     var tmpObj = tmpObjs[i];
+        //                     tmpArray[i] = parseFloat(tmpObj.V);
+        //                     tmpArray2[i] = parseFloat(tmpObj.MAXV);
+        //                     tmpArray3[i] = parseFloat(tmpObj.MINV);
+        //                     tmpArray4[i] = tmpArray[i] - tmpArray2[i];
+        //                     if (tmpArray4[i] < 0)
+        //                         tmpArray4[i] = 0;
+        //                 }
+        //                 //initialSectionChartControl([tmpArray,tmpArray2,tmpArray3]);	
 
-                        m_RiverSectionVDataArray = [tmpArray, tmpArray2, tmpArray3, tmpArray4];
-                        // console.log(m_RiverSectionVDataArray)
+        //                 m_RiverSectionVDataArray = [tmpArray, tmpArray2, tmpArray3, tmpArray4];
+        //                 // console.log(m_RiverSectionVDataArray)
 
 
-                    }
-                });
-        }
+        //             }
+        //         });
+        // }
 
         function refreshMapRiverShow() {
             fetch('./riversection.geojson')
@@ -2479,7 +2480,7 @@
         var m_SectionChart = null;
 
         /**
-         * 初始化河道断面及水面
+         * 初始化河道断面及水面  替掉原来首页介绍梧桐山流域介绍的echats
          * @param {Object} dataArray
          */
         function initialSectionChartControl(dataArray) {
@@ -2680,7 +2681,7 @@
                         //if(tmpPlanID!=null)
                         //{
                         m_LastQueryTime = (new Date()).Format("yyyy/MM/dd HH:00:00");
-                        refreshSectionElvData(tmpPlanID);
+                        // refreshSectionElvData(tmpPlanID); 暂时不需要更新断面数据，等labelBox bug修复后 可以取消注释吧
                         refreshWaterReportData(tmpPlanID);
                         //}							
                     }
@@ -2692,7 +2693,7 @@
 
         var m_RiverSectionVDataArray = [];
         /**
-         * 刷新断面的高程及水面高程数据
+         * 刷新断面的高程及水面高程数据 自己重新修改的
          * @param {Object} planID
          */
         function refreshSectionElvData(planID) {
@@ -2736,7 +2737,7 @@
                             if (tmpArray4[i] < 0)
                                 tmpArray4[i] = 0;
                         }
-                        //initialSectionChartControl([tmpArray,tmpArray2,tmpArray3]);	
+                        initialSectionChartControl([tmpArray,tmpArray2,tmpArray3]);	
 
                         m_RiverSectionVDataArray = [tmpArray, tmpArray2, tmpArray3, tmpArray4];
 

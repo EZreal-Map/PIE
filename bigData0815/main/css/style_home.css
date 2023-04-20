@@ -46,7 +46,7 @@ header{width:1860px; height: 90px; background: url(../images/bg_top.png) center 
 #content .content_center{width: 1050px; height: 100%; float: left; margin-left: 20px;}
 .content_center .center_top{width: 1050px; height: 650px;  float: left; background: url(../images/center01_1050_650.png) no-repeat;}
 .center_top_con{width: 950px; height: 550px;  float: top;margin: 0 50px 0px 50px;}
-.mapBottomControlBtn {width:32px;height:32px;padding: 5px;float:right;}
+.mapBottomControlBtn {width:32px;height:32px;padding: 5px;float:right;cursor: pointer;}
 
 .panel-table {text-align: left;color: #ccc;margin: 0 auto !important;width: 96%;	margin-top: 20px !important;font-size: 1.2rem;}
 .content_center .center_bot{width: 1050px; height: 280px; float: left; background: url(../images/center02_1050_280.png) no-repeat; margin-top: 20px; }

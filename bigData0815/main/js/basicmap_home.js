@@ -1083,10 +1083,10 @@ function centerOnMapAndAnim(lng, lat) {
 	m_FocusPointOverlay_Red.setPosition(tmpPoint);
 }
 
-function gotoHome() {
-	mapView.setCenter(m_DefaultMapCenter);
-	mapView.setZoom(14);
-}
+// function gotoHome() {
+// 	mapView.setCenter(m_DefaultMapCenter);
+// 	mapView.setZoom(14);
+// }
 
 function zoomToExtent(extend) {
 	var tmpWidth = ol.extent.getWidth(extend);
