@@ -2,6 +2,8 @@ body {
 	margin: 0;
 	padding: 0;
 	height: 100%;
+    /* 清除滑条 */
+    overflow: hidden; 
 }
 
 html {
@@ -39,7 +41,7 @@ ul { margin: 0; padding: 0;}
 header{width:1860px; height: 90px; background: url(../images/bg_top.png) center no-repeat ; text-align: center; font-size: 36px; color: #00f6ff; line-height: 90px; margin: 0 auto;}
 #content{width: 1860px; height: 100%; margin: 20px auto 0 auto;}
 
-#content .content_center{width: 1435px; height: 100%; float: left; margin-left: 20px;}
+#content .content_center{width: 1435px; height: 100%; float: left; margin-left: 10px;}
 .content_center .center_top{width: 1435px; height: 580px;  float: left; background: url(../images/center01_1435_580.png) no-repeat;}
 .content_center .title{width: 1435px; height: 70px; float: left; color: #00f6ff; font-size: 20px; line-height: 70px; background:url(../images/bottom_line.png) bottom center no-repeat; text-align: center;}
 .content_center .title img{vertical-align: middle;}
