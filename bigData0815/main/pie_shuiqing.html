@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>水情预警</title>
+    <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+
     <link rel="stylesheet" href="css/style_shuiqing.css" />
     <link rel="stylesheet" href="css/PIEmap.css" />
 
@@ -12,8 +15,6 @@
     <script type="text/javascript" src="Earth.js"></script>
     <script type="text/javascript" src="js/PIEmap.js"></script>
 
-    <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
-    <script type="text/javascript" src="js/common.js"></script>
 </head>
 
 <style type="text/css">
@@ -353,8 +354,8 @@
     .xuanzhe_riqi {
         width: 50px;
         height: 50px;
-        margin-left: 320px;
-        margin-top: -15px;
+        margin-left: 295px;
+        margin-top: -50px;
         position: absolute;
         /*background-color: navy;*/
     }
@@ -438,11 +439,11 @@
                     <div class="rili_tubiao" onclick="showDateSelect();"></div>
                 </div>
                 <div class="center_top_shuiqin_con" id="distribution_map"
-                    style="height: 440px;margin-top: 35px;margin-left: 30px;width: 1080px;">
+                    style="height: 440px;margin-top: 5px;margin-left: 30px;width: 1080px;">
                     <canvas id="mapContainer" oncontextmenu="return false"></canvas>
                     <div style="width: 100%; height: 60px;">
                         <img id="mapBottomControlBtnHome" class="mapBottomControlBtn" src="images/map_home.png"
-                            style="margin-right: 42px;" title="地图全图" />
+                            style="margin-right: -6px;" title="地图全图" />
                         <!-- <img id="mapBottomControlBtnRadarMap" class="mapBottomControlBtn" src="images/layer_radar_on.png"
                             title="雷达监测 无效" /> -->
                         <img id="mapBottomControlBtnSalMap" class="mapBottomControlBtn" src="images/layer_salmap_on.png"
@@ -1198,13 +1199,15 @@
         setTimeout(function () {
             for (var i in entityCollection._entities) {
                 entityCollection._entities[i].labelBox._offsetWidth =  +8;
-                entityCollection._entities[i].labelBox._offsetHeight =  +220;
-                if (entityCollection._entities[i].layer === 'GYEventLayer' || entityCollection._entities[i].layer === 'userGPSLayer') {
-                    entityCollection._entities[i].show = !entityCollection._entities[i].show;
-                    // entityCollection._entities[i].labelBox.show = false;
-                }
+                entityCollection._entities[i].labelBox._offsetHeight =  +190;
+                // if (entityCollection._entities[i].layer === 'GYEventLayer' || entityCollection._entities[i].layer === 'userGPSLayer') {
+                //     entityCollection._entities[i].show = !entityCollection._entities[i].show;
+                //     // entityCollection._entities[i].labelBox.show = false;
+                // }
             }
-            viewer.imageryLayers.remove(layer_basemapTxt)
+            $(mapBottomControlBtnUser).click()
+            $(mapBottomControlBtnEvent).click()
+            $(mapBottomControlBtnSalMap).click()
 
             viewer.camera.flyTo({
                 destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 3500.0),

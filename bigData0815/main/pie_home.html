@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>河道管养智慧流域管控决策平台</title>
+    <!-- RunWebServiceJSON等函数的定义 -->
+    <script type="text/javascript" src="js/CommonJS.js"></script>
+    <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+
     <link rel="stylesheet" href="css/style_home.css" />
     <link rel="stylesheet" href="css/PIEmap.css" />
 
@@ -11,11 +16,6 @@
     <script type="text/javascript" src="Earth.js"></script>
     <script type="text/javascript" src="js/PIEmap.js"></script>
 
-    <!-- RunWebServiceJSON等函数的定义 -->
-    <script type="text/javascript" src="js/CommonJS.js"></script>
-    <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
-    <script type="text/javascript" src="js/common.js"></script>
-    
 </head>
 
 <style type="text/css">
@@ -2191,170 +2191,170 @@
             });
         }
 
-        $("#mapBottomControlBtnHome").click(function () {
-            // gotoHome(); 替换原来的openlayer方法，使用新的PIE方法
-            viewer.camera.flyTo({
-                destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 2800.0),
+        // $("#mapBottomControlBtnHome").click(function () {
+        //     // gotoHome(); 替换原来的openlayer方法，使用新的PIE方法
+        //     viewer.camera.flyTo({
+        //         destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 2800.0),
 
-                orientation: {
-                    heading: Earth.Math.toRadians(0),
-                    pitch: Earth.Math.toRadians(0),
-                    roll: 0.0,
-                },
-                duration: 1,
-                complete: () => {
-                    console.log('complete');
-                },
-            });
-        });
-
-        // $("#mapBottomControlBtnTurb").click(function () {
-        //     refreshTyphoonData();
+        //         orientation: {
+        //             heading: Earth.Math.toRadians(0),
+        //             pitch: Earth.Math.toRadians(0),
+        //             roll: 0.0,
+        //         },
+        //         duration: 1,
+        //         complete: () => {
+        //             console.log('complete');
+        //         },
+        //     });
         // });
 
-		$("#mapBottomControlBtnClearLabelBox").click(function () {
-			for (var i in entityCollection._entities) {
-                    entityCollection._entities[i].labelBox.show = false;
-					if (entityCollection._entities[i].polygon){
-						entityCollection._entities[i].polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
-					}
-                }
-		});
+        // // $("#mapBottomControlBtnTurb").click(function () {
+        // //     refreshTyphoonData();
+        // // });
 
-        var m_Layer_User_Vis = true;
-        $("#mapBottomControlBtnUser").click(function () {
-            if (m_Layer_User_Vis) {
-                $("#mapBottomControlBtnUser").attr("src", "images/layer_user_off.png");
-                m_Layer_User_Vis = false;
-                // clearGPSTrackLayers();
-            }
-            else {
-                $("#mapBottomControlBtnUser").attr("src", "images/layer_user_on.png");
-                m_Layer_User_Vis = true;
-            }
-            // UserGPSLayer.setVisible(m_Layer_User_Vis);
-            // GPSTrackLayer.setVisible(m_Layer_User_Vis);
-            // GPSTrackPointLayer.setVisible(m_Layer_User_Vis);
-            for (var i in entityCollection._entities) {
-                // console.log(i)
-                if (entityCollection._entities[i].layer === 'userGPSLayer') {
-                    entityCollection._entities[i].show = !entityCollection._entities[i].show;
-                    entityCollection._entities[i].labelBox.show = false;
-                }
-            }
+		// $("#mapBottomControlBtnClearLabelBox").click(function () {
+		// 	for (var i in entityCollection._entities) {
+        //             entityCollection._entities[i].labelBox.show = false;
+		// 			if (entityCollection._entities[i].polygon){
+		// 				entityCollection._entities[i].polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
+		// 			}
+        //         }
+		// });
 
-        });
-        // var m_Layer_Camera_Vis = true;
-        // $("#mapBottomControlBtnCamera").click(function () {
-        //     if (m_Layer_Camera_Vis) {
-        //         $("#mapBottomControlBtnCamera").attr("src", "images/layer_camera_off.png");
-        //         m_Layer_Camera_Vis = false;
+        // var m_Layer_User_Vis = true;
+        // $("#mapBottomControlBtnUser").click(function () {
+        //     if (m_Layer_User_Vis) {
+        //         $("#mapBottomControlBtnUser").attr("src", "images/layer_user_off.png");
+        //         m_Layer_User_Vis = false;
+        //         // clearGPSTrackLayers();
         //     }
         //     else {
-        //         $("#mapBottomControlBtnCamera").attr("src", "images/layer_camera_on.png");
-        //         m_Layer_Camera_Vis = true;
+        //         $("#mapBottomControlBtnUser").attr("src", "images/layer_user_on.png");
+        //         m_Layer_User_Vis = true;
         //     }
-        //     CameraLayer.setVisible(m_Layer_Camera_Vis);
+        //     // UserGPSLayer.setVisible(m_Layer_User_Vis);
+        //     // GPSTrackLayer.setVisible(m_Layer_User_Vis);
+        //     // GPSTrackPointLayer.setVisible(m_Layer_User_Vis);
+        //     for (var i in entityCollection._entities) {
+        //         // console.log(i)
+        //         if (entityCollection._entities[i].layer === 'userGPSLayer') {
+        //             entityCollection._entities[i].show = !entityCollection._entities[i].show;
+        //             entityCollection._entities[i].labelBox.show = false;
+        //         }
+        //     }
+
         // });
+        // // var m_Layer_Camera_Vis = true;
+        // // $("#mapBottomControlBtnCamera").click(function () {
+        // //     if (m_Layer_Camera_Vis) {
+        // //         $("#mapBottomControlBtnCamera").attr("src", "images/layer_camera_off.png");
+        // //         m_Layer_Camera_Vis = false;
+        // //     }
+        // //     else {
+        // //         $("#mapBottomControlBtnCamera").attr("src", "images/layer_camera_on.png");
+        // //         m_Layer_Camera_Vis = true;
+        // //     }
+        // //     CameraLayer.setVisible(m_Layer_Camera_Vis);
+        // // });
 
-        var m_Layer_SheShi_Vis = true;
-        $("#mapBottomControlBtnSheShi").click(function () {
-            if (m_Layer_SheShi_Vis) {
-                $("#mapBottomControlBtnSheShi").attr("src", "images/layer_sheshi_off.png");
-                m_Layer_SheShi_Vis = false;
-            }
-            else {
-                $("#mapBottomControlBtnSheShi").attr("src", "images/layer_sheshi_on.png");
-                m_Layer_SheShi_Vis = true;
-            }
-            // StationLayer.setVisible(m_Layer_SheShi_Vis);
-            for (var i in entityCollection._entities) {
-                // console.log(entityCollection._entities[i].layer)
-                if (entityCollection._entities[i].layer === 'stationLayer') {
-                    entityCollection._entities[i].show = !entityCollection._entities[i].show;
-                    entityCollection._entities[i].labelBox.show = false;
-                }
-            }
-        });
-
-        var m_Layer_Event_Vis = true;
-        $("#mapBottomControlBtnEvent").click(function () {
-            if (m_Layer_Event_Vis) {
-                $("#mapBottomControlBtnEvent").attr("src", "images/layer_event_off.png");
-                m_Layer_Event_Vis = false;
-            }
-            else {
-                $("#mapBottomControlBtnEvent").attr("src", "images/layer_event_on.png");
-                m_Layer_Event_Vis = true;
-            }
-            // GYEventLayer.setVisible(m_Layer_Event_Vis);
-            for (var i in entityCollection._entities) {
-                // console.log(i)
-                if (entityCollection._entities[i].layer === 'GYEventLayer') {
-                    entityCollection._entities[i].show = !entityCollection._entities[i].show;
-                    entityCollection._entities[i].labelBox.show = false;
-                }
-            }
-        });
-
-        var m_Layer_River_ShowMode = 0;
-        $("#mapBottomControlBtnRiver").click(function () {
-            if (m_Layer_River_ShowMode == 0) {
-                $("#mapBottomControlBtnRiver").attr("src", "images/layer_river_off.png");
-                m_Layer_River_ShowMode = 1;
-            }
-            else {
-                $("#mapBottomControlBtnRiver").attr("src", "images/layer_river_on.png");
-                m_Layer_River_ShowMode = 0;
-            }
-            // refreshMapRiverShow();
-        });
-
-        // var m_Layer_Radar_Vis = true;
-        // $("#mapBottomControlBtnRadarMap").click(function () {
-        //     if (m_Layer_Radar_Vis) {
-        //         $("#mapBottomControlBtnRadarMap").attr("src", "images/layer_radar_off.png");
-        //         m_Layer_Radar_Vis = false;
+        // var m_Layer_SheShi_Vis = true;
+        // $("#mapBottomControlBtnSheShi").click(function () {
+        //     if (m_Layer_SheShi_Vis) {
+        //         $("#mapBottomControlBtnSheShi").attr("src", "images/layer_sheshi_off.png");
+        //         m_Layer_SheShi_Vis = false;
         //     }
         //     else {
-        //         $("#mapBottomControlBtnRadarMap").attr("src", "images/layer_radar_on.png");
-        //         m_Layer_Radar_Vis = true;
+        //         $("#mapBottomControlBtnSheShi").attr("src", "images/layer_sheshi_on.png");
+        //         m_Layer_SheShi_Vis = true;
         //     }
-        //     RadarTrackLayer.setVisible(m_Layer_Radar_Vis);
+        //     // StationLayer.setVisible(m_Layer_SheShi_Vis);
+        //     for (var i in entityCollection._entities) {
+        //         // console.log(entityCollection._entities[i].layer)
+        //         if (entityCollection._entities[i].layer === 'stationLayer') {
+        //             entityCollection._entities[i].show = !entityCollection._entities[i].show;
+        //             entityCollection._entities[i].labelBox.show = false;
+        //         }
+        //     }
         // });
 
-        var m_Layer_Sal_Vis = true;
-        $("#mapBottomControlBtnSalMap").click(function () {
-            if (m_Layer_Sal_Vis) {
-                $("#mapBottomControlBtnSalMap").attr("src", "images/layer_salmap_off.png");
-                m_Layer_Sal_Vis = false;
-                viewer.imageryLayers.remove(layer_basemapTxt)
-            }
-            else {
-                $("#mapBottomControlBtnSalMap").attr("src", "images/layer_salmap_on.png");
-                m_Layer_Sal_Vis = true;
-                layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
-            }
-            // TianDitu_Val_Layer.setVisible(m_Layer_Sal_Vis);
-        });
+        // var m_Layer_Event_Vis = true;
+        // $("#mapBottomControlBtnEvent").click(function () {
+        //     if (m_Layer_Event_Vis) {
+        //         $("#mapBottomControlBtnEvent").attr("src", "images/layer_event_off.png");
+        //         m_Layer_Event_Vis = false;
+        //     }
+        //     else {
+        //         $("#mapBottomControlBtnEvent").attr("src", "images/layer_event_on.png");
+        //         m_Layer_Event_Vis = true;
+        //     }
+        //     // GYEventLayer.setVisible(m_Layer_Event_Vis);
+        //     for (var i in entityCollection._entities) {
+        //         // console.log(i)
+        //         if (entityCollection._entities[i].layer === 'GYEventLayer') {
+        //             entityCollection._entities[i].show = !entityCollection._entities[i].show;
+        //             entityCollection._entities[i].labelBox.show = false;
+        //         }
+        //     }
+        // });
+
+        // var m_Layer_River_ShowMode = 0;
+        // $("#mapBottomControlBtnRiver").click(function () {
+        //     if (m_Layer_River_ShowMode == 0) {
+        //         $("#mapBottomControlBtnRiver").attr("src", "images/layer_river_off.png");
+        //         m_Layer_River_ShowMode = 1;
+        //     }
+        //     else {
+        //         $("#mapBottomControlBtnRiver").attr("src", "images/layer_river_on.png");
+        //         m_Layer_River_ShowMode = 0;
+        //     }
+        //     // refreshMapRiverShow();
+        // });
+
+        // // var m_Layer_Radar_Vis = true;
+        // // $("#mapBottomControlBtnRadarMap").click(function () {
+        // //     if (m_Layer_Radar_Vis) {
+        // //         $("#mapBottomControlBtnRadarMap").attr("src", "images/layer_radar_off.png");
+        // //         m_Layer_Radar_Vis = false;
+        // //     }
+        // //     else {
+        // //         $("#mapBottomControlBtnRadarMap").attr("src", "images/layer_radar_on.png");
+        // //         m_Layer_Radar_Vis = true;
+        // //     }
+        // //     RadarTrackLayer.setVisible(m_Layer_Radar_Vis);
+        // // });
+
+        // var m_Layer_Sal_Vis = true;
+        // $("#mapBottomControlBtnSalMap").click(function () {
+        //     if (m_Layer_Sal_Vis) {
+        //         $("#mapBottomControlBtnSalMap").attr("src", "images/layer_salmap_off.png");
+        //         m_Layer_Sal_Vis = false;
+        //         viewer.imageryLayers.remove(layer_basemapTxt)
+        //     }
+        //     else {
+        //         $("#mapBottomControlBtnSalMap").attr("src", "images/layer_salmap_on.png");
+        //         m_Layer_Sal_Vis = true;
+        //         layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
+        //     }
+        //     // TianDitu_Val_Layer.setVisible(m_Layer_Sal_Vis);
+        // });
             
-        // 暂时没有使用 riverSection颜色
-        // function refreshMapRiverShow()
-        // {
-        // 	if(m_RiverSectionVDataArray!=null && m_RiverSectionVDataArray.length>0)
-        // 	{
-        // 		if(m_Layer_River_ShowMode == 0)//显示水位
-        // 		{
-        // 			DefaultMapTipParaName = "水位(m)";
-        // 			// setRiverSectionsValue(m_RiverSectionVDataArray[0]); 暂时注释，没有引用basicmap_home.js 20230419
-        // 		}
-        // 		else if(m_Layer_River_ShowMode == 1)//显示水深
-        // 		{
-        // 			DefaultMapTipParaName = "水深(m)";
-        // 			// setRiverSectionsValue(m_RiverSectionVDataArray[3]); 暂时注释，没有引用basicmap_home.js 20230419
-        // 		}
-        // 	}
-        // }
+        // // 暂时没有使用 riverSection颜色
+        // // function refreshMapRiverShow()
+        // // {
+        // // 	if(m_RiverSectionVDataArray!=null && m_RiverSectionVDataArray.length>0)
+        // // 	{
+        // // 		if(m_Layer_River_ShowMode == 0)//显示水位
+        // // 		{
+        // // 			DefaultMapTipParaName = "水位(m)";
+        // // 			// setRiverSectionsValue(m_RiverSectionVDataArray[0]); 暂时注释，没有引用basicmap_home.js 20230419
+        // // 		}
+        // // 		else if(m_Layer_River_ShowMode == 1)//显示水深
+        // // 		{
+        // // 			DefaultMapTipParaName = "水深(m)";
+        // // 			// setRiverSectionsValue(m_RiverSectionVDataArray[3]); 暂时注释，没有引用basicmap_home.js 20230419
+        // // 		}
+        // // 	}
+        // // }
 
         var m_StartTime = new Date();
         var m_EndTime = new Date();
