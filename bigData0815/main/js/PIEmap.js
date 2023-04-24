@@ -5,8 +5,8 @@ createEarthModule().then(function () {
     viewer = new Earth.Viewer('mapContainer', {
 
         sceneMode: Earth.SceneMode.SCENE3D, //Earth.SceneMode.SCENE2D
-        center: [114.181236, 22.598030], //初始中心点
-        zoom: 15, //初始层级
+        center: [114.181236, 22.590030], //初始中心点
+        zoom: 12, //初始层级
         cameraSmooth: false, //是否开启相机缓冲效果
         // projection: new Earth.Projection.WebMercator(),
         imageryProvider: new Earth.TileMapServiceImageryProvider({
@@ -432,6 +432,8 @@ createEarthModule().then(function () {
             entityCollection._entities[i].labelBox.show = false;
         }
         console.log('最初的clearLabelBox 2s')
+        // 初始化地图高度和视角
+        $("#mapBottomControlBtnHome").click() 
       }, 2000);
 
 

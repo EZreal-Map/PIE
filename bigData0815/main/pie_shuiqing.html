@@ -440,6 +440,28 @@
                 <div class="center_top_shuiqin_con" id="distribution_map"
                     style="height: 440px;margin-top: 35px;margin-left: 30px;width: 1080px;">
                     <canvas id="mapContainer" oncontextmenu="return false"></canvas>
+                    <div style="width: 100%; height: 60px;">
+                        <img id="mapBottomControlBtnHome" class="mapBottomControlBtn" src="images/map_home.png"
+                            style="margin-right: 42px;" title="地图全图" />
+                        <!-- <img id="mapBottomControlBtnRadarMap" class="mapBottomControlBtn" src="images/layer_radar_on.png"
+                            title="雷达监测 无效" /> -->
+                        <img id="mapBottomControlBtnSalMap" class="mapBottomControlBtn" src="images/layer_salmap_on.png"
+                            title="地图标注 " />
+                        <img id="mapBottomControlBtnRiver" class="mapBottomControlBtn" src="images/layer_river_on.png"
+                            title="河道地图切换" />
+                        <!-- <img id="mapBottomControlBtnTurb" class="mapBottomControlBtn" src="images/layer_turb_on.png"
+                            title="台风地图 无效" /> -->
+                        <img id="mapBottomControlBtnSheShi" class="mapBottomControlBtn" src="images/layer_sheshi_on.png"
+                            title="设施地图" />
+                        <!-- <img id="mapBottomControlBtnCamera" class="mapBottomControlBtn" src="images/layer_camera_on.png"
+                            title="摄像头地图 无效" /> -->
+                        <img id="mapBottomControlBtnEvent" class="mapBottomControlBtn" src="images/layer_event_on.png"
+                            title="事件地图" />
+                        <img id="mapBottomControlBtnUser" class="mapBottomControlBtn" src="images/layer_user_on.png"
+                            title="人员" />
+                        <img id="mapBottomControlBtnClearLabelBox" class="mapBottomControlBtn" src="images/layer_clear_on.png"
+                            title="清除标签" />
+                    </div>
                 </div>
 
             </div>
@@ -1175,7 +1197,8 @@
         // shuiqing.html要去除userGPSLayer  GYEventLayer  basemapTxtLayer
         setTimeout(function () {
             for (var i in entityCollection._entities) {
-                // console.log(i)
+                entityCollection._entities[i].labelBox._offsetWidth =  +8;
+                entityCollection._entities[i].labelBox._offsetHeight =  +220;
                 if (entityCollection._entities[i].layer === 'GYEventLayer' || entityCollection._entities[i].layer === 'userGPSLayer') {
                     entityCollection._entities[i].show = !entityCollection._entities[i].show;
                     // entityCollection._entities[i].labelBox.show = false;
@@ -1184,7 +1207,7 @@
             viewer.imageryLayers.remove(layer_basemapTxt)
 
             viewer.camera.flyTo({
-                destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 2800.0),
+                destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 3500.0),
 
                 orientation: {
                     heading: Earth.Math.toRadians(0),
@@ -1196,7 +1219,7 @@
                     console.log('complete');
                 },
             });
-        }, 1000);
+        }, 3000);
 
     </script>
 

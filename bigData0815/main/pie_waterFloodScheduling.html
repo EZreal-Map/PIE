@@ -1209,7 +1209,8 @@ min:25,
         // shuiqing.html要去除userGPSLayer  GYEventLayer  basemapTxtLayer
         setTimeout(function () {
             for (var i in entityCollection._entities) {
-                // console.log(i)
+                entityCollection._entities[i].labelBox._offsetWidth =  18;
+                entityCollection._entities[i].labelBox._offsetHeight =  +188;
                 if (entityCollection._entities[i].layer === 'GYEventLayer' || entityCollection._entities[i].layer === 'userGPSLayer') {
                     entityCollection._entities[i].show = !entityCollection._entities[i].show;
                     entityCollection._entities[i].labelBox.show = false;
@@ -1230,7 +1231,7 @@ min:25,
                     console.log('complete');
                 },
             });
-        }, 1000);
+        }, 2000);
 
 		</script>
 		

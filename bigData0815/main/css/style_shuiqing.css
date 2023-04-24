@@ -334,6 +334,8 @@ from {transform: rotate(0deg);}
 to {transform: rotate(359deg);}
 }
 
+.mapBottomControlBtn {width:32px;height:32px;padding: 5px;float:right;cursor: pointer;}
+
 
 @media all and (-webkit-min-device-pixel-ratio:0) and (min-resolution: .001dpcm) { 
     .masked{
@@ -379,3 +381,5 @@ to {transform: rotate(359deg);}
             background: rgba(0, 0, 0, 0);
         }
     }
+
+    
