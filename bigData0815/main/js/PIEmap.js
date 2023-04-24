@@ -6,7 +6,7 @@ createEarthModule().then(function () {
 
         sceneMode: Earth.SceneMode.SCENE3D, //Earth.SceneMode.SCENE2D
         center: [114.181236, 22.598030], //初始中心点
-        zoom: 13.5, //初始层级
+        zoom: 15, //初始层级
         cameraSmooth: false, //是否开启相机缓冲效果
         // projection: new Earth.Projection.WebMercator(),
         imageryProvider: new Earth.TileMapServiceImageryProvider({
@@ -427,15 +427,12 @@ createEarthModule().then(function () {
     MyrefreshGYEventsInfo()
 
     setTimeout(function() {
-        // 解决labelBox .show false的bug
+        // 解决labelBox.show false的初始化bug
         for (var i in entityCollection._entities) {
             entityCollection._entities[i].labelBox.show = false;
-            if (entityCollection._entities[i].polygon){
-                entityCollection._entities[i].polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
-            }
         }
-        console.log('最初的clearLabelBox')
-      }, 1000);
+        console.log('最初的clearLabelBox 2s')
+      }, 2000);
 
 
 });// createEarthModule结束 new Earth

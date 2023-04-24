@@ -57,7 +57,7 @@
 			background-size: 100% 100%;
 			/*设置左右宽度比例*/
 			/*height: 3px;/*横条的高度*/
-			*/
+			
 		}
 		/*拖动块的样式*/
 		
@@ -272,22 +272,22 @@
 					
 			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;">
 				<ul class="menu">
-					<li><a href="page_home.html">管控大屏</a></li>
+					<li><a href="pie_home.html">管控大屏</a></li>
 					<li><a href="#">水务预警</a>
 						<ul class="submenu">
-							<li><a href="page_shuiqing.html">水情预警</a></li>
-							<li><a href="page_shuizhi.html">水质预警</a></li>
-							<li><a href="page_weiyi.html">工程安全</a></li>
-							<li><a href="page_videocenter.html">视频预警</a></li>
+							<li><a href="pie_shuiqing.html">水情预警</a></li>
+							<li><a href="pie_shuizhi.html">水质预警</a></li>
+							<li><a href="pie_weiyi.html">工程安全</a></li>
+							<!-- <li><a href="pie_videocenter.html">视频预警</a></li> -->
 						</ul>
 					</li>
 					<li><a  style="color:#00FCFF" href="#">流域调度</a>
 						<ul class="submenu">
-							<li><a  style="color:#00FCFF" href="page_waterFloodScheduling.html">防洪调度</a></li>
-							<li><a href="page_waterscheduling.html">水质模拟</a></li>
+							<li><a  style="color:#00FCFF" href="pie_waterFloodScheduling.html">防洪调度</a></li>
+							<li><a href="pie_waterscheduling.html">水质模拟</a></li>
 						</ul>
 					</li>
-					<li><a href="page_guanyang.html">河道管养</a></li>
+					<li><a href="pie_guanyang.html">河道管养</a></li>
 				</ul>
 			</div>
 		</header>
@@ -1216,6 +1216,20 @@ min:25,
                 }
             }
             viewer.imageryLayers.remove(layer_basemapTxt)
+
+			viewer.camera.flyTo({
+                destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 2800.0),
+
+                orientation: {
+                    heading: Earth.Math.toRadians(0),
+                    pitch: Earth.Math.toRadians(0),
+                    roll: 0.0,
+                },
+                duration: 1,
+                complete: () => {
+                    console.log('complete');
+                },
+            });
         }, 1000);
 
 		</script>

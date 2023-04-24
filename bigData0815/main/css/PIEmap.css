@@ -40,7 +40,7 @@ button {
     /* background-color: white; */
 }
 
-.zoomIn,
+/* .zoomIn,
 .zoomOut {
     display: block;
     width: 40px;
@@ -55,7 +55,7 @@ button {
 .zoomOut {
     background: url(./images/zoom-out.png) no-repeat center #efefef;
     background-size: 80% 80%;
-}
+} */
 
 
 .stationPop {

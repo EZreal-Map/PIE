@@ -1,59 +1,402 @@
+<!-- 添加Label -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta http-equiv="origin-trial"
+        content="AguxL8gUQtVnjaKBJ+cg8sDcaMQ2PEqJuTSmja7AA8Gv7b3Oo4Kpru2YsC7Owk3P5YXviYGFHcarBWIn8dqMdAEAAAB9eyJvcmlnaW4iOiJodHRwczovL2Nsb3VkdGVzdC5waWVzYXQuY246NDQzIiwiZmVhdHVyZSI6IlVucmVzdHJpY3RlZFNoYXJlZEFycmF5QnVmZmVyIiwiZXhwaXJ5IjoxNjU4ODc5OTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZX0=" />
+    <title>labelBox</title>
+    <link rel="stylesheet" href="earth.css" />
+    <style>
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-    <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
-    <script type="text/javascript" src="js/common.js"></script>
+        #globe {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
 
-    <title>TEST</title>
+        #earthContainer {
+            width: 100%;
+            height: 100%;
+        }
+
+        #btn {
+            position: absolute;
+            top: 20px;
+            left: 5px;
+        }
+
+        #btn-del {
+            position: absolute;
+            top: 20px;
+            left: 80px;
+        }
+    </style>
 </head>
+
 <body>
-    <p>测试使用</p>
-    <script>
+    <div id="globe">
+        <canvas id="earthContainer" oncontextmenu="return false"></canvas>
+        <div id="btn">
+            <button onclick="handleSwitch()">显隐</button>
+            <button onclick="changePosition()">修改位置</button>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="PIEWrapperWeb.js"></script>
+<script type="text/javascript" src="Earth.js"></script>
+<script>
+    var entity13;
+    createEarthModule({ baseUrl: '../../' }).then(function (module) {
+        const viewer = new Earth.Viewer('earthContainer', {
+            center: [101.0, 41.0], //初始中心点
+            zoom: 5, //初始层级
+        });
+        const entity = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(121.2219, 23.5161, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
+                show: false,
+                type: Earth.LabelBoxType.box0,
+                scale: 1,
+                style: {
+                    text: '测试位置',
+                },
+            },
+        });
+        const entityCollection = viewer.entities;
+        entityCollection.add(entity);
 
-                $.ajax({
-                //站点数据
-                // url: ServerURL + "/ServiceHandler/BigDataHandler.ashx?method=getfacilitiesinfobyprojectid&projectid="+CurrentProjectID+"&token="+defaultToken,
-                // type: "GET",
-                // dataType: "json",
+        const entity1 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(119, 40, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            point: {
+                show: false,
+                pixelSize: 16,
+                color: Earth.Color.RED.withAlpha(1),
+                outlineColor: undefined, //不支持
+                outlineWidth: undefined, //不支持
+                distanceDisplayCondition: undefined, //暂不支持
+            },
+            labelBox: {
+                type: Earth.LabelBoxType.box1,
+                scale: 0.5,
+                style: {
+                    theme: 'red', //支持四种格式 'red','blue','yellow' 'green'
+                    title: '大厦',
+                    show: false,
+                    items1: [
+                        {
+                            label: '车位数',
+                            num: 2499,
+                            unit: '位',
+                        },
+                        {
+                            label: '当前空余',
+                            num: 126,
+                            unit: '位',
+                        },
+                    ],
+                    items2: [
+                        {
+                            label: '车库状态',
+                            status1: '1号',
+                            status2: '2号',
+                        },
+                        {
+                            label: '车库入口',
+                            status1: '1号',
+                            status2: '2号',
+                        },
+                    ],
+                },
+            },
+        });
+        entityCollection.add(entity1);
 
-                // 事件数据
-                type: "post",
-				url: ServerURL + "/ServiceHandler/BigDataHandler.ashx",
-				async: true,
-				// data:dataObj,
-				dataType: "json",
-    success: function(joResult) {
-        if(joResult.success == true) {
-            console.log(joResult)
-            var tmpObjs = joResult.data;
-            // 将数据转换为JSON字符串
-            const data = JSON.stringify(joResult.data);
-            // 创建blob对象
-            const blob = new Blob([data], { type: 'application/json' });
-            // 获取blob对象URL
-            const url = URL.createObjectURL(blob);
-            // 创建a标签
-            const link = document.createElement('a');
-            // 设置a标签href属性为blob URL
-            link.href = url;
-            // 设置下载文件的名称
-            link.download = 'data_event.json';
-            // 将a标签添加到DOM中
-            document.body.appendChild(link);
-            // 模拟a标签的点击事件来下载文件
-            link.click();
-            // 从DOM中删除a标签
-            document.body.removeChild(link);
-            // 释放blob对象URL
-            URL.revokeObjectURL(url);
+        const entity2 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(100, 40, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
+                type: Earth.LabelBoxType.box2,
+                scale: 1.0,
+                offset: { x: -35, y: -35 },
+                style: {
+                    text: '测试位置',
+                    fontSize: 14,
+                    fontFamily: 'PingFang-SC-Medium',
+                    color: '#FFFFFF',
+                    // backgroundColor: "rgba(30,111,255,.1)",
+                    backgroundColor: 'red',
+                    boderColor: '#ff0000f0',
+
+                },
+                show: false,
+            },
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1),
+            },
+        });
+        entityCollection.add(entity2);
+
+        const entity3 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(110, 40, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
+                type: Earth.LabelBoxType.box3,
+                scale: 0.8,
+                offset: { x: -3, y: -6 },
+                style: {
+                    text: '测试位置',
+                },
+                show: false,
+            },
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1),
+            },
+        });
+        entityCollection.add(entity3);
+
+        const entity4 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(100, 50, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
+                type: Earth.LabelBoxType.box4,
+                scale: 0.8,
+                offset: { x: -9, y: -6 },
+                style: {
+                    text: '蓝色文本标牌',
+                },
+                show: false,
+            },
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1),
+            },
+        });
+        entityCollection.add(entity4);
+
+        const entity5 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(90, 30, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
+                type: Earth.LabelBoxType.box5,
+                scale: 0.2,
+                offset: { x: -9, y: -13 },
+                style: {
+                    url: '../../images/tf.gif',
+
+                },
+                show: false,
+            },
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1)
+            },
+
+        });
+        entityCollection.add(entity5);
+
+        const entity5_1 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(90, 50, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
+                type: Earth.LabelBoxType.box5,
+                scale: 0.5,
+                offset: { x: -18, y: -30 },
+                style: {
+                    url: '../../images/symbol2.png',
+                },
+                show: false,
+            },
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1),
+                outlineColor: undefined, //不支持
+                outlineWidth: undefined, //不支持
+                distanceDisplayCondition: undefined, //暂不支持
+            },
+        });
+        entityCollection.add(entity5_1);
+
+        const entity5_2 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(104, 30, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
+                type: Earth.LabelBoxType.box5,
+                scale: 1.0,
+                offset: { x: -16, y: -28 },
+                style: {
+                    url: '../../images/paizhang.png',
+                    text: '标牌',
+                    textColor: 'red',
+                },
+                show: false,
+            },
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1),
+                outlineColor: undefined, //不支持
+                outlineWidth: undefined, //不支持
+                distanceDisplayCondition: undefined, //暂不支持
+            },
+        });
+        entityCollection.add(entity5_2);
+
+        const entity6 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(90, 40, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
+                type: Earth.LabelBoxType.box6,
+                scale: 0.8,
+                offset: { x: 2, y: -2 },
+                style: {
+                    text: '这是box6',
+                },
+                show: false,
+            },
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1),
+
+            },
+        });
+        entityCollection.add(entity6);
+
+        const entity7 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(120, 30, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
+                show: false,
+                type: Earth.LabelBoxType.box7,
+                scale: 0.8,
+                offset: { x: 0, y: -5 },
+                style: {
+                    url: '../../images/camera.svg',
+                },
+            },
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1),
+
+            },
+        });
+        entityCollection.add(entity7);
+
+        const entity8 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(70, 50, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
+                show: false,
+                type: Earth.LabelBoxType.box8,
+                scale: 0.8,
+                style: {
+                    text: '我是竖立文本',
+                },
+            },
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1),
+                outlineColor: undefined, //不支持
+                outlineWidth: undefined, //不支持
+                distanceDisplayCondition: undefined, //暂不支持
+            },
+        });
+        entityCollection.add(entity8);
+
+        const entity9 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(60, 50, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
+                show: false,
+                type: Earth.LabelBoxType.box9,
+                scale: 0.8,
+                offset: { x: 0, y: -2 },
+                style: {
+                    color: 'green',
+                },
+            },
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1),
+
+            },
+        });
+        entityCollection.add(entity9);
+
+        entity13 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(100, 30, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
+                show: false,
+                type: Earth.LabelBoxType.box10,
+                scale: 0.8,
+                offset: { x: -35, y: -50 },
+                maxHeight: 20000000,
+                style: {
+                    html: '自定义文本',
+                    color: 'black',
+                    backgroundColor: 'white'
+                },
+            },
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1),
+            },
+            billboard: {
+        image: 'images/监测站.png',
+        show: false // 初始化时隐藏
+    } 
+        });
+        entityCollection.add(entity13);
+    });
+    function handleSwitch() {
+        if (entity13) {
+            entity13.labelBox.show = !entity13.labelBox.show;
         }
     }
-});
 
-    </script>
-</body>
+    function changePosition() {
+        if (entity13) {
+            entity13.position = Earth.Cartesian3.fromDegrees(80, 20);
+        }
+    }
+</script>
+
 </html>

@@ -61,7 +61,6 @@
         background-size: 100% 100%;
         /*设置左右宽度比例*/
         /*height: 3px;/*横条的高度*/
-        */
     }
 
     /*拖动块的样式*/
@@ -359,7 +358,7 @@
 
 
 
-    #popup font {
+    /* #popup font {
         display: inline-block;
         width: 80px;
         float: left;
@@ -376,7 +375,7 @@
         padding: 0 !important;
         font-weight: bold;
         padding: 0px !important;
-    }
+    } */
 
 
 
@@ -540,32 +539,32 @@
             style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;z-index: 9999;">
             <ul class="menu">
                 <li>
-                    <a href="page_home.html">管控大屏</a>
+                    <a href="pie_home.html">管控大屏</a>
                 </li>
                 <li>
                     <a style="color:#00FCFF" href="#">水务预警</a>
                     <ul class="submenu">
-                        <li><a href="page_shuiqing.html">水情预警</a></li>
-                        <li><a style="color:#00FCFF" href="page_shuizhi.html">水质预警</a></li>
-                        <li><a href="page_weiyi.html">工程安全</a></li>
-                        <li>
-                            <a href="page_videocenter.html">视频预警</a>
-                        </li>
+                        <li><a href="pie_shuiqing.html">水情预警</a></li>
+                        <li><a style="color:#00FCFF" href="pie_shuizhi.html">水质预警</a></li>
+                        <li><a href="pie_weiyi.html">工程安全</a></li>
+                        <!-- <li>
+                            <a href="pie_videocenter.html">视频预警</a>
+                        </li> -->
                     </ul>
                 </li>
                 <li>
                     <a href="#">流域调度</a>
                     <ul class="submenu">
                         <li>
-                            <a href="page_waterFloodScheduling.html">防洪调度</a>
+                            <a href="pie_waterFloodScheduling.html">防洪调度</a>
                         </li>
                         <li>
-                            <a href="page_waterscheduling.html">水质模拟</a>
+                            <a href="pie_waterscheduling.html">水质模拟</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="page_guanyang.html">河道管养</a>
+                    <a href="pie_guanyang.html">河道管养</a>
                 </li>
             </ul>
         </div>
@@ -663,7 +662,7 @@
         <div class="shuizhi_xia" style="padding-top: 29px;font-size: 16pt;">
             <div class="zhengwen_tubiao_5_2">
 
-                <table class="layui-table" style=" height:100%;width: 94%;margin-left: 0px;>
+                <table class="layui-table" style=" height:100%;width: 94%;margin-left: 0px;">
 								<colgroup>
 									<col width=" 150">
                     </col>
@@ -715,9 +714,9 @@
             <div class="center_top_shuiqin" style="width: 980px;">
                 <div class="centerTabTitle"><img src="images/icon03.png" /> 地图</div>
                 <span id="localtime"
-                    style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 475px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+                    style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 475px; top:140px; width:100px;z-index: 9990;">10:00:00</span>
                 <span id="localtime2"
-                    style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 578px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+                    style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 578px; top:140px; width:100px;z-index: 9990;">10:00:00</span>
                 <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="180"
                     height="150" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
                     style="position: absolute; left: 1140px; top:140px; z-index: 9990;"></iframe>
@@ -1759,10 +1758,24 @@
                 // console.log(i)
                 if (entityCollection._entities[i].layer === 'GYEventLayer' || entityCollection._entities[i].layer === 'userGPSLayer') {
                     entityCollection._entities[i].show = !entityCollection._entities[i].show;
-                    entityCollection._entities[i].labelBox.show = false;
+                    // entityCollection._entities[i].labelBox.show = false;
                 }
             }
             viewer.imageryLayers.remove(layer_basemapTxt)
+
+            viewer.camera.flyTo({
+                destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 2800.0),
+
+                orientation: {
+                    heading: Earth.Math.toRadians(0),
+                    pitch: Earth.Math.toRadians(0),
+                    roll: 0.0,
+                },
+                duration: 1,
+                complete: () => {
+                    console.log('complete');
+                },
+            });
         }, 1000);
 
     </script>
