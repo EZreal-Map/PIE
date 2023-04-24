@@ -12,7 +12,7 @@ html {
 	-ms-text-size-adjust: 100%;
 }
 
-.mapBottomControlBtn {width:32px;height:32px;padding: 5px;float:right;cursor: pointer;}
+.mapBottomControlBtn {width:32px;height:32px;padding:3px 5px;float:right;cursor: pointer;}
 
 body {
 	background-color: #0b122e;
@@ -49,7 +49,7 @@ header{width:1860px; height: 90px; background: url(../images/bg_top.png) center 
 
 #content .content_center{width: 1435px; height: 100%; float: left; margin-left: 0px;}
 .content_center .center_top{width: 1435px; height: 580px;  float: left; background: url(../images/center01_1435_580.png) no-repeat;}
-.content_center .title{width: 1435px; height: 70px; float: left; color: #FFD000; font-size: 20px; font-weight:bold;line-height: 70px; background:url(../images/bottom_line.png) bottom center no-repeat; text-align: center;}
+.content_center .title{width: 1435px; height: 54px; float: left; color: #FFD000; font-size: 20px; font-weight:bold;line-height: 70px; background:url(../images/bottom_line.png) bottom center no-repeat; text-align: center;}
 .content_center .title img{vertical-align: middle;}
 .content_center .center_top_con{ height: 480px; width: 1300px; padding:0px; float: left;padding-left: 50px;}
 .panel-table {text-align: left;color: #ccc;margin: 0 auto !important;width: 96%;	margin-top: 20px !important;padding: 0.5rem 0 !important;font-size: 1.2rem;}
@@ -485,17 +485,17 @@ to {transform: rotate(359deg);}
     margin: auto;
 }
 .t_mbox h2{
-    font-size: 16pt;
+    font-size: 12pt;
     color: #fff;
     position: absolute;
-    top: 15px;
-    left: 60px;
+    top: 10px;
+    left: 69px;
 }
 .t_mbox span{
     font-size: 12pt;
     color: #fff;
     position: absolute;
-    top: 10px;
+    top: 5px;
     left: 60px;
 }
 .t_rbox i{

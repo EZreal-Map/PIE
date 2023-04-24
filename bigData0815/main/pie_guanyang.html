@@ -111,16 +111,38 @@
 			<div class="content_center">
 				<div class="center_top">
 					<div class="title"><img id="switchMapZoomID" src="images/icon03.png" /> 地图</div>					
-					<span id="localtime" style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 100px; top:140px; width:100px;z-index: 9990;">10:00:00</span>
-					<span id="localtime2" style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 220px; top:140px; width:100px;z-index: 9990;">10:00:00</span>
-					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="180" height="150" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute; left: 1120px; top:140px; z-index: 9990;"></iframe>
+					<span id="localtime" style="font-size:18pt; line-height:1.1;font-family:yejing; font-weight:bold;position: absolute; left: 100px; top:110px; width:110px;z-index: 9990;">10:00:00</span>
+					<span id="localtime2" style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 220px; top:104px; width:100px;z-index: 9990;">10:00:00</span>
+					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="180" height="150" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute; left: 1211px; top:94px; z-index: 9990;"></iframe>
 					
 					<div class="center_top_con" id="distribution_map">
 						<canvas id="mapContainer" oncontextmenu="return false"></canvas>
+						<div style="width: 100%; height: 60px;">
+							<img id="mapBottomControlBtnHome" class="mapBottomControlBtn" src="images/map_home.png"
+								style="margin-right: -5px;" title="地图全图" />
+							<!-- <img id="mapBottomControlBtnRadarMap" class="mapBottomControlBtn" src="images/layer_radar_on.png"
+								title="雷达监测 无效" /> -->
+							<img id="mapBottomControlBtnSalMap" class="mapBottomControlBtn" src="images/layer_salmap_on.png"
+								title="地图标注 " />
+							<img id="mapBottomControlBtnRiver" class="mapBottomControlBtn" src="images/layer_river_on.png"
+								title="河道地图切换" />
+							<!-- <img id="mapBottomControlBtnTurb" class="mapBottomControlBtn" src="images/layer_turb_on.png"
+								title="台风地图 无效" /> -->
+							<img id="mapBottomControlBtnSheShi" class="mapBottomControlBtn" src="images/layer_sheshi_on.png"
+								title="设施地图" />
+							<!-- <img id="mapBottomControlBtnCamera" class="mapBottomControlBtn" src="images/layer_camera_on.png"
+								title="摄像头地图 无效" /> -->
+							<img id="mapBottomControlBtnEvent" class="mapBottomControlBtn" src="images/layer_event_on.png"
+								title="事件地图" />
+							<img id="mapBottomControlBtnUser" class="mapBottomControlBtn" src="images/layer_user_on.png"
+								title="人员" />
+							<img id="mapBottomControlBtnClearLabelBox" class="mapBottomControlBtn" src="images/layer_clear_on.png"
+								title="清除标签" />
+						</div>
 					</div>
 				</div>
 				
-				<div class="t_mbox t_userbox" style="text-align: center;position: absolute; left: 80px; top:220px; width:100px;z-index: 9990;">
+				<div class="t_mbox t_userbox" style="text-align: center;position: absolute; left: 1044px; top:114px; width:114px;z-index: 9990;height: 28px;">
 		                    <i></i>
 		                    <span>人员信息</span>
 		                    <h2 id="gy_Label03">-/-</h2>
@@ -1273,7 +1295,10 @@
                 //     entityCollection._entities[i].labelBox.show = false;
                 // }
             }
-            viewer.imageryLayers.remove(layer_basemapTxt)
+            
+			// $(mapBottomControlBtnUser).click()
+            $(mapBottomControlBtnEvent).click()
+            $(mapBottomControlBtnSalMap).click()
 
 			viewer.camera.flyTo({
                 destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 2800.0),
