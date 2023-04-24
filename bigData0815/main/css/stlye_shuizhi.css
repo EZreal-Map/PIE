@@ -3,6 +3,7 @@ html,body{
     width: 100%;
      overflow: hidden;
 }
+.mapBottomControlBtn {width:32px;height:32px;padding: 5px;float:right;cursor: pointer;}
 .layui-table td, .layui-table th{
 	font-size: 1.2rem !important;
 }
@@ -11,6 +12,7 @@ html,body{
 			color: white;
 			border: #00186A;
 		}
+        
 input::-webkit-input-placeholder, textarea::-webkit-input-placeholder { 
 /* WebKit browsers */ 
 color: #ffffff; 
@@ -295,3 +297,4 @@ color: #ffffff;
     left:-1px;
     bottom:-1px;
 }
+

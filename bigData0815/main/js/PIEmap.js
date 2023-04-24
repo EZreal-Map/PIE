@@ -437,7 +437,7 @@ createEarthModule().then(function () {
         
         $("#mapBottomControlBtnClearLabelBox").click() 
         // 初始化地图高度和视角
-        $("#mapBottomControlBtnHome").click() 
+        $("#mapBottomControlBtnTHome").click() 
 
       }, 2000);
 

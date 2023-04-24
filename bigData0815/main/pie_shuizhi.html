@@ -497,8 +497,8 @@
     .xuanzhe_riqi {
         width: 50px;
         height: 50px;
-        margin-left: 300px;
-        margin-top: -15px;
+        margin-left: 310px;
+        margin-top: -50px;
         position: absolute;
         /*background-color: navy;*/
     }
@@ -714,9 +714,9 @@
             <div class="center_top_shuiqin" style="width: 980px;">
                 <div class="centerTabTitle"><img src="images/icon03.png" /> 地图</div>
                 <span id="localtime"
-                    style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 475px; top:140px; width:100px;z-index: 9990;">10:00:00</span>
+                    style="font-size:18pt; line-height:1.1;font-family:yejing; font-weight:bold;position: absolute; left: 475px; top:112px; width:110px;z-index: 9990;">10:00:00</span>
                 <span id="localtime2"
-                    style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 578px; top:140px; width:100px;z-index: 9990;">10:00:00</span>
+                    style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 582px; top:105px; width:100px;z-index: 9990;">10:00:00</span>
                 <iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="180"
                     height="150" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
                     style="position: absolute; left: 1140px; top:140px; z-index: 9990;"></iframe>
@@ -724,8 +724,30 @@
                     <div class="rili_tubiao" onclick="showDateSelect();"></div>
                 </div>
                 <div class="center_top_shuiqin_con" id="distribution_map"
-                    style="height: 510px;margin-top: 35px;margin-left: 30px;width: 905px;">
+                    style="height: 510px;margin-top: 5px;margin-left: 30px;width: 905px;">
                     <canvas id="mapContainer" oncontextmenu="return false"></canvas>
+                    <div> 
+                    <img id="mapBottomControlBtnHome" class="mapBottomControlBtn" src="images/map_home.png"
+                        style="margin-right: -5px;" title="地图全图" />
+                    <!-- <img id="mapBottomControlBtnRadarMap" class="mapBottomControlBtn" src="images/layer_radar_on.png"
+                        title="雷达监测 无效" /> -->
+                    <img id="mapBottomControlBtnSalMap" class="mapBottomControlBtn" src="images/layer_salmap_on.png"
+                        title="地图标注 " />
+                    <img id="mapBottomControlBtnRiver" class="mapBottomControlBtn" src="images/layer_river_on.png"
+                        title="河道地图切换" />
+                    <!-- <img id="mapBottomControlBtnTurb" class="mapBottomControlBtn" src="images/layer_turb_on.png"
+                        title="台风地图 无效" /> -->
+                    <img id="mapBottomControlBtnSheShi" class="mapBottomControlBtn" src="images/layer_sheshi_on.png"
+                        title="设施地图" />
+                    <!-- <img id="mapBottomControlBtnCamera" class="mapBottomControlBtn" src="images/layer_camera_on.png"
+                        title="摄像头地图 无效" /> -->
+                    <img id="mapBottomControlBtnEvent" class="mapBottomControlBtn" src="images/layer_event_on.png"
+                        title="事件地图" />
+                    <img id="mapBottomControlBtnUser" class="mapBottomControlBtn" src="images/layer_user_on.png"
+                        title="人员" />
+					<img id="mapBottomControlBtnClearLabelBox" class="mapBottomControlBtn" src="images/layer_clear_on.png"
+                        title="清除标签" />
+                    </div>
                 </div>
             </div>
             <div class="center_bot_shuiqin" style="width: 919px;font-size: 16pt;">
@@ -1756,13 +1778,15 @@
         setTimeout(function () {
             for (var i in entityCollection._entities) {
                 entityCollection._entities[i].labelBox._offsetWidth =  +402;
-                entityCollection._entities[i].labelBox._offsetHeight =  +222;
-                if (entityCollection._entities[i].layer === 'GYEventLayer' || entityCollection._entities[i].layer === 'userGPSLayer') {
-                    entityCollection._entities[i].show = !entityCollection._entities[i].show;
-                    // entityCollection._entities[i].labelBox.show = false;
-                }
+                entityCollection._entities[i].labelBox._offsetHeight =  +192;
+                // if (entityCollection._entities[i].layer === 'GYEventLayer' || entityCollection._entities[i].layer === 'userGPSLayer') {
+                //     entityCollection._entities[i].show = !entityCollection._entities[i].show;
+                //     // entityCollection._entities[i].labelBox.show = false;
+                // }
             }
-            viewer.imageryLayers.remove(layer_basemapTxt)
+            $(mapBottomControlBtnUser).click()
+            $(mapBottomControlBtnEvent).click()
+            $(mapBottomControlBtnSalMap).click()
 
             viewer.camera.flyTo({
                 destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 2800.0),
