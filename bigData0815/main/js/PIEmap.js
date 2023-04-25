@@ -735,6 +735,30 @@ function addGYEventPoint(lng, lat, obj) {
 
 // 控制按钮的函数
 $(document).ready(function () {
+    
+    const mapCanvas = document.getElementById("globe");
+    const imgDiv = document.getElementById("mapContainerBottomImgDiv");
+    
+    $("#mapBottomControlBtnfullScreen").click(function (){
+        if (mapCanvas.classList.contains("fullscreen")) {
+            mapCanvas.classList.remove("fullscreen");
+            imgDiv.classList.remove("fullscreen");
+            document.getElementById("localtime").classList.remove("fullscreen")
+            document.getElementById("localtime2").classList.remove("fullscreen")
+            $("#mapBottomControlBtnfullScreen").attr("src", "images/fullscreen_on.png");
+            $("#mapBottomControlBtnfullScreen").attr("title", "全屏");
+
+        } else {
+            mapCanvas.classList.add("fullscreen");
+            imgDiv.classList.add("fullscreen")
+            document.getElementById("localtime").classList.add("fullscreen")
+            document.getElementById("localtime2").classList.add("fullscreen")
+            $("#mapBottomControlBtnfullScreen").attr("src", "images/fullscreen_off.png");
+            $("#mapBottomControlBtnfullScreen").attr("title", "退出全屏");
+
+        }
+    })
+
 
 	$("#mapBottomControlBtnHome").click(function () {
 		// gotoHome(); 替换原来的openlayer方法，使用新的PIE方法

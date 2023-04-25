@@ -162,7 +162,7 @@
         </div>
         <div class="masked1" style="font-weight: bold;">梧桐山智慧流域管控平台</div>
         <div scrolling="no" allowtransparency="true"
-            style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;">
+            style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;z-index: 9999;">
             <ul class="menu">
 				<!-- 已修改为page_home.html -->
                 <li><a href="pie_home.html" style="color:#00FCFF">管控大屏</a></li>
@@ -259,33 +259,10 @@
 
                 <div class="center_top_con" id="distribution_map">
                     <div id="globe">
-                        <!-- <div class="left-top-tools">
-                            <button type="button" class="tool" onclick="clearLabelBox()">clearLabelBox</button>
-                            <button type="button" class="tool" onclick="stationLayerShow()">stationLayer</button>
-                            <button type="button" class="tool"
-                                onclick="riverSectionLayerShow()">riverSectionLayer</button>
-                            <button type="button" class="tool" onclick="userGPSLayerShow()">userGPSLayer</button>
-                            <button type="button" class="tool" onclick="GYEventLayerShow()">GYEventLayer</button>
-                            <button type="button" class="tool" onclick="FlyTargetLocation()">聚焦研究区域</button>
-                            <button type="button" class="tool" onclick="ChangeSceneMode()">2D/3D（功能废除）</button>
-                        </div> -->
-                        <!-- <div class="right-top-tools">
-                            <button class="zoomIn"></button>
-                            <button class="zoomOut"></button>
-                        </div> -->
                         <canvas id="mapContainer" oncontextmenu="return false"></canvas>
                     </div>
-                    <!-- <div class="left-bottom-tools">
-                        <button class="measureLength">测距</button>
-                        <button class="clearMeasureLength" style="display: none;">清除测距</button>
-                    </div> -->
-
                 </div>
-                <!-- <div id="popup" class="ol-popup">
-                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                    <div id="popup-content"></div>
-                </div> -->
-                <div style="width: 100%; height: 60px;">
+                <div id="mapContainerBottomImgDiv" style="width: 100%; height: 60px;">
                     <img id="mapBottomControlBtnHome" class="mapBottomControlBtn" src="images/map_home.png"
                         style="margin-right: 42px;" title="地图全图" />
                     <!-- <img id="mapBottomControlBtnRadarMap" class="mapBottomControlBtn" src="images/layer_radar_on.png"
@@ -306,6 +283,8 @@
                         title="人员" />
 					<img id="mapBottomControlBtnClearLabelBox" class="mapBottomControlBtn" src="images/layer_clear_on.png"
                         title="清除标签" />
+                    <img id="mapBottomControlBtnfullScreen" class="mapBottomControlBtn" src="images/fullscreen_on.png"
+                        title="全屏" />
                 </div>
             </div>
             <div class="center_bot">

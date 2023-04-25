@@ -530,7 +530,7 @@
 <body>
     <header>
         <div scrolling="no" allowtransparency="true"
-            style="font-size:14px; position: absolute; left: 50px; top:-5px;width:600px;height: 50px; display:inline;">
+            style="font-size:14px; position: absolute; left: 50px; top:-5px;width:600px;height: 50px; display:inline;z-index: 9999;">
             <img src="images/pie.png" style="width: 100px; height: 50px;" />
         </div>
         <div class="masked1" style="font-weight: bold;">水 质 预 警</div>
@@ -725,28 +725,32 @@
                 </div>
                 <div class="center_top_shuiqin_con" id="distribution_map"
                     style="height: 510px;margin-top: 5px;margin-left: 30px;width: 905px;">
-                    <canvas id="mapContainer" oncontextmenu="return false"></canvas>
-                    <div> 
-                    <img id="mapBottomControlBtnHome" class="mapBottomControlBtn" src="images/map_home.png"
-                        style="margin-right: -5px;" title="地图全图" />
-                    <!-- <img id="mapBottomControlBtnRadarMap" class="mapBottomControlBtn" src="images/layer_radar_on.png"
-                        title="雷达监测 无效" /> -->
-                    <img id="mapBottomControlBtnSalMap" class="mapBottomControlBtn" src="images/layer_salmap_on.png"
-                        title="地图标注 " />
-                    <img id="mapBottomControlBtnRiver" class="mapBottomControlBtn" src="images/layer_river_on.png"
-                        title="河道地图切换" />
-                    <!-- <img id="mapBottomControlBtnTurb" class="mapBottomControlBtn" src="images/layer_turb_on.png"
-                        title="台风地图 无效" /> -->
-                    <img id="mapBottomControlBtnSheShi" class="mapBottomControlBtn" src="images/layer_sheshi_on.png"
-                        title="设施地图" />
-                    <!-- <img id="mapBottomControlBtnCamera" class="mapBottomControlBtn" src="images/layer_camera_on.png"
-                        title="摄像头地图 无效" /> -->
-                    <img id="mapBottomControlBtnEvent" class="mapBottomControlBtn" src="images/layer_event_on.png"
-                        title="事件地图" />
-                    <img id="mapBottomControlBtnUser" class="mapBottomControlBtn" src="images/layer_user_on.png"
-                        title="人员" />
-					<img id="mapBottomControlBtnClearLabelBox" class="mapBottomControlBtn" src="images/layer_clear_on.png"
-                        title="清除标签" />
+                    <div id="globe">
+                        <canvas id="mapContainer" oncontextmenu="return false"></canvas>
+                    </div>
+                    <div id="mapContainerBottomImgDiv" style="width: 100%; height: 60px;">
+                        <img id="mapBottomControlBtnHome" class="mapBottomControlBtn" src="images/map_home.png"
+                            style="margin-right: -5px;" title="地图全图" />
+                        <!-- <img id="mapBottomControlBtnRadarMap" class="mapBottomControlBtn" src="images/layer_radar_on.png"
+                            title="雷达监测 无效" /> -->
+                        <img id="mapBottomControlBtnSalMap" class="mapBottomControlBtn" src="images/layer_salmap_on.png"
+                            title="地图标注 " />
+                        <img id="mapBottomControlBtnRiver" class="mapBottomControlBtn" src="images/layer_river_on.png"
+                            title="河道地图切换" />
+                        <!-- <img id="mapBottomControlBtnTurb" class="mapBottomControlBtn" src="images/layer_turb_on.png"
+                            title="台风地图 无效" /> -->
+                        <img id="mapBottomControlBtnSheShi" class="mapBottomControlBtn" src="images/layer_sheshi_on.png"
+                            title="设施地图" />
+                        <!-- <img id="mapBottomControlBtnCamera" class="mapBottomControlBtn" src="images/layer_camera_on.png"
+                            title="摄像头地图 无效" /> -->
+                        <img id="mapBottomControlBtnEvent" class="mapBottomControlBtn" src="images/layer_event_on.png"
+                            title="事件地图" />
+                        <img id="mapBottomControlBtnUser" class="mapBottomControlBtn" src="images/layer_user_on.png"
+                            title="人员" />
+                        <img id="mapBottomControlBtnClearLabelBox" class="mapBottomControlBtn" src="images/layer_clear_on.png"
+                            title="清除标签" />
+                        <img id="mapBottomControlBtnfullScreen" class="mapBottomControlBtn" src="images/fullscreen_on.png"
+                            title="全屏" />
                     </div>
                 </div>
             </div>
@@ -1776,14 +1780,14 @@
         }
         // shuiqing.html要去除userGPSLayer  GYEventLayer  basemapTxtLayer
         setTimeout(function () {
-            for (var i in entityCollection._entities) {
-                entityCollection._entities[i].labelBox._offsetWidth =  +402;
-                entityCollection._entities[i].labelBox._offsetHeight =  +192;
-                // if (entityCollection._entities[i].layer === 'GYEventLayer' || entityCollection._entities[i].layer === 'userGPSLayer') {
-                //     entityCollection._entities[i].show = !entityCollection._entities[i].show;
-                //     // entityCollection._entities[i].labelBox.show = false;
-                // }
-            }
+            // for (var i in entityCollection._entities) {
+            //     entityCollection._entities[i].labelBox._offsetWidth =  +402;
+            //     entityCollection._entities[i].labelBox._offsetHeight =  +192;
+            //     // if (entityCollection._entities[i].layer === 'GYEventLayer' || entityCollection._entities[i].layer === 'userGPSLayer') {
+            //     //     entityCollection._entities[i].show = !entityCollection._entities[i].show;
+            //     //     // entityCollection._entities[i].labelBox.show = false;
+            //     // }
+            // }
             $(mapBottomControlBtnUser).click()
             $(mapBottomControlBtnEvent).click()
             $(mapBottomControlBtnSalMap).click()

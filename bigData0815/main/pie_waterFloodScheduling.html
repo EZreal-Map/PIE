@@ -270,7 +270,7 @@
 			</div>
 			<div class="masked1" style="font-weight: bold;">防 洪 调 度</div>
 					
-			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;">
+			<div scrolling="no" allowtransparency="true" style="font-size:14px; position: absolute; left: 1350px; top:22px; width:550px;height: 40px; display:inline;z-index: 9999;">
 				<ul class="menu">
 					<li><a href="pie_home.html">管控大屏</a></li>
 					<li><a href="#">水务预警</a>
@@ -302,8 +302,10 @@
 					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="180" height="150" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute; left: 1120px; top:140px; z-index: 9990;"></iframe>
 					
 					<div class="center_top_con" id="distribution_map">
-						<canvas id="mapContainer" oncontextmenu="return false"></canvas>
-						<div style="width: 100%; height: 60px;">
+						<div id="globe">
+							<canvas id="mapContainer" oncontextmenu="return false"></canvas>
+						</div>
+						<div id="mapContainerBottomImgDiv" style="width: 100%; height: 60px;">
 							<img id="mapBottomControlBtnHome" class="mapBottomControlBtn" src="images/map_home.png"
 								style="margin-right: -5px;" title="地图全图" />
 							<!-- <img id="mapBottomControlBtnRadarMap" class="mapBottomControlBtn" src="images/layer_radar_on.png"
@@ -324,6 +326,8 @@
 								title="人员" />
 							<img id="mapBottomControlBtnClearLabelBox" class="mapBottomControlBtn" src="images/layer_clear_on.png"
 								title="清除标签" />
+							<img id="mapBottomControlBtnfullScreen" class="mapBottomControlBtn" src="images/fullscreen_on.png"
+								title="全屏" />								
 						</div>
 					</div>
 					<div id="popup" class="ol-popup">
@@ -1230,14 +1234,14 @@ min:25,
 
         // shuiqing.html要去除userGPSLayer  GYEventLayer  basemapTxtLayer
         setTimeout(function () {
-            for (var i in entityCollection._entities) {
-                entityCollection._entities[i].labelBox._offsetWidth =  18;
-                entityCollection._entities[i].labelBox._offsetHeight =  +188;
-                // if (entityCollection._entities[i].layer === 'GYEventLayer' || entityCollection._entities[i].layer === 'userGPSLayer') {
-                //     entityCollection._entities[i].show = !entityCollection._entities[i].show;
-                //     entityCollection._entities[i].labelBox.show = false;
-                // }
-            }
+            // for (var i in entityCollection._entities) {
+            //     entityCollection._entities[i].labelBox._offsetWidth =  18;
+            //     entityCollection._entities[i].labelBox._offsetHeight =  +188;
+            //     // if (entityCollection._entities[i].layer === 'GYEventLayer' || entityCollection._entities[i].layer === 'userGPSLayer') {
+            //     //     entityCollection._entities[i].show = !entityCollection._entities[i].show;
+            //     //     entityCollection._entities[i].labelBox.show = false;
+            //     // }
+            // }
             $(mapBottomControlBtnUser).click()
             $(mapBottomControlBtnEvent).click()
             $(mapBottomControlBtnSalMap).click()
