@@ -1,7 +1,7 @@
 let entityCollection;
 let viewer;
-let layer_basemapTxt;
-let tmsImageryProvider_basemapTxt;
+// let layer_basemapTxt;
+let layer_nightmap;
 
 createEarthModule().then(function () {
     viewer = new Earth.Viewer('mapContainer', {
@@ -11,31 +11,44 @@ createEarthModule().then(function () {
         zoom: 12, //初始层级
         cameraSmooth: false, //是否开启相机缓冲效果
         // projection: new Earth.Projection.WebMercator(),
-        imageryProvider: new Earth.TileMapServiceImageryProvider({
-            url: 'tiles/basemap/L{z}/{y}-{x}.png',
-            // tilingScheme: new Earth.EPSG3857TilingScheme(),
-            // tilingScheme: tilingScheme,
-        }),
+        // imageryProvider: new Earth.TileMapServiceImageryProvider({
+        //     // url: 'tiles/basemap/L{z}/{y}-{x}.png',
+        //     url:'http://cache1.arcgisonline.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/%d/%d/%d'
+        //     // tilingScheme: new Earth.EPSG3857TilingScheme(),
+        //     // tilingScheme: tilingScheme,
+        // }),
+        imageryProvider: new Earth.ArcGisMapServerImageryProvider({
+            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            epsg: 3857,
+            index: 0,
+          }),
     });
+    console.log(viewer.imageryLayers._imageryLayers[0])
+    console.log(viewer.imageryLayers.indexOf(viewer.imageryLayers._imageryLayers[0]))
+    // let ImageryProvider_imagery = new Earth.ArcGisMapServerImageryProvider({
+    //     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    //     epsg: 3857,
+    // })
+    // const layer_imagery = viewer.imageryLayers.addImageryProvider(ImageryProvider_imagery, 1);
 
-    viewer.scene.skyBox.show = false;
+    // viewer.scene.skyBox.show = false;
     entityCollection = viewer.entities;
 
-
-    let tmsImageryProvider_nightmap = new Earth.TileMapServiceImageryProvider({
+    
+    let ImageryProvider_nightmap = new Earth.ArcGisMapServerImageryProvider({
         url: 'tiles/nightmap/{z}/{x}/{y}.png'
     })
-    const layer_nightmap = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_nightmap, 0);
+    layer_nightmap = viewer.imageryLayers.addImageryProvider(ImageryProvider_nightmap, 1);
 
-    // const tmsImageryProvider_basemap = new Earth.TileMapServiceImageryProvider({
-    //     url: 'tiles/basemap/L{z}/{y}-{x}.png',
-    // });
-    // const layer_basemap = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemap);
+    const ImageryProvider_basemap = new Earth.ArcGisMapServerImageryProvider({
+        url: 'tiles/basemap/L{z}/{y}-{x}.png',
+    });
+    const layer_basemap = viewer.imageryLayers.addImageryProvider(ImageryProvider_basemap, 2);
 
-    tmsImageryProvider_basemapTxt = new Earth.TileMapServiceImageryProvider({
+    ImageryProvider_basemapTxt = new Earth.ArcGisMapServerImageryProvider({
         url: 'tiles/basemapTxt/L{z}/{y}-{x}.png'
     })
-    layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
+    layer_basemapTxt = viewer.imageryLayers.addImageryProvider(ImageryProvider_basemapTxt, 3);
 
     // 原来index.html中的button方法，已经整合到page_home中去了，无用，待删除  clearLabelBox暂时还有用
     // （已经转移clearLabelBox）
@@ -437,8 +450,8 @@ createEarthModule().then(function () {
         
         $("#mapBottomControlBtnClearLabelBox").click() 
         // 初始化地图高度和视角
-        $("#mapBottomControlBtnTHome").click() 
-
+        $("#mapBottomControlBtnHome").click() 
+        // $("#mapBottomControlBtnfullScreen").click() 
       }, 2000);
 
 
@@ -897,14 +910,16 @@ $(document).ready(function () {
 		if (m_Layer_Sal_Vis) {
 			$("#mapBottomControlBtnSalMap").attr("src", "images/layer_salmap_off.png");
 			m_Layer_Sal_Vis = false;
-			viewer.imageryLayers.remove(layer_basemapTxt)
+			// viewer.imageryLayers.remove(layer_nightmap)
+            
 		}
 		else {
 			$("#mapBottomControlBtnSalMap").attr("src", "images/layer_salmap_on.png");
 			m_Layer_Sal_Vis = true;
-			layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
+			// layer_basemapTxt = viewer.imageryLayers.addImageryProvider(ImageryProvider_nightmap);
 		}
 		// TianDitu_Val_Layer.setVisible(m_Layer_Sal_Vis);
+        layer_nightmap.show = m_Layer_Sal_Vis;
 	});
 
 	// 暂时没有使用 riverSection颜色
