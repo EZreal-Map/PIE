@@ -206,7 +206,7 @@ createEarthModule().then(function () {
                                         show: false,
                                         pixelSize: 1,
                                         color: Earth.Color.BLUE.withAlpha(1),
-                                        heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
+                                        // heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
                                         outlineColor: undefined, //不支持
                                         outlineWidth: undefined, //不支持
                                         distanceDisplayCondition: undefined, //暂不支持
@@ -324,7 +324,7 @@ createEarthModule().then(function () {
                             show: false,
                             pixelSize: 1,
                             color: Earth.Color.BLUE.withAlpha(1),
-                            heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
+                            // heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
                             outlineColor: undefined, //不支持
                             outlineWidth: undefined, //不支持
                             distanceDisplayCondition: undefined, //暂不支持
@@ -334,7 +334,8 @@ createEarthModule().then(function () {
                             image: 'images/' + tmpStationType + '.png',
                             scale: 1,
                             horizontalOrigin: Earth.HorizontalOrigin.CENTER,
-                            verticalOrigin: Earth.VerticalOrigin.CENTER
+                            verticalOrigin: Earth.VerticalOrigin.CENTER,
+                            heigh:100,
                         },
                         // label: {
                         //   show: true,
@@ -423,10 +424,12 @@ createEarthModule().then(function () {
             pickObj.labelBox.show = !pickObj.labelBox.show;
             if (pickObj.polygon) {
                 if (pickObj.labelBox.show) {
-                    pickObj.polygon.color = Earth.Color.fromBytes(255, 0, 0, 200);
+                    // pickObj.polygon.color = Earth.Color.fromBytes(255, 0, 0, 200);
+                    pickObj.polygon.color = Earth.Color.RED;
                 }
                 else {
-                    pickObj.polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
+                    // pickObj.polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
+                    pickObj.polygon.color = Earth.Color.BLUE;
                 }
             }
 
@@ -545,10 +548,13 @@ function refreshMapRiverShow() {
                     polygon: new Earth.Polygon({
                         show: true,
                         hierarchy: Earth.Cartesian3.fromDegreesArray(tmpCoordinates),
-                        color: Earth.Color.fromBytes(0, 0, 255, 200),
+                        // color: Earth.Color.fromBytes(0, 0, 255, 255),
+                        color: Earth.Color.BLUE,
                         heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
+                        // height: -100,
                         outline: true, //好像暂时不支持
                         outlineColor: Earth.Color.RED, //好像暂时不支持
+                        // zIndex: -10,
                     }),
 
                     labelBox: {
@@ -673,7 +679,7 @@ function addGYEventPoint(lng, lat, obj) {
             show: false,
             pixelSize: 1,
             color: Earth.Color.BLUE.withAlpha(1),
-            heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
+            // heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
             outlineColor: undefined, //不支持
             outlineWidth: undefined, //不支持
             distanceDisplayCondition: undefined, //暂不支持
@@ -798,7 +804,9 @@ $(document).ready(function () {
 		for (var i in entityCollection._entities) {
 			entityCollection._entities[i].labelBox.show = false;
 			if (entityCollection._entities[i].polygon) {
-				entityCollection._entities[i].polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
+				// entityCollection._entities[i].polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
+				entityCollection._entities[i].polygon.color = Earth.Color.BLUE;
+
 			}
 		}
 	});
