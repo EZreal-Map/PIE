@@ -867,7 +867,7 @@
        		else if(stcdt == 2){
        			m_StationS = "12021225";
        		}
-       		else if(stcdt){
+       		else if(stcdt == 3){
        			m_StationS = "12021222";
        		}
        		else if(stcdt == 4){
@@ -1188,7 +1188,7 @@
 			var month = dateTime.getMonth() + 1;
 			month = month.toString();
 			month = month < 10 ? "0" + month : month;
-			var day =dateTime. getDate();
+			var day =dateTime.getDate()-7;
 			var nextDay = day - 1; 
 			day = day.toString();
 			day = day < 10 ? "0" + day : day;

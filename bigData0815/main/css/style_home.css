@@ -394,15 +394,18 @@ to {transform: rotate(359deg);}
     font-size: 12pt!important;
     color: #fff;
     position: absolute;
-    top: 11px;
-    left: 70px;
+    top: 26px;
+    left: 80px;
 }
 .t_mbox span{
     font-size: 12pt;
     color: #fff;
     position: absolute;
-    top: 5px;
+    top: 18px;
     left: 60px;
+}
+#gy_Label02 {
+    left: 85px;
 }
 .t_rbox i{
     background: url(../images/indent.png) no-repeat;

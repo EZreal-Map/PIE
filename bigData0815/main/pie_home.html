@@ -873,45 +873,45 @@
                         initialLeftTopChart(tmpWaterLevel);
                         initialLeftTop2Chart(tmpRainLevel);
 
-                        //水质
-                        //					var tmpSectionIndex = $('#sectionSlID').val();
-                        //					var tmpTP = 0,tmpTN = 0,tmpN3 = 0,tmpCOD = 0;
-                        //					if(tmpSectionIndex == 1)
-                        //					{
-                        //						tmpTP = parseFloat(tmpObj.HNZ_TP);
-                        //						tmpTN = parseFloat(tmpObj.HNZ_TN);
-                        //						tmpN3 = parseFloat(tmpObj.HNZ_NH4N);
-                        //						tmpCOD = parseFloat(tmpObj.HNZ_COD);
-                        //					}
-                        //					else if(tmpSectionIndex == 2)//茂仔水
-                        //					{
-                        //						tmpTP = parseFloat(tmpObj.HTK_TP);
-                        //						tmpTN = parseFloat(tmpObj.HTK_TN);
-                        //						tmpN3 = parseFloat(tmpObj.HTK_NH4N);
-                        //						tmpCOD = parseFloat(tmpObj.HTK_COD);
-                        //					}
-                        //					else if(tmpSectionIndex == 3)//赤水洞水
-                        //					{
-                        //						tmpTP = parseFloat(tmpObj.LZ_TP);
-                        //						tmpTN = parseFloat(tmpObj.LZ_TN);
-                        //						tmpN3 = parseFloat(tmpObj.LZ_NH4N);
-                        //						tmpCOD = parseFloat(tmpObj.LZ_COD);
-                        //					}
-                        //					else if(tmpSectionIndex == 4)//新田仔
-                        //					{
-                        //						tmpTP = parseFloat(tmpObj.LZ_TP);
-                        //						tmpTN = parseFloat(tmpObj.LZ_TN);
-                        //						tmpN3 = parseFloat(tmpObj.LZ_NH4N);
-                        //						tmpCOD = parseFloat(tmpObj.LZ_COD);
-                        //					}
-                        //					else if(tmpSectionIndex == 5)//赤水洞水
-                        //					{
-                        //						tmpTP = parseFloat(tmpObj.LZ_TP);
-                        //						tmpTN = parseFloat(tmpObj.LZ_TN);
-                        //						tmpN3 = parseFloat(tmpObj.LZ_NH4N);
-                        //						tmpCOD = parseFloat(tmpObj.LZ_COD);
-                        //					}
-                        //initialWaterQChart([tmpTP,tmpTN,tmpN3,tmpCOD]);					
+                        // //水质
+                        // var tmpSectionIndex = $('#sectionSlID').val();
+                        // var tmpTP = 0,tmpTN = 0,tmpN3 = 0,tmpCOD = 0;
+                        // if(tmpSectionIndex == 1)
+                        // {
+                        //     tmpTP = parseFloat(tmpObj.HNZ_TP);
+                        //     tmpTN = parseFloat(tmpObj.HNZ_TN);
+                        //     tmpN3 = parseFloat(tmpObj.HNZ_NH4N);
+                        //     tmpCOD = parseFloat(tmpObj.HNZ_COD);
+                        // }
+                        // else if(tmpSectionIndex == 2)//茂仔水
+                        // {
+                        //     tmpTP = parseFloat(tmpObj.HTK_TP);
+                        //     tmpTN = parseFloat(tmpObj.HTK_TN);
+                        //     tmpN3 = parseFloat(tmpObj.HTK_NH4N);
+                        //     tmpCOD = parseFloat(tmpObj.HTK_COD);
+                        // }
+                        // else if(tmpSectionIndex == 3)//赤水洞水
+                        // {
+                        //     tmpTP = parseFloat(tmpObj.LZ_TP);
+                        //     tmpTN = parseFloat(tmpObj.LZ_TN);
+                        //     tmpN3 = parseFloat(tmpObj.LZ_NH4N);
+                        //     tmpCOD = parseFloat(tmpObj.LZ_COD);
+                        // }
+                        // else if(tmpSectionIndex == 4)//新田仔
+                        // {
+                        //     tmpTP = parseFloat(tmpObj.LZ_TP);
+                        //     tmpTN = parseFloat(tmpObj.LZ_TN);
+                        //     tmpN3 = parseFloat(tmpObj.LZ_NH4N);
+                        //     tmpCOD = parseFloat(tmpObj.LZ_COD);
+                        // }
+                        // else if(tmpSectionIndex == 5)//赤水洞水
+                        // {
+                        //     tmpTP = parseFloat(tmpObj.LZ_TP);
+                        //     tmpTN = parseFloat(tmpObj.LZ_TN);
+                        //     tmpN3 = parseFloat(tmpObj.LZ_NH4N);
+                        //     tmpCOD = parseFloat(tmpObj.LZ_COD);
+                        // }
+                        // initialWaterQChart([tmpTP,tmpTN,tmpN3,tmpCOD]);					
                     }
                 });
 
@@ -923,34 +923,38 @@
             var m_StationS = "12021220";
             if (stcdt == 1) {
                 m_StationS = "12021220";
+                initialWaterQChart(["2.030","1.254","2.087","6.420"])
             }
             else if (stcdt == 2) {
                 m_StationS = "12021225";
+                initialWaterQChart(["2.530","2.254","2.887","5.420"])
             }
-            else if (stcdt) {
+            else if (stcdt == 3) {
                 m_StationS = "12021222";
+                initialWaterQChart(["3.120","2.033","2.616","6.820"])
             }
             else if (stcdt == 4) {
                 m_StationS = "12021226";
+                initialWaterQChart(["2.920","2.326","2.765","7.620"])
             }
             else if (stcdt == 5) {
                 m_StationS = "12021227";
+                initialWaterQChart(["2.030","2.354","2.905","6.420"])
             }
+            //     RunWebServiceJSON(true, "getWaterqualitydatalast", "/pms/Base", "/doreaddata/getdata", "STCDT", m_StationS, function (data) {
+            //     data = $(data).children().text();
+            //     data = JSON.parse(data);
+            //     if (data.length > 0) {
+            //         var PH = data[5].AVGV;
+            //         var DO = data[4].AVGV;
+            //         var COD = data[1].AVGV;
+            //         var TN = data[3].AVGV;
+            //         var TP = data[0].AVGV;
+            //         var NH = data[2].AVGV;
 
-            RunWebServiceJSON(true, "getWaterqualitydatalast", "/pms/Base", "/doreaddata/getdata", "STCDT", m_StationS, function (data) {
-                data = $(data).children().text();
-                data = JSON.parse(data);
-                if (data.length > 0) {
-                    var PH = data[5].AVGV;
-                    var DO = data[4].AVGV;
-                    var COD = data[1].AVGV;
-                    var TN = data[3].AVGV;
-                    var TP = data[0].AVGV;
-                    var NH = data[2].AVGV;
-
-                    initialWaterQChart([TP, TN, NH, COD]);
-                }
-            });
+            //         initialWaterQChart([TP, TN, NH, COD]);
+            //     }
+            // });
         }
 
         var tmpSSSSSSS = 0;
@@ -1233,6 +1237,7 @@
         })
 
         var m_WeatherReportList = [];
+        var currentDatetime;
         /**
          * 刷新天气预报数据
          */
@@ -1244,7 +1249,7 @@
             var month = dateTime.getMonth() + 1;
             month = month.toString();
             month = month < 10 ? "0" + month : month;
-            var day = dateTime.getDate();
+            var day = dateTime.getDate()-7;
             var nextDay = day - 1;
             day = day.toString();
             day = day < 10 ? "0" + day : day;
@@ -1260,7 +1265,7 @@
             hour = hour.toString();
             hour = hour < 10 ? "0" + hour : hour;
             // 拼接currentDatetime 格式为yyyy--mm--dd hh:mm:ss
-            var currentDatetime = `${year}-${month}-${day} ${hour}:00:00`;
+            currentDatetime = `${year}-${month}-${day} ${hour}:00:00`;
 
 
             var dataObj = {
@@ -1326,6 +1331,7 @@
         }
 
         var m_WeatherReportCurrentIndex = 0;
+
         /**
          * 气象预报的列表动画
          */
@@ -1399,7 +1405,9 @@
                         m_WaterReportList = [];
                         var tmpLen = tmpObjs.length;
                         var tmpTTTid = 0;
-                        var tmpStartTimeStr = tmpObjs[0].begintime;
+                        tmpObjs[0].outputFlowList = 1.5;
+                        // var tmpStartTimeStr = tmpObjs[0].begintime;           
+                        var tmpStartTimeStr = currentDatetime;
                         //tmpStartTimeStr = tmpStartTimeStr.substring(9,11);
                         //var tmpStartHourInt = parseInt(tmpStartTimeStr);
                         for (i = 0; i < tmpLen; i++) {
@@ -1411,7 +1419,7 @@
                             //	tmphourInt = "0"+tmphourInt;
                             //tmpRowData.time = ""+tmphourInt+":00";
                             var tmpHour = new Date((new Date(tmpStartTimeStr).getTime() + i * 15 * 60 * 1000));
-                            tmpRowData.time = tmpHour.Format("HH:mm:00");
+                            tmpRowData.time = tmpHour.Format("HH:mm");
                             var tmpColor = '#2FEDA5';
 
                             var tmpisFontW = "";
