@@ -936,7 +936,7 @@
         }
 
         var myDate = new Date();
-        var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
+        var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3)
         var oldyear = oldDate.getFullYear(); //获取当前年
         var year = myDate.getFullYear(); //获取当前年
         var oldmonth = oldDate.getMonth() + 1; //获取当前月
@@ -1226,7 +1226,7 @@
                     console.log('complete');
                 },
             });
-        }, 3000);
+        }, 30000);
 
     </script>
 

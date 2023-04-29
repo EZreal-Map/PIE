@@ -21,8 +21,8 @@
 			border: none;
 			color: #00F6FF;
 			font-size: 16pt;
-			height: 38px;
-			line-height: 38px;
+			height: 40px;
+			line-height: 44px;
 			/*很关键：将默认的select选择框样式清除*/
 			appearance: none;
 			-moz-appearance: none;
@@ -50,7 +50,6 @@
 			background-size: 100% 100%;
 			/*设置左右宽度比例*/
 			/*height: 3px;/*横条的高度*/
-			*/
 		}
 		/*拖动块的样式*/
 		
@@ -457,8 +456,8 @@
 			<div class="content_center">
 				<div class="center_top_shuiqin">
 					<div class="centerTabTitle"><img src="images/icon03.png" /> 地图</div>
-					<span id="localtime" style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 60px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
-					<span id="localtime2" style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 165px; top:140px; width：100px;z-index: 9990;">10:00:00</span>
+					<span id="localtime" style="font-size:18pt; font-family:yejing; font-weight:bold;position: absolute; left: 60px; top:140px; width:100px;z-index: 9990;">10:00:00</span>
+					<span id="localtime2" style="font-size:40pt; font-family:yejing; font-weight:bold;position: absolute; left: 165px; top:140px; width:100px;z-index: 9990;">10:00:00</span>
 					<iframe name="weather_inc" src="http://i.tianqi.com/index.php?c=code&id=48&color=%232FEDA5" width="180" height="150" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="position: absolute; left: 850px; top:140px; z-index: 9990;"></iframe>
 					<div class="xuanzhe_riqi">
 						<div class="rili_tubiao" onclick="showDateSelect();"></div>
@@ -486,7 +485,7 @@
 			<div class="content_right">
 				<div class="topPanel" style="padding-left: 5px;">
 					<div class="title">
-						<div style="display:float;margin: 10px;line-height: 38px;font-size: 14pt;margin-left: 230px;font-weight：bold ;">
+						<div style="display:float;margin: 10px;line-height: 38px;font-size: 14pt;margin-left: 230px;font-weight:bold;">
 							<strong>站点：
 							<input type="radio" name="stationRadio" value="1" checked/> 横沥口
 							<input type="radio" name="stationRadio" value="2" /> 茂仔水</strong>
@@ -569,7 +568,7 @@
       				$("#dateDaySelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
 		        }
 		        $('#dataSelectID').click(function () {
-		            var tmpStr = $("#dateYearSelectID").val();
+		            var tmpStr = $("#dateYearSelectID").val()-3;
 		            if($("#dateMonthSelectID").val()<10)
 		            	tmpStr += "-0"+$("#dateMonthSelectID").val();
 		            else
@@ -933,12 +932,12 @@ function echarts6(dataV) {
 		return s < 10 ? '0' + s : s;
 	}
 
-	var myDate = new Date();
-	var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
+	var myDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3);
+	var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3 )
 	var oldyear = oldDate.getFullYear(); //获取当前年
 	var year = myDate.getFullYear(); //获取当前年
 	var oldmonth = oldDate.getMonth() + 1; //获取当前月
-	var oldmonth = oldDate.getMonth() + 1; //获取当前月
+	var oldmonth = oldDate.getMonth(); //获取当前月
 	var month = myDate.getMonth() + 1; //获取当前月
 	var date = myDate.getDate(); //获取当前日
 	var olddate = oldDate.getDate(); //获取当前日
@@ -950,7 +949,7 @@ function echarts6(dataV) {
 	var oldh = oldDate.getHours(); //获取当前小时数(0-23)
 	var oldm = oldDate.getMinutes(); //获取当前分钟数(0-59)
 	var olds = oldDate.getSeconds();
-	var old = year + '-' + getNow(oldmonth) + "-" + getNow(olddate) + " " + getNow(oldh) + ':' + getNow(oldm) + ":" + getNow(olds);
+	var old = oldyear + '-' + getNow(oldmonth) + "-" + getNow(olddate) + " " + getNow(oldh) + ':' + getNow(oldm) + ":" + getNow(olds);
 	var now = year + '-' + getNow(month) + "-" + getNow(date) + " " + getNow(h) + ':' + getNow(m) + ":" + getNow(s);
 
 	var V3 = null, V4 = null;
@@ -964,6 +963,7 @@ function echarts6(dataV) {
 					for(i = 0; i < data.length; i++) {
 						var AVGV = data[i].AVGV;
 						var time = data[i].TIME;
+						time = parseInt(time.slice(0,4))+3 + time.slice(4);
 						timedata.push(time);
 						V.push(AVGV);
 						if(i + 1 == data.length) {
@@ -976,8 +976,8 @@ function echarts6(dataV) {
 					timedata3 = timedata;
 					if (V4!=null && V3!=null)
 				    {
-				    	echarts3(timedata4, V3, V4);
-						echarts3(timedata3, V3);
+				    	echarts3(timedata3, V3, V4);
+						// echarts3(timedata3, V3);
 				    }	
 				})
 		
@@ -990,6 +990,7 @@ function echarts6(dataV) {
 					for(i = 0; i < data.length; i++) {
 						var AVGV = data[i].AVGV;
 						var time = data[i].TIME;
+						time = parseInt(time.slice(0,4))+3 + time.slice(4);
 						timedata.push(time);
 						V.push(AVGV);
 						if(i + 1 == data.length) {
@@ -1002,6 +1003,7 @@ function echarts6(dataV) {
 					echarts3(timedata4, V4);
 					if (V4!=null && V3!=null)
 						    echarts3(timedata4, V3, V4);
+							// echarts3(timedata3, V3);
 					})
 
 		//分钟数查水位table
@@ -1032,6 +1034,10 @@ function echarts6(dataV) {
 			            
 			            for(var tmpI in data){
 							var tmpitem01 = data[tmpI];
+
+							var time = tmpitem01.TIME;
+							time = parseInt(time.slice(0,4))+3 + time.slice(4);
+							tmpitem01.TIME = time;
 			            	
 							tmpDTUTBHTML+='<tr class="aaa" style="font-size: 16pt; " align="center" >'
 			            		+'<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpitem01.TIME
@@ -1064,6 +1070,10 @@ function echarts6(dataV) {
 			            
 			            for(var tmpI in data){
 							var tmpitem01 = data[tmpI];
+							
+							var time = tmpitem01.TIME;
+							time = parseInt(time.slice(0,4))+3 + time.slice(4);
+							tmpitem01.TIME = time;
 			            	
 							tmpDTUTBHTML+='<tr class="aaa" style="font-size: 16pt; " align="center" >'
 			            		+'<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">'+tmpitem01.TIME
@@ -1094,10 +1104,10 @@ function echarts6(dataV) {
        		}
     });
     
-    		function showDateSelect()
+    	function showDateSelect()
 		{
 			var tmpStrs = m_CurrentQueryData.split('-');
-			$("#dateYearSelectID").val(parseInt(tmpStrs[0]));
+			$("#dateYearSelectID").val(parseInt(tmpStrs[0])+3);
 			$("#dateMonthSelectID").val(parseInt(tmpStrs[1]));
 			$("#dateDaySelectID").val(parseInt(tmpStrs[2]));
 			$('.bgPop3,.pop3').show();			
