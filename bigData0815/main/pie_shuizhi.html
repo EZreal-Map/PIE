@@ -31,8 +31,8 @@
         border: none;
         color: #00F6FF;
         font-size: 16pt;
-        height: 38px;
-        line-height: 38px;
+        height: 40px;
+        line-height: 44px;
         /*很关键：将默认的select选择框样式清除*/
         appearance: none;
         -moz-appearance: none;
@@ -662,11 +662,13 @@
         <div class="shuizhi_xia" style="padding-top: 29px;font-size: 16pt;">
             <div class="zhengwen_tubiao_5_2">
 
-                <table class="layui-table" style=" height:100%;width: 94%;margin-left: 0px;">
-								<colgroup>
-									<col width=" 150">
+                <table class="layui-table" style=" height:100%;width: 94%;margin-left: 0px; cursor: default;">
+					<colgroup>
+					<!-- <col width=" 150"> -->
+                    <col>
                     </col>
-                    <col width="150">
+                    <!-- <col width="150"> -->
+                    <col>
                     </col>
                     <col>
                     </col>
@@ -674,29 +676,36 @@
                     <thead>
                         <tr>
                             <th>当前水质</th>
-                            <th>当前水质等级</th>
+                            <th>指标等级</th>
+                            <th>水质总指标等级</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td id="PH" height="35.5">1</td>
+                            <td id="PH" height="35.5" title="pH">1</td>
+                            <td id="PHdegree" height="35.5" title="pH">Ⅱ类</td>
                             <td bgcolor="#348f50" rowspan="6" class="colordiv3 "
                                 style="font-size:2rem !important;margin: 0; ">Ⅱ类</td>
                         </tr>
                         <tr>
-                            <td id="DO" height="35.5">2</td>
+                            <td id="DO" height="35.5" title="DO">2</td>
+                            <td id="DOdegree" height="35.5" title="DO">Ⅱ类</td>
                         </tr>
                         <tr>
-                            <td id="COD" height="35.5">3</td>
+                            <td id="COD" height="35.5" title="COD">3</td>
+                            <td id="CODdegree" height="35.5" title="COD">Ⅱ类</td>
                         </tr>
                         <tr>
-                            <td id="TN" height="35.5">4</td>
+                            <td id="TN" height="35.5" title="TN">4</td>
+                            <td id="TNdegree" height="35.5" title="TN">Ⅱ类</td>
                         </tr>
                         <tr>
-                            <td id="TP" height="35.5">5</td>
+                            <td id="TP" height="35.5" title="TP">5</td>
+                            <td id="TPdegree" height="35.5" title="TP">Ⅱ类</td>
                         </tr>
                         <tr>
-                            <td id="NH" height="35.5">6</td>
+                            <td id="NH" height="35.5" title="NH">6</td>
+                            <td id="NHdegree" height="35.5" title="NH">Ⅱ类</td>
                         </tr>
                     </tbody>
                 </table>
@@ -768,14 +777,14 @@
                             <th width="130" bgcolor="#0c2857">V类</th>
                         </tr>
                         <tr height="37" style="border: 1px #0c2857 solid;">
-                            <th>PH</th>
+                            <th>pH</th>
                             <th></th>
                             <th width="80" colspan="5" class="beijin_tupian">6~9</th>
 
                         </tr>
                         <tr height="37" style="border: 1px #0c2857 solid;">
                             <th>DO</th>
-                            <th>&nbsp;≤&nbsp;</th>
+                            <th>&nbsp;≥&nbsp;</th>
                             <th bgcolor="#57acec">7.5</th>
                             <th bgcolor="#088f06">6</th>
                             <th bgcolor="#86771a">5</th>
@@ -784,7 +793,7 @@
                         </tr>
                         <tr height="37" style="border: 1px #0c2857 solid;">
                             <th>COD</th>
-                            <th>&nbsp;≥&nbsp;</th>
+                            <th>&nbsp;≤&nbsp;</th>
                             <th bgcolor="#57acec">15</th>
                             <th bgcolor="#088f06">15</th>
                             <th bgcolor="#86771a">20</th>
@@ -793,7 +802,7 @@
                         </tr>
                         <tr height="37" style="border: 1px #0c2857 solid;">
                             <th>TN</th>
-                            <th>&nbsp;≥&nbsp;</th>
+                            <th>&nbsp;≤&nbsp;</th>
                             <th bgcolor="#57acec">0.2</th>
                             <th bgcolor="#088f06">0.5</th>
                             <th bgcolor="#86771a">1</th>
@@ -802,7 +811,7 @@
                         </tr>
                         <tr height="37" style="border: 1px #0c2857 solid;">
                             <th>TP</th>
-                            <th>&nbsp;≥&nbsp;</th>
+                            <th>&nbsp;≤&nbsp;</th>
                             <th bgcolor="#57acec">0.02</th>
                             <th bgcolor="#088f06">0.1</th>
                             <th bgcolor="#86771a">0.2</th>
@@ -811,7 +820,7 @@
                         </tr>
                         <tr height="37" style="border: 1px #0c2857 solid;">
                             <th>NH₃-N</th>
-                            <th>&nbsp;≥&nbsp;</th>
+                            <th>&nbsp;≤&nbsp;</th>
                             <th bgcolor="#57acec">0.15</th>
                             <th bgcolor="#088f06">0.5</th>
                             <th bgcolor="#86771a">1</th>
@@ -865,7 +874,7 @@
             </div>
             <div class="yuo_xia_shuizhi">
                 <div id="shuizhi_youxia"
-                    style="float: top;margin: 20px;margin-top: 30px !important;height: 250px;width: 100%;">
+                    style="float: top;margin: 8px;margin-top: 10px !important;height: 250px;width: 100%;">
                 </div>
             </div>
         </div>
@@ -930,7 +939,7 @@
                 $("#dateDaySelectID").append("<option class='selectoptionbg' value='" + tmpI + "'>" + tmpI2 + "</option>'");
             }
             $('#dataSelectID').click(function () {
-                var tmpStr = $("#dateYearSelectID").val();
+                var tmpStr = $("#dateYearSelectID").val()-3;
                 if ($("#dateMonthSelectID").val() < 10)
                     tmpStr += "-0" + $("#dateMonthSelectID").val();
                 else
@@ -977,12 +986,12 @@
         function getNow(s) {
             return s < 10 ? '0' + s : s;
         }
-        var myDate = new Date();
-        var oldDate = new Date(new Date().getTime() - 20 * 24 * 60 * 60 * 1000)
+        var myDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3);
+        var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3)
         var oldyear = oldDate.getFullYear(); //获取当前年
         var year = myDate.getFullYear(); //获取当前年
-        var oldmonth = oldDate.getMonth() + 1; //获取当前月
-        var oldmonth = oldDate.getMonth() + 1; //获取当前月
+        // var oldmonth = oldDate.getMonth() + 1; //获取当前月
+        var oldmonth = oldDate.getMonth(); //获取当前月
         var month = myDate.getMonth() + 1; //获取当前月
         var date = myDate.getDate(); //获取当前日
         var olddate = oldDate.getDate(); //获取当前日
@@ -994,7 +1003,7 @@
         var oldh = oldDate.getHours(); //获取当前小时数(0-23)
         var oldm = oldDate.getMinutes(); //获取当前分钟数(0-59)
         var olds = oldDate.getSeconds();
-        var old = year + '-' + getNow(oldmonth) + "- " + getNow(olddate) + " " + getNow(oldh) + ':' + getNow(oldm) + ": " + getNow(olds);
+        var old = oldyear + '-' + getNow(oldmonth) + "- " + getNow(olddate) + " " + getNow(oldh) + ':' + getNow(oldm) + ": " + getNow(olds);
         var now = year + '-' + getNow(month) + "- " + getNow(date) + " " + getNow(h) + ':' + getNow(m) + ": " + getNow(s);
 
         var m_StationS = "12021220", m_StationY = "10200041";
@@ -1038,20 +1047,110 @@
 
                     var PH = data[5].AVGV;
                     $("#PH").html(PH);
+                    var PHdegree;
+                    if (PH >= 6 && PH <= 9) {
+                        PHdegree = 'Ⅰ类'
+                    } else {
+                        PHdegree = '劣V类'
+                    }
+                    $("#PHdegree").html(PHdegree);
+
                     var DO = data[4].AVGV;
                     $("#DO").html(DO);
+                    var DOdegree;
+                    if (DO >= 7.5) {
+                        DOdegree = 'Ⅰ类'
+                    } else if (DO >= 6) {
+                        DOdegree = 'Ⅱ类'
+                    } else if (DO >= 5) {
+                        DOdegree = 'Ⅲ类'
+                    } else if (DO >= 3) {
+                        DOdegree = 'Ⅳ类'
+                    } else if (DO >= 2) {
+                        DOdegree = 'V类'
+                    } else {
+                        DOdegree = '劣V类'
+                    }
+                    $("#DOdegree").html(DOdegree);
+
+
                     var COD = data[1].AVGV;
                     $("#COD").html(COD);
                     $("#COD1").html(COD);
+                    var CODdegree;
+                    if (COD <= 15) {
+                        CODdegree = 'Ⅰ类'
+                    } else if (COD <= 15) {
+                        CODdegree = 'Ⅱ类'
+                    } else if (COD <= 20) {
+                        CODdegree = 'Ⅲ类'
+                    } else if (COD <= 30) {
+                        CODdegree = 'Ⅳ类'
+                    } else if (COD <= 40) {
+                        CODdegree = 'V类'
+                    } else {
+                        CODdegree = '劣V类'
+                    }
+                    $("#CODdegree").html(CODdegree);
+
                     var TN = data[3].AVGV;
                     $("#TN").html(TN);
                     $("#TN1").html(TN);
+                    var TNdegree;
+                    if (TN <= 0.2) {
+                        TNdegree = 'Ⅰ类'
+                    } else if (TN <= 0.5) {
+                        TNdegree = 'Ⅱ类'
+                    } else if (TN <= 1) {
+                        TNdegree = 'Ⅲ类'
+                    } else if (TN <= 1.5) {
+                        TNdegree = 'Ⅳ类'
+                    } else if (TN <= 2) {
+                        TNdegree = 'V类'
+                    } else {
+                        TNdegree = '劣V类'
+                    }
+                    $("#TNdegree").html(TNdegree);
+
                     var TP = data[0].AVGV;
                     $("#TP").html(TP);
                     $("#TP1").html(TP);
+                    var TPdegree;
+                    if (TP <= 0.02) {
+                        TPdegree = 'Ⅰ类'
+                    } else if (TP <= 0.1) {
+                        TPdegree = 'Ⅱ类'
+                    } else if (TP <= 0.2) {
+                        TPdegree = 'Ⅲ类'
+                    } else if (TP <= 0.3) {
+                        TPdegree = 'Ⅳ类'
+                    } else if (TP <= 0.4) {
+                        TPdegree = 'V类'
+                    } else {
+                        TPdegree = '劣V类'
+                    }
+                    $("#TPdegree").html(TPdegree);
+
+
                     var NH = data[2].AVGV;
                     $("#NH").html(NH);
                     $("#NH1").html(NH);
+                    var NHdegree;
+                    if (NH <= 0.2) {
+                        NHdegree = 'Ⅰ类'
+                    } else if (NH <= 0.5) {
+                        NHdegree = 'Ⅱ类'
+                    } else if (NH <= 1) {
+                        NHdegree = 'Ⅲ类'
+                    } else if (NH <= 1.5) {
+                        NHdegree = 'Ⅳ类'
+                    } else if (NH <= 2) {
+                        NHdegree = 'V类'
+                    } else {
+                        NHdegree = '劣V类'
+                    }
+                    $("#NHdegree").html(NHdegree);
+
                     var a = [];
                     a.push(COD);
                     a.push(TN);
@@ -1077,6 +1176,8 @@
                 for (i = 0; i < data.length; i++) {
                     var AVGV = data[i].AVGV;
                     var time = data[i].TIME;
+
+                    time = parseInt(time.slice(0,4))+3 + time.slice(4);
                     jsondata.push(randomData());
 
                 }
@@ -1146,6 +1247,10 @@
 
                 for (var tmpI in data) {
                     var tmpitem01 = data[tmpI];
+
+                    var time = tmpitem01.TIME;
+					time = parseInt(time.slice(0,4))+3 + time.slice(4);
+                    tmpitem01.TIME = time;
 
                     tmpDTUTBHTML += '<tr class="aaa" style="font-size: 16pt; " align="center" >'
                         + '<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">' + tmpitem01.TIME
@@ -1235,16 +1340,16 @@
                     },
                     "indicator": [{
                         "name": "COD",
-                        "max": 40
+                        "max": 15
                     }, {
                         "name": "TN",
-                        "max": 2
+                        "max": 0.5
                     }, {
                         "name": "TP",
-                        "max": 1
+                        "max": 0.1
                     }, {
                         "name": "NH₃N",
-                        "max": 2
+                        "max": 0.5
                     }]
                 },
                 "series": [{
@@ -1676,7 +1781,7 @@
 
         function showDateSelect() {
             var tmpStrs = m_CurrentQueryData.split('-');
-            $("#dateYearSelectID").val(parseInt(tmpStrs[0]));
+            $("#dateYearSelectID").val(parseInt(tmpStrs[0])+3);
             $("#dateMonthSelectID").val(parseInt(tmpStrs[1]));
             $("#dateDaySelectID").val(parseInt(tmpStrs[2]));
             $('.bgPop3,.pop3').show();

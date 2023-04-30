@@ -893,7 +893,7 @@
       				$("#dateDaySelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI2+"</option>'");
 		        }
 		        $('#dataSelectID').click(function () {
-		            var tmpStr = $("#dateYearSelectID").val();
+		            var tmpStr = $("#dateYearSelectID").val()-3;
 		            if($("#dateMonthSelectID").val()<10)
 		            	tmpStr += "-0"+$("#dateMonthSelectID").val();
 		            else
@@ -940,12 +940,12 @@
 		function getNow(s) {
 			return s < 10 ? '0' + s : s;
 		}
-		var myDate = new Date();
-		var oldDate = new Date(new Date().getTime() - 20*24 * 60 * 60 * 1000)
+		var myDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3);
+		var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3)
 		var oldyear = oldDate.getFullYear(); //获取当前年
 		var year = myDate.getFullYear(); //获取当前年
-		var oldmonth = oldDate.getMonth() + 1; //获取当前月
-		var oldmonth = oldDate.getMonth() + 1; //获取当前月
+		// var oldmonth = oldDate.getMonth() + 1; //获取当前月
+		var oldmonth = oldDate.getMonth(); //获取当前月
 		var month = myDate.getMonth() + 1; //获取当前月
 		var date = myDate.getDate(); //获取当前日
 		var olddate = oldDate.getDate(); //获取当前日
@@ -957,7 +957,7 @@
 		var oldh = oldDate.getHours(); //获取当前小时数(0-23)
 		var oldm = oldDate.getMinutes(); //获取当前分钟数(0-59)
 		var olds = oldDate.getSeconds();
-		var old = year + '-' + getNow(oldmonth) + "- " + getNow(olddate) + " " + getNow(oldh) + ':' + getNow(oldm) + ": " + getNow(olds);
+		var old = oldyear + '-' + getNow(oldmonth) + "- " + getNow(olddate) + " " + getNow(oldh) + ':' + getNow(oldm) + ": " + getNow(olds);
 		var now = year + '-' + getNow(month) + "- " + getNow(date) + " " + getNow(h) + ':' + getNow(m) + ": " + getNow(s);
 		 
 		 var m_StationS = "12021220", m_StationY = "10200041";
