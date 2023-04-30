@@ -372,7 +372,7 @@
 							<li class="shuiqin_qianzi">赤水洞水断面，河道底高程<label id="cs_digao">xx</label>m，河道岸坡高程<label id="cs_angao">xx</label>m，当前水位<label id="cs_shuiwei">xx</label>m</li>
 							<li class="shuiqin_qianzi">坑背河断面，河道底高程<label id="kenbei_digao">xx</label>m，河道岸坡高程<label id="kenbei_angao">xx</label>m，当前水位<label id="kenbei_shuiwei">xx</label>m</li>
 							<li class="shuiqin_qianzi">深圳水库入库断面，河道底高程<label id="szsk_digao">xx</label>m，河道岸坡高程<label id="szsk_angao">xx</label>m，当前水位<label id="szsk_shuiwei">xx</label>m</li>
-							<div class="sszxgs_xiabiao">深水咨询公司</div>
+							<div class="sszxgs_xiabiao">梧桐山河水文</div>
 						</div>
 					
 				</div>
@@ -442,9 +442,9 @@
 			//		refreshData();
 			//		setInterval(refreshData,3000);///刷新数据
 			//		setInterval(refreshSalData,2000);///刷新数据
-			var d = new Date();
-			var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-			$("#show_riqi").text(str);
+			// var d = new Date();
+			// var str = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+			// $("#show_riqi").text(str);
 				var date = new Date();
 		        var seperator1 = "-";
 		        var year = date.getFullYear();
@@ -461,7 +461,7 @@
 
 
              $("#lblTime").bind("input propertychange change", function(event) {
-					//
+					$("#show_riqi").text(document.getElementById("lblTime").value)
 					refreshSchedulingPlan(new Date(event.timeStamp));
 				});
 			
@@ -601,7 +601,10 @@
 
 			function refreshSchedulingPlan(queryDataTime) {		
 				queryDataTime=$("#lblTime").val();
-var now=new Date();
+				var time = queryDataTime;
+				time = parseInt(time.slice(0,4))-3 + time.slice(4);
+                queryDataTime = time;
+				var now=new Date();
 				var hh=now.getHours();
 
 				queryDataTime=queryDataTime+ ' '+hh+':00'//'2019-05-12'
@@ -705,7 +708,7 @@ var now=new Date();
 						//circleChartChange();
 						//$("#top_right_div").html(tmpTotalHTML);
                         //测试
-                        tmpPlanID=28181
+                        // tmpPlanID=28181
 						if(tmpPlanID!='')
 			            	exeSchedulingPlan(document.getElementById(tmpDefaultBtnID), tmpPlanID);
 

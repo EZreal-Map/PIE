@@ -623,7 +623,7 @@
 
 			function refreshSchedulingPlan(queryDataTime) {		
 				queryDataTime=$("#lblTime").val();
-var now=new Date();
+				var now=new Date();
 				var hh=now.getHours();
 
 				queryDataTime=queryDataTime+ ' '+hh+':00'//'2019-05-12'
@@ -1044,6 +1044,7 @@ min:25,
 
 			var m_sectionID = [1, 12, 18, 52, 57];
 			//时间可以切换
+			// 此处refreshSchedulingPlan exeSchedulingPlan是正常时间没有减去3年，但是好像会被后面覆盖
 			refreshSchedulingPlan(dateToString(new Date()));
 
 			exeSchedulingPlan(undefined, "28181");
