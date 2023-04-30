@@ -547,7 +547,7 @@
 		        });
 		        
 		        $("#dateYearSelectID").empty();
-		        for(var tmpI = 2017; tmpI < 2030; tmpI++)
+		        for(var tmpI = 2023; tmpI < 2030; tmpI++)
 		        {
       				$("#dateYearSelectID").append("<option class='selectoptionbg' value='"+tmpI+"'>"+tmpI+"</option>'");
 		        }
@@ -580,7 +580,8 @@
 		            m_CurrentQueryData = tmpStr;
 		            old = m_CurrentQueryData;
 		            refreshDatas();
-		        });		        
+		        });
+				// $('#dataSelectID').click()		        
 		    })
 		</script>
 
@@ -937,7 +938,7 @@ function echarts6(dataV) {
 	var oldyear = oldDate.getFullYear(); //获取当前年
 	var year = myDate.getFullYear(); //获取当前年
 	var oldmonth = oldDate.getMonth() + 1; //获取当前月
-	var oldmonth = oldDate.getMonth(); //获取当前月
+	// var oldmonth = oldDate.getMonth(); //获取当前月
 	var month = myDate.getMonth() + 1; //获取当前月
 	var date = myDate.getDate(); //获取当前日
 	var olddate = oldDate.getDate(); //获取当前日

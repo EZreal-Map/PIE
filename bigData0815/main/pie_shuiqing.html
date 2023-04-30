@@ -33,8 +33,8 @@
         border: none;
         color: #00F6FF;
         font-size: 16pt;
-        height: 38px;
-        line-height: 38px;
+        height: 40px;
+        line-height: 44px;
         /*很关键：将默认的select选择框样式清除*/
         appearance: none;
         -moz-appearance: none;
@@ -571,7 +571,7 @@
                 $("#dateDaySelectID").append("<option class='selectoptionbg' value='" + tmpI + "'>" + tmpI2 + "</option>'");
             }
             $('#dataSelectID').click(function () {
-                var tmpStr = $("#dateYearSelectID").val();
+                var tmpStr = $("#dateYearSelectID").val()-3;
                 if ($("#dateMonthSelectID").val() < 10)
                     tmpStr += "-0" + $("#dateMonthSelectID").val();
                 else
@@ -935,12 +935,12 @@
             return s < 10 ? '0' + s : s;
         }
 
-        var myDate = new Date();
+        var myDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3);
         var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3)
         var oldyear = oldDate.getFullYear(); //获取当前年
         var year = myDate.getFullYear(); //获取当前年
         var oldmonth = oldDate.getMonth() + 1; //获取当前月
-        var oldmonth = oldDate.getMonth() + 1; //获取当前月
+        // var oldmonth = oldDate.getMonth(); //获取当前月
         var month = myDate.getMonth() + 1; //获取当前月
         var date = myDate.getDate(); //获取当前日
         var olddate = oldDate.getDate(); //获取当前日
@@ -950,9 +950,12 @@
         var s = myDate.getSeconds();
 
         var oldh = oldDate.getHours(); //获取当前小时数(0-23)
+        oldh = 0;
         var oldm = oldDate.getMinutes(); //获取当前分钟数(0-59)
+        oldm = 0;
         var olds = oldDate.getSeconds();
-        var old = year + '-' + getNow(oldmonth) + "-" + getNow(olddate) + " " + getNow(oldh) + ':' + getNow(oldm) + ":" + getNow(olds);
+        olds = 0;
+        var old = oldyear + '-' + getNow(oldmonth) + "-" + getNow(olddate) + " " + getNow(oldh) + ':' + getNow(oldm) + ":" + getNow(olds);
         var now = year + '-' + getNow(month) + "-" + getNow(date) + " " + getNow(h) + ':' + getNow(m) + ":" + getNow(s);
 
         var V3 = null, V4 = null;
@@ -966,6 +969,9 @@
                 for (i = 0; i < data.length; i++) {
                     var AVGV = data[i].AVGV;
                     var time = data[i].TIME;
+
+                    time = parseInt(time.slice(0,4))+3 + time.slice(4);
+
                     timedata.push(time);
                     V.push(AVGV);
                     if (i + 1 == data.length) {
@@ -977,8 +983,8 @@
                 V3 = V;
                 timedata3 = timedata;
                 if (V4 != null && V3 != null) {
-                    echarts3(timedata4, V3, V4);
-                    echarts3(timedata3, V3);
+                    echarts3(timedata3, V3, V4);
+                    // echarts3(timedata3, V3);
                 }
             })
 
@@ -991,6 +997,9 @@
                 for (i = 0; i < data.length; i++) {
                     var AVGV = data[i].AVGV;
                     var time = data[i].TIME;
+
+                    time = parseInt(time.slice(0,4))+3 + time.slice(4);
+
                     timedata.push(time);
                     V.push(AVGV);
                     if (i + 1 == data.length) {
@@ -1000,7 +1009,7 @@
                 }
                 V4 = V;
                 timedata4 = timedata;
-                echarts3(timedata4, V4);
+                // echarts3(timedata4, V4);
                 if (V4 != null && V3 != null)
                     echarts3(timedata4, V3, V4);
             })
@@ -1034,6 +1043,10 @@
                 for (var tmpI in data) {
                     var tmpitem01 = data[tmpI];
 
+                    var time = tmpitem01.TIME;
+					time = parseInt(time.slice(0,4))+3 + time.slice(4);
+                    tmpitem01.TIME = time;
+
                     tmpDTUTBHTML += '<tr class="aaa" style="font-size: 16pt; " align="center" >'
                         + '<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">' + tmpitem01.TIME
                         + '</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">' + tmpitem01.AVGV
@@ -1066,6 +1079,10 @@
                 for (var tmpI in data) {
                     var tmpitem01 = data[tmpI];
 
+                    var time = tmpitem01.TIME;
+					time = parseInt(time.slice(0,4))+3 + time.slice(4);
+                    tmpitem01.TIME = time;
+
                     tmpDTUTBHTML += '<tr class="aaa" style="font-size: 16pt; " align="center" >'
                         + '<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">' + tmpitem01.TIME
                         + '</td><td style="color: #00fcff; font-size: 18px; padding: 5px 0;">' + tmpitem01.AVGV
@@ -1096,7 +1113,7 @@
 
         function showDateSelect() {
             var tmpStrs = m_CurrentQueryData.split('-');
-            $("#dateYearSelectID").val(parseInt(tmpStrs[0]));
+            $("#dateYearSelectID").val(parseInt(tmpStrs[0])+3);
             $("#dateMonthSelectID").val(parseInt(tmpStrs[1]));
             $("#dateDaySelectID").val(parseInt(tmpStrs[2]));
             $('.bgPop3,.pop3').show();
@@ -1214,7 +1231,7 @@
             // $(mapBottomControlBtnSalMap).click()
 
             viewer.camera.flyTo({
-                destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 3500.0),
+                destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 2500.0),
 
                 orientation: {
                     heading: Earth.Math.toRadians(0),
@@ -1226,7 +1243,7 @@
                     console.log('complete');
                 },
             });
-        }, 30000);
+        }, 3000);
 
     </script>
 
