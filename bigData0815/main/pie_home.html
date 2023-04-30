@@ -1243,27 +1243,57 @@
          */
         function refreshWeatherReportData() {
             // 增加 获取当前时间格式的不同拼接 作为筛选条件
-            var dateTime = new Date();
+            var dateTime = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 30);
+
+            var hour = dateTime.getHours() + 1;
+            if (hour == 24)
+            {
+                hour = 0;
+                dateTime = new Date(dateTime.getTime() + 24 * 60 * 60 * 1000 );
+            }
+            hour = hour.toString();
+            hour = hour < 10 ? "0" + hour : hour;
+
             var year = dateTime.getFullYear();
             year = year.toString();
             var month = dateTime.getMonth() + 1;
             month = month.toString();
             month = month < 10 ? "0" + month : month;
-            var day = dateTime.getDate()-7;
-            var nextDay = day - 1;
+            var day = dateTime.getDate();
             day = day.toString();
             day = day < 10 ? "0" + day : day;
-            nextDay = nextDay.toString();
-            nextDay = nextDay < 10 ? "0" + nextDay : nextDay;
+
+            // var nextDay = day - 2;
+            // nextDay = nextDay.toString();
+            // nextDay = nextDay < 10 ? "0" + nextDay : nextDay;
+            dateTime = new Date(dateTime.getTime() - 24 * 60 * 60 * 1000 * 2);
+            // startyear
+            var startyear = dateTime.getFullYear();
+            startyear = startyear.toString();
+            // startmonth
+            var startmonth = dateTime.getMonth() + 1;
+            startmonth = startmonth.toString();
+            startmonth = startmonth < 10 ? "0" + startmonth : startmonth; 
+            // startday
+            var startday = dateTime.getDate();
+            startday = startday.toString();
+            startday = startday < 10 ? "0" + startday : startday;
+            
+            
             // 拼接startDate endDate 格式为yyyymmdd
-            var startDate = year + month + nextDay;
+            var startDate = startyear + startmonth + startday;
             // startDate = '20230406'
             var endDate = year + month + day;
             // endDate = '20230407'
 
-            var hour = dateTime.getHours() + 1;
-            hour = hour.toString();
-            hour = hour < 10 ? "0" + hour : hour;
+            // var hour = dateTime.getHours() + 1;
+            // if (hour == 24)
+            // {
+            //     hour = 0;
+            //     dateTime = new Date(new Date().getTime() + 24 * 60 * 60 * 1000 );
+            // }
+            // hour = hour.toString();
+            // hour = hour < 10 ? "0" + hour : hour;
             // 拼接currentDatetime 格式为yyyy--mm--dd hh:mm:ss
             currentDatetime = `${year}-${month}-${day} ${hour}:00:00`;
 
