@@ -887,8 +887,8 @@
 
         var myDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 + 1));
         var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 + 2))
-        var oldyear =2019;// oldDate.getFullYear(); //获取当前年
-        var year =2019;// myDate.getFullYear(); //获取当前年
+        var oldyear =oldDate.getFullYear(); //获取当前年
+        var year =myDate.getFullYear(); //获取当前年
         var oldmonth = oldDate.getMonth() + 1; //获取当前月
         // var oldmonth = oldDate.getMonth(); //获取当前月
         var month = myDate.getMonth() + 1; //获取当前月
@@ -1012,6 +1012,10 @@
 
                 for (var tmpI in data) {
                     var tmpitem01 = data[tmpI];
+                    var time = tmpitem01.TIME;
+					time = parseInt(time.slice(0,4))+4 + time.slice(4);
+                    tmpitem01.TIME = time;
+
 
                     tmpDTUTBHTML += '<tr class="aaa" style="font-size: 16pt; " align="center" >'
                         + '<td style="color: #00fcff; font-size: 18px; padding: 5px 0;">' + tmpitem01.TIME
