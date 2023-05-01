@@ -65,7 +65,7 @@ header{width:1860px; height: 90px; background: url(../images/bg_top.png) center 
 .workflowList img{ width: 30px; border-radius: 15px; margin-right: 5px; display: inline-block; vertical-align: middle;}
 .workflowList span{ line-height:30px; font-size: 12pt;color: rgba(255,255,255,.6); }
 
-.eventPanelList{width: 350px; height:260px; overflow: hidden;padding: 10px;padding-left: 30px;}
+.eventPanelList{width: 350px; height:210px; overflow: hidden;padding: 10px;padding-left: 30px;}
 .eventPanelList li{ height:40px;list-style:none;}
 .eventPanelList img{ width: 30px; border-radius: 15px; margin-right: 5px; display: inline-block; vertical-align: middle;}
 .eventPanelList span{ line-height:30px; font-size: 12pt;color: rgba(255,255,255,.6); }
@@ -115,10 +115,10 @@ tr.aaa:hover{background: #1d3152; cursor: pointer;}
 .report1 p{ font-weight: bold; font-size: 18px; color: #f2f2f2;}
 .report1 small{font-size: 24px;line-height: 5px;}
 
-.content_right .news_report{width: 385px; height: 330px; margin-top: 0px; float: left; background: url(../images/bg_report.png) no-repeat;}
+.content_right .news_report{width: 385px; height: 580px; margin-top: 0px; float: left; background: url(../images/bg_report2.png) no-repeat;}
 .content_right .title{width: 385px; height: 70px; float: left; color: #FFD000; font-size: 20px;font-weight:bold; line-height: 70px; background:url(../images/bottom_line.png) bottom no-repeat; text-align: center;}
 .content_right .title img{vertical-align: middle;}
-.news_list{width: 350px; height: 220px; padding-left: 20px; font-size: 16px; float: left; overflow: hidden;}
+.news_list{width: 350px; height: 480px; padding-left: 20px; font-size: 16px; float: left; overflow: hidden;}
 .news_list ul{list-style: none;}
 .news_list ul li{width:100%; height: 38px; float: left; line-height: 38px; padding-left: 15px;}
 .li01{background: url(../images/new_list01.png) left center no-repeat;}
@@ -127,14 +127,14 @@ tr.aaa:hover{background: #1d3152; cursor: pointer;}
 .data_con{width: 365px; height: 330px; float: left; padding: 10px;}
 
 
-.content_right .bottomPanel{width: 385px; height: 580px; margin-top: 20px; float: left; background: url(../images/bg_report2.png) no-repeat;}
+.content_right .bottomPanel{width: 385px; height: 330px; margin-top: 20px; float: left; background: url(../images/bg_report.png) no-repeat;}
 .content_right .bottomPanel .topBox{width: 385px; height: 200px; float: top;margin-top: 50px;}
 .content_right .bottomPanel .bottomBox{width: 385px; height: 300px; float: top;margin-top: 30px;}
 
 
 
 
-.content_right .news_report2{width: 385px; height: 580px; margin-top: 20px; float: left; background: url(../images/bg_report2.png) no-repeat;}
+/* .content_right .news_report2{width: 385px; height: 580px; margin-top: 20px; float: left; background: url(../images/bg_report2.png) no-repeat;} */
 
 
 
