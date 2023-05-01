@@ -1245,15 +1245,15 @@
             // 增加 获取当前时间格式的不同拼接 作为筛选条件
             var dateTime = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 30);
             // dateTime = new Date(dateTime.getTime() - 2 * 60 * 60 * 1000 )
-            var hour = dateTime.getHours();
-            // if (hour == 24)
-            // {   
-            //     // 解决currentDatetime 跨日的进位问题
-            //     hour = 0;
-            //     dateTime = new Date(dateTime.getTime() + 24 * 60 * 60 * 1000 );
-            // }
-            hour = hour.toString();
-            hour = hour < 10 ? "0" + hour : hour;
+            // var hour = dateTime.getHours();
+            // // if (hour == 24)
+            // // {   
+            // //     // 解决currentDatetime 跨日的进位问题
+            // //     hour = 0;
+            // //     dateTime = new Date(dateTime.getTime() + 24 * 60 * 60 * 1000 );
+            // // }
+            // hour = hour.toString();
+            // hour = hour < 10 ? "0" + hour : hour;
 
             var year = dateTime.getFullYear();
             year = year.toString();
@@ -1445,7 +1445,7 @@
                         m_WaterReportList = [];
                         var tmpLen = tmpObjs.length;
                         var tmpTTTid = 0;
-                        tmpObjs[0].outputFlowList = 1.5;
+                        // tmpObjs[0].outputFlowList = 1.5;
                         // var tmpStartTimeStr = tmpObjs[0].begintime;           
                         var tmpStartTimeStr = currentDatetime;
                         //tmpStartTimeStr = tmpStartTimeStr.substring(9,11);
@@ -1708,8 +1708,8 @@
         var m_LastQueryTime = '';
 
         function refreshPlanIDData() { //加载横沥口数据
-            var now = new Date();
-            now.setFullYear('2019') //新加入
+            var now = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3);
+            // now.setFullYear('2019') //新加入
             if (now.getMinutes() < 7)
                 now = new Date(now.getTime() - 30 * 60 * 1000);
             var queryDataTime = now.Format("yyyy/MM/dd HH:00:00");
@@ -1726,11 +1726,11 @@
                     if (tmpObjs != null && tmpObjs.length > 0) {
                         var tmpPlanID = tmpObjs[0].planID;
                         //测试
-                        tmpPlanID = 28181
+                        // tmpPlanID = 28181
                         //if(tmpPlanID!=null)
                         //{
-                        m_LastQueryTime = (new Date()).Format("yyyy/MM/dd HH:00:00");
-                        // refreshSectionElvData(tmpPlanID); 暂时不需要更新断面数据，等labelBox bug修复后 可以取消注释吧
+                        m_LastQueryTime = (new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3)).Format("yyyy/MM/dd HH:00:00");
+                        refreshSectionElvData(tmpPlanID); 
                         refreshWaterReportData(tmpPlanID);
                         //}							
                     }

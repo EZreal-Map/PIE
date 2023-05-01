@@ -950,6 +950,7 @@
 			            var tmpPlanID = '';
 			            var tmpDefaultBtnID = '';
 			            for(var tmpI in tmpObjs){
+							tmpI = tmpObjs.length - tmpI - 1;
 			            	var tmpitem01 = tmpObjs[tmpI];
 			            	var tmpBtnID = 'btn_tb_op_'+tmpI;
 			            	tmpDTUTBHTML+='<tr class="aaa" style="font-size: 16px;" align="center" >'
@@ -963,7 +964,7 @@
 			            	if(tmpDefaultBtnID == '')
 			            		tmpDefaultBtnID = tmpBtnID;
 			            	tmpTTTid++;
-			            	if(tmpTTTid >= 5)
+			            	if(tmpTTTid >= 4)
 			            		break;
 			            }
 			            $("#planTable").html(tmpDTUTBHTML);
@@ -1302,7 +1303,7 @@
 			$('#myRange').val(m_CurrentSchedulingIndex);//.trigger('change');
 			//initialWaterQCurverChartControlByPlan(m_SchedulingPlanDataArray[m_CurrentSchedulingIndex]);
 			gotoSchedulingIndex();
-			m_CurrentSchedulingIndex++;
+			m_CurrentSchedulingIndex = m_CurrentSchedulingIndex + 1;
 		}
 		
 		function gotoSchedulingIndex()
@@ -1320,7 +1321,7 @@
 					tmpIndex = 2;	
 				else if(m_CurrentSelectMonitorPara == "COD")
 					tmpIndex = 3;					
-				setRiverSectionsValue(tmpArray[tmpIndex]);//设置河道断面监测值
+				// setRiverSectionsValue(tmpArray[tmpIndex]);//设置河道断面监测值
 				circleChartChange();				
 			}
 		}
@@ -1517,7 +1518,7 @@
 		var m_sectionID = [1,17,25,51,57];
 		
 		/**查询的日期*/
-		var m_CurrentQueryData = dateToString(new Date());
+		var m_CurrentQueryData = dateToString(new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 4));
 		
 		refreshSchedulingPlan(m_CurrentQueryData);
 				

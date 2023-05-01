@@ -571,7 +571,7 @@
                 $("#dateDaySelectID").append("<option class='selectoptionbg' value='" + tmpI + "'>" + tmpI2 + "</option>'");
             }
             $('#dataSelectID').click(function () {
-                var tmpStr = $("#dateYearSelectID").val()-3;
+                var tmpStr = $("#dateYearSelectID").val()-4;
                 if ($("#dateMonthSelectID").val() < 10)
                     tmpStr += "-0" + $("#dateMonthSelectID").val();
                 else
@@ -935,8 +935,8 @@
             return s < 10 ? '0' + s : s;
         }
 
-        var myDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3);
-        var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3)
+        var myDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
+        var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
         var oldyear = oldDate.getFullYear(); //获取当前年
         var year = myDate.getFullYear(); //获取当前年
         var oldmonth = oldDate.getMonth() + 1; //获取当前月
@@ -970,7 +970,7 @@
                     var AVGV = data[i].AVGV;
                     var time = data[i].TIME;
 
-                    time = parseInt(time.slice(0,4))+3 + time.slice(4);
+                    time = parseInt(time.slice(0,4))+4 + time.slice(4);
 
                     timedata.push(time);
                     V.push(AVGV);
@@ -998,7 +998,7 @@
                     var AVGV = data[i].AVGV;
                     var time = data[i].TIME;
 
-                    time = parseInt(time.slice(0,4))+3 + time.slice(4);
+                    time = parseInt(time.slice(0,4))+4 + time.slice(4);
 
                     timedata.push(time);
                     V.push(AVGV);
@@ -1044,7 +1044,7 @@
                     var tmpitem01 = data[tmpI];
 
                     var time = tmpitem01.TIME;
-					time = parseInt(time.slice(0,4))+3 + time.slice(4);
+					time = parseInt(time.slice(0,4))+4 + time.slice(4);
                     tmpitem01.TIME = time;
 
                     tmpDTUTBHTML += '<tr class="aaa" style="font-size: 16pt; " align="center" >'
@@ -1080,7 +1080,7 @@
                     var tmpitem01 = data[tmpI];
 
                     var time = tmpitem01.TIME;
-					time = parseInt(time.slice(0,4))+3 + time.slice(4);
+					time = parseInt(time.slice(0,4))+4 + time.slice(4);
                     tmpitem01.TIME = time;
 
                     tmpDTUTBHTML += '<tr class="aaa" style="font-size: 16pt; " align="center" >'
@@ -1113,7 +1113,7 @@
 
         function showDateSelect() {
             var tmpStrs = m_CurrentQueryData.split('-');
-            $("#dateYearSelectID").val(parseInt(tmpStrs[0])+3);
+            $("#dateYearSelectID").val(parseInt(tmpStrs[0])+4);
             $("#dateMonthSelectID").val(parseInt(tmpStrs[1]));
             $("#dateDaySelectID").val(parseInt(tmpStrs[2]));
             $('.bgPop3,.pop3').show();
