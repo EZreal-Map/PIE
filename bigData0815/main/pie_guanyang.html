@@ -187,8 +187,8 @@
 								
 				<div class="bottomPanel">
 					<div class="title"><img src="images/icon02.png" /> 管养事件</div>
-					<div class="topBox" id="containerEventChartDiv">						
-					</div>
+					<!-- <div class="topBox" id="containerEventChartDiv">						
+					</div> -->
 					<div class="bottomBox">
 						<div style="height: 130px; position: relative;" >						
 							<div id="eventPanelListDiv" class="eventPanelList">
@@ -390,11 +390,11 @@
 				success: function(joResult) {
 					if(joResult.success == true) {
 						var tmpObjs = joResult.data;
-						if(UserGPSLayerVectorSource == null) {
-							UserGPSLayerVectorSource = new ol.source.Vector();
-							UserGPSLayer.setSource(UserGPSLayerVectorSource);
-						} else
-							UserGPSLayerVectorSource.clear(true);
+						// if(UserGPSLayerVectorSource == null) {
+						// 	UserGPSLayerVectorSource = new ol.source.Vector();
+						// 	UserGPSLayer.setSource(UserGPSLayerVectorSource);
+						// } else
+						// 	UserGPSLayerVectorSource.clear(true);
 						m_UsersInfoList = [];
 						var tmpTotalUsersCount = tmpObjs.length;
 						var tmpOnlineUsersCount = 0;
@@ -404,39 +404,39 @@
 							var tmpObj = tmpObjs[i];
 							var tmpX = parseFloat(tmpObj.longitude),
 								tmpY = parseFloat(tmpObj.latitude);
-							if(tmpX > 1 && tmpY > 1) {							
-								var tmpCoordinate = ol.proj.transform([tmpX, tmpY], 'EPSG:4326', 'EPSG:3857');
+							// if(tmpX > 1 && tmpY > 1) {							
+								// var tmpCoordinate = ol.proj.transform([tmpX, tmpY], 'EPSG:4326', 'EPSG:3857');
 								var tmpNickName = tmpObj.RealName;
-								var tmpPoint = new ol.geom.Point(tmpCoordinate);
-								var tmpFeature = new ol.Feature({
-									name: tmpMsg,
-									geometry: tmpPoint
-								});
-								var tmpSpeed = parseFloat(tmpObj.speed);
-								var tmpaccuracy = parseFloat(tmpObj.accuracy);
-								var tmpMsg = "<div style=\"margin:0 auto;text-align:center;\"><label style=\"font-size:16px;\"><font color=\"#6FFF6F\">【" + tmpNickName + "】</font></label><br/></div>" +
-									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">时间：</font>" + tmpObj.gpsTime + "</label><br/>" +
-									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">经度：</font>" + tmpX + "</label><br/>" +
-									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">纬度：</font>" + tmpY + "</label><br/>" +
-									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">速度：</font>" + tmpSpeed.toFixed(2) + "m/s</label><br/>" +
-									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">精度：</font>" + tmpaccuracy.toFixed(2) + "m</label><br/>" +
-									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">地址：</font>" + tmpObj.address + "</label><br/>" +
-									"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">备注：</font>" + tmpObj.remark + "</label><br/>" +
-									"<br/>";
+								// var tmpPoint = new ol.geom.Point(tmpCoordinate);
+								// var tmpFeature = new ol.Feature({
+								// 	name: tmpMsg,
+								// 	geometry: tmpPoint
+								// });
+								// var tmpSpeed = parseFloat(tmpObj.speed);
+								// var tmpaccuracy = parseFloat(tmpObj.accuracy);
+								// var tmpMsg = "<div style=\"margin:0 auto;text-align:center;\"><label style=\"font-size:16px;\"><font color=\"#6FFF6F\">【" + tmpNickName + "】</font></label><br/></div>" +
+								// 	"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">时间：</font>" + tmpObj.gpsTime + "</label><br/>" +
+								// 	"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">经度：</font>" + tmpX + "</label><br/>" +
+								// 	"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">纬度：</font>" + tmpY + "</label><br/>" +
+								// 	"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">速度：</font>" + tmpSpeed.toFixed(2) + "m/s</label><br/>" +
+								// 	"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">精度：</font>" + tmpaccuracy.toFixed(2) + "m</label><br/>" +
+								// 	"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">地址：</font>" + tmpObj.address + "</label><br/>" +
+								// 	"<label style=\"font-size:16px;\"><font color=\"#01FFFF\">备注：</font>" + tmpObj.remark + "</label><br/>" +
+								// 	"<br/>";
 		
 								var tmpIsOnline = false;
 								var tmpTime01 = Date.parse(tmpObj.gpsTime);
-								if(dateNow - tmpTime01 < 300000) //5分钟之内都表示在线
-								{
+								// if(dateNow - tmpTime01 > 300000) //5分钟之内都表示在线
+								// {
 									tmpOnlineUsersCount++;
 									tmpIsOnline = "true";
 									
-									tmpFeature.set("ftype", "usergpslayer", false);
-									tmpFeature.set("nickname", tmpNickName, false);
-									tmpFeature.set("isonline", tmpIsOnline, false);
-									tmpFeature.set("msg", tmpMsg, false);
+									// tmpFeature.set("ftype", "usergpslayer", false);
+									// tmpFeature.set("nickname", tmpNickName, false);
+									// tmpFeature.set("isonline", tmpIsOnline, false);
+									// tmpFeature.set("msg", tmpMsg, false);
 			
-									UserGPSLayerVectorSource.addFeature(tmpFeature);
+									// UserGPSLayerVectorSource.addFeature(tmpFeature);
 									
 									var tmpColor = '#2FEDA5';
 									if(tmpIsOnline != "true")
@@ -457,10 +457,10 @@
 			                         	+'</td></tr>';
 			                         m_UsersInfoList[tmpTid001] = tmpRowHTML;
 			                         tmpTid001++;
-								}
-							}
+								// }
+							// }
 						}
-						$('#gy_Label03').text(tmpOnlineUsersCount + "/" + tmpTotalUsersCount);
+						// $('#gy_Label03').text(tmpOnlineUsersCount + "/" + tmpTotalUsersCount);
 					}
 				}
 			})
@@ -486,7 +486,7 @@
 	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">时间</td>'
 	                        	+'<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;">地址</td>'
 	                         	+'</tr>';	
-	            if(tmpLen<=5)
+	            if(tmpLen<=11)
 	            {
 	            	for(var i = 0; i < tmpLen; i++)
 		            {        	
@@ -495,7 +495,7 @@
 		            $("#planTable").html(tmpTotalHTML);
 	            }
 	            else{
-	            	for(var i = m_UsersInfoCurrentIndex; i < m_UsersInfoCurrentIndex + 5; i++)
+	            	for(var i = m_UsersInfoCurrentIndex; i < m_UsersInfoCurrentIndex + 11; i++)
 		            {
 		            	var tmpRowHTML = null;
 		            	if(i>=tmpLen)
@@ -1096,7 +1096,7 @@
 									if(tmpObj.Y == '')
 										tmpObj.Y = '22.5951098889';
 										
-									addGYEventPoint(tmpObj.X, tmpObj.Y, tmpObj);
+									// addGYEventPoint(tmpObj.X, tmpObj.Y, tmpObj);
 									tmpTotalHTML+='<li class="clearfix" onClick="centerOnMapAndAnim('+tmpObj.X+','+tmpObj.Y+');"><label class="'
 										+tmpLClass+'">'+tmpObj.EmergencyType+'</label> '+tmpObj.EventType
 										+'|'+tmpStr+'</li>';

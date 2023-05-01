@@ -684,7 +684,7 @@
 		
 		var m_sectionID = [1,17,25,51,57];
 		/**查询的日期*/
-		var m_CurrentQueryData = dateToString(new Date()); 
+		var m_CurrentQueryData = dateToString(new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1))); 
 		
 		//refreshSchedulingPlan(m_CurrentQueryData);
 				
@@ -1617,7 +1617,7 @@
 		var m_LastQueryTime = '';
 		
 		function refreshPlanIDData() { //加载横沥口数据
-		    var now = new Date();
+		    var now = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
 		    now.setFullYear('2019') //新加入
 			if(now.getMinutes()<7)
 				now = new Date(now.getTime() - 30*60*1000);
@@ -1639,7 +1639,7 @@
 							tmpPlanID=28181
 							//if(tmpPlanID!=null)
 							//{
-								m_LastQueryTime = (new Date()).Format("yyyy/MM/dd HH:00:00");
+								m_LastQueryTime = (new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1))).Format("yyyy/MM/dd HH:00:00");
 								refreshSectionElvData(tmpPlanID);
 								refreshWaterReportData(tmpPlanID);
 							//}							
@@ -1750,7 +1750,7 @@
 					
 					initialDispChart([tmpDispX,tmpDispY]);
 					
-					var now = new Date();
+					var now =new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
 					//tmpDispX = Math.random();
 					tmpSSSSSSS++;
 					if(tmpSSSSSSS > 10)
@@ -1792,7 +1792,7 @@
 		 * 刷新河道管养的事件与工单数量
 		 */
 		function refreshGuanYangCountData() {
-			var now = new Date();
+			var now = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
 			var tmpMonth = now.getMonth()+1;
 			var tmpMonthStr = ""+tmpMonth;
 			if(tmpMonth<10)
@@ -1877,7 +1877,7 @@
 		 */
 		function refreshLastGYEventsInfo()
 		{
-			m_LastGYEventQueryTimeStr = (new Date()).Format("yyyy/MM/dd HH:mm:ss");
+			m_LastGYEventQueryTimeStr = (new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1))).Format("yyyy/MM/dd HH:mm:ss");
 			var dataObj = {
 				method:"geteventslastinfo",
 				projectid:CurrentProjectID,
@@ -1929,7 +1929,7 @@
 		 */
 		function refreshGYEventsInfoByTime()
 		{
-			var tmpCurrentTime = (new Date()).Format("yyyy/MM/dd HH:mm:ss");
+			var tmpCurrentTime = (new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1))).Format("yyyy/MM/dd HH:mm:ss");
 			var dataObj = {
 				method:"geteventsinfobytime",
 				prjectid:CurrentProjectID,
@@ -2274,15 +2274,15 @@
   			}
   		}
   		
-  		var m_StartTime = new Date();
-		var m_EndTime = new Date();
+  		var m_StartTime = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
+		var m_EndTime = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
 		m_StartTime = new Date(m_EndTime.getTime() - 60*60*1000); //1小时前
 			
   		function refreshCameraEventData()
 		{
 			if(m_Layer_Camera_Vis)
 			{
-				m_EndTime = new Date();
+				m_EndTime = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
 			var tmpRequestURL = ServerURL + "/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=queryevents&starttime="
 				+m_StartTime.Format('yyyy-MM-dd HH:mm:ss')+"&endtime="+m_EndTime.Format('yyyy-MM-dd HH:mm:ss');			
 			$.ajax({

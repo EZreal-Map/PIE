@@ -805,7 +805,7 @@ function refreshUserGPSInfo() {
 					var tmpX = parseFloat(tmpObj.longitude),
 						tmpY = parseFloat(tmpObj.latitude);
 					if(tmpX > 1 && tmpY > 1) {
-						var dateNow = new Date();
+						var dateNow = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
 						var tmpCoordinate = ol.proj.transform([tmpX, tmpY], 'EPSG:4326', 'EPSG:3857');
 						var tmpNickName = tmpObj.RealName;
 						var tmpPoint = new ol.geom.Point(tmpCoordinate);
@@ -1453,7 +1453,7 @@ function startConnect()
 		
 		function queryusertrack(username, nickname)
 	   {
-	   		var newDate = new Date();
+	   		var newDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
 	   		var tmpEndStr = newDate.Format("yyyy-MM-dd-HH-mm-ss");
 	   		var preDate = new Date(newDate.getTime() - 60*60*1000);//1个小时
 	   		var tmpStartStr = preDate.Format("yyyy-MM-dd-HH-mm-ss");
