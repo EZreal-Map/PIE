@@ -1244,13 +1244,14 @@
         function refreshWeatherReportData() {
             // 增加 获取当前时间格式的不同拼接 作为筛选条件
             var dateTime = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 30);
-
-            var hour = dateTime.getHours() + 1;
-            if (hour == 24)
-            {
-                hour = 0;
-                dateTime = new Date(dateTime.getTime() + 24 * 60 * 60 * 1000 );
-            }
+            // dateTime = new Date(dateTime.getTime() - 2 * 60 * 60 * 1000 )
+            var hour = dateTime.getHours();
+            // if (hour == 24)
+            // {   
+            //     // 解决currentDatetime 跨日的进位问题
+            //     hour = 0;
+            //     dateTime = new Date(dateTime.getTime() + 24 * 60 * 60 * 1000 );
+            // }
             hour = hour.toString();
             hour = hour < 10 ? "0" + hour : hour;
 
@@ -1266,7 +1267,8 @@
             // var nextDay = day - 2;
             // nextDay = nextDay.toString();
             // nextDay = nextDay < 10 ? "0" + nextDay : nextDay;
-            dateTime = new Date(dateTime.getTime() - 24 * 60 * 60 * 1000 * 2);
+            // 解决跨月 跨年的startday的进位问题
+            dateTime = new Date(dateTime.getTime() - 24 * 60 * 60 * 1000 );
             // startyear
             var startyear = dateTime.getFullYear();
             startyear = startyear.toString();
@@ -1286,14 +1288,14 @@
             var endDate = year + month + day;
             // endDate = '20230407'
 
-            // var hour = dateTime.getHours() + 1;
+            var hour = dateTime.getHours();
             // if (hour == 24)
             // {
             //     hour = 0;
             //     dateTime = new Date(new Date().getTime() + 24 * 60 * 60 * 1000 );
             // }
-            // hour = hour.toString();
-            // hour = hour < 10 ? "0" + hour : hour;
+            hour = hour.toString();
+            hour = hour < 10 ? "0" + hour : hour;
             // 拼接currentDatetime 格式为yyyy--mm--dd hh:mm:ss
             currentDatetime = `${year}-${month}-${day} ${hour}:00:00`;
 
@@ -1330,8 +1332,16 @@
                                 tmpisFontW = "font-weight:bold";
                                 // 增加 筛选第一行为当前小时日期
                                 // var currentDatetime = "2023-04-06 15:00:00";
-                                tmpRowData = data.filter(currentData => currentData.FORECASTTIME === currentDatetime);
-                                tmpRowData = tmpRowData[0];
+                                tmpRowData = data.filter(currentData => currentData.FORECASTTIME.slice(-8) === currentDatetime.slice(-8)
+                                
+                                
+                                );
+                                if (tmpRowData.length !== 0) {
+                                    tmpRowData = tmpRowData[0];
+                                } else {
+                                    tmpRowData = data[0];
+                                    tmpRowData.FORECASTTIME = currentDatetime;
+                                }
                             }
 
                             tmpRowData.time = tmpRowData.FORECASTTIME.substr(10, 6);

@@ -887,8 +887,8 @@
 
         var myDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 + 1));
         var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 + 2))
-        var oldyear = oldDate.getFullYear(); //获取当前年
-        var year = myDate.getFullYear(); //获取当前年
+        var oldyear =2019;// oldDate.getFullYear(); //获取当前年
+        var year =2019;// myDate.getFullYear(); //获取当前年
         var oldmonth = oldDate.getMonth() + 1; //获取当前月
         // var oldmonth = oldDate.getMonth(); //获取当前月
         var month = myDate.getMonth() + 1; //获取当前月
@@ -1031,21 +1031,21 @@
 
 
 
-            RunWebServiceJSON(true, "getdisplacementlast", "/pms/Base", "/doreaddata/getdata", "stcdt", stcdt, function (data) {
+            RunWebServiceJSON(true, "getalltimeDiffData", "/pms/Base", "/doreaddata/getdata", "ptcode#startTime#endTime", stcdt+ "#" + old+"#" + now, function (data) {
                 data = $(data).children().text();
                 data = JSON.parse(data);
                 if (data.length > 0) {
                     var dataV2 = [];
-                    dataV2.push(data[0].DiffX);
-                    dataV2.push(data[0].DiffZ);
+                    dataV2.push(data[0].DisX);
+                    dataV2.push(data[0].DisZ);
                     //				echarts5(dataV2);
                     var myChart = echarts.init(document.getElementById('echarts5'));
                     /*---------------------数据----------------------------*/
                     var exemptData = [{
-                        value: Number(data[0].DiffX) - Number(data[1].DiffX),
+                        value: Number(data[0].DisX) - Number(data[1].DisX),
                         name: '水平位移'
                     }, {
-                        value: Number(data[0].DiffX) - Number(data[1].DiffX),
+                        value: Number(data[0].DisX) - Number(data[1].DisX),
                         name: '',
                         labelLine: {
                             normal: {
@@ -1054,10 +1054,10 @@
                         }
                     }];
                     var examNum = [{
-                        value: Number(data[0].DiffZ) - Number(data[1].DiffZ),
+                        value: Number(data[0].DisZ) - Number(data[1].DisZ),
                         name: '垂直位移'
                     }, {
-                        value: Number(data[0].DiffZ) - Number(data[1].DiffZ),
+                        value: Number(data[0].DisZ) - Number(data[1].DisZ),
                         name: '',
                         labelLine: {
                             normal: {
