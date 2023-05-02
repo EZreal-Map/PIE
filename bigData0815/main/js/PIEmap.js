@@ -857,6 +857,11 @@ function addGYEventPoint(lng, lat, obj) {
 }
 
 function centerOnMapAndAnim(lng, lat) {
+    if (entity9){
+        entity9._labelBox.show = false;
+        entityCollection.remove(entity9);
+        objEntity._labelBox.show = false;
+    }
     var tmpLng = parseFloat(lng);
     var tmpLat = parseFloat(lat);
     objEntity = getClosestEntityToLocation(tmpLng, tmpLat) 
@@ -873,10 +878,7 @@ function centerOnMapAndAnim(lng, lat) {
         	objEntity._labelBox.show = true;
         },
     });
-    if (entity9){
-        entityCollection.remove(entity9);
-        objEntity._labelBox.show = false;
-    }
+
     
     entity9 = new Earth.Entity({
         name: 'label',
