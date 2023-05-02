@@ -431,7 +431,7 @@ createEarthModule().then(function () {
                 }
                 else {
                     // pickObj.polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
-                    pickObj.polygon.color = pickObj.colorNotation;
+                    pickObj.polygon.color = pickObj.colorDepth;
                 }
             }
 
@@ -442,7 +442,7 @@ createEarthModule().then(function () {
 
     // 一些更新地图的函数的调用
     refreshUserGPSInfo()
-    refreshSectionElvData(28181)
+    // refreshSectionElvData(28181)
     // refreshMapRiverShow();
     MyrefreshGYEventsInfo()
 
@@ -603,20 +603,27 @@ function colorToHex(rgb) {
     }
 }
 
-function refreshMapRiverShow() {
-    fetch('./riversection.geojson')
-        .then(response => response.json())
-        .then(data => {
+function refreshMapRiverShow(planID) {
+    RunWebServiceJSON(true, "getTSDBLeveldata", "/pms/Base", "/doreaddata/getdata",
+    "guid#timeindex", String(planID) + "#-1", function (data) {
             // console.log(data.features); // data为JSON对象
-            var tmpObjs = data.features;
-            
+            // var tmpObjs = data.features;
+            var jqueryObj = $(data);
+            var message = jqueryObj.children();
+            var text = message.text();
+            var tmpObjs = eval("(" + text + ")");
             // 色带
             var gradient = gradientColor('#0000FF', '#FF0000', 10)
 
-            // 记录最小、最大水深
-            var m_GradientColorMax = Math.max.apply(null,m_RiverSectionVDataArray[3]);
-            var m_GradientColorMin = Math.min.apply(null,m_RiverSectionVDataArray[3]);
-            var m_GradientColorStep = (m_GradientColorMax - m_GradientColorMin) / 10;
+            // 记录最小、最大水深 depth
+            var depth_GradientColorMax = Math.max.apply(null,m_RiverSectionVDataArray[3]);
+            var depth_GradientColorMin = Math.min.apply(null,m_RiverSectionVDataArray[3]);
+            var depth_GradientColorStep = (depth_GradientColorMax - depth_GradientColorMin) / 10;
+
+            // 记录最小、最大水位 level
+            var level_GradientColorMax = Math.max.apply(null,m_RiverSectionVDataArray[0]);
+            var level_GradientColorMin = Math.min.apply(null,m_RiverSectionVDataArray[0]);
+            var level_GradientColorStep = (level_GradientColorMax - level_GradientColorMin) / 10;
 
             for (var i in tmpObjs) {
                 tmpObj = tmpObjs[i];
@@ -633,12 +640,16 @@ function refreshMapRiverShow() {
                 // console.log(polygonCentroid);
 
                 // --80写死了，待处理-- 读取后台数据，更新m_RiverSectionVDataArray
-                var tmpRiverSectionWaterLevel = m_RiverSectionVDataArray[0][i].toFixed(2);
                 var tmpRiverSectionWaterDepth = m_RiverSectionVDataArray[3][i].toFixed(2);
+                var tmpRiverSectionWaterLevel = m_RiverSectionVDataArray[0][i].toFixed(2);
 
-                var tmpI = parseInt((tmpRiverSectionWaterDepth - m_GradientColorMin) / m_GradientColorStep);
+                var tmpI = parseInt((tmpRiverSectionWaterDepth - depth_GradientColorMin) / depth_GradientColorStep);
                 tmpI = tmpI > 9 ? 9:tmpI;
-                var colorNotation = Earth.Color.fromCssColorString(gradient[tmpI]);
+                var colorDepth = Earth.Color.fromCssColorString(gradient[tmpI]);
+
+                var tmpI = parseInt((tmpRiverSectionWaterLevel - level_GradientColorMin) / level_GradientColorStep);
+                tmpI = tmpI > 9 ? 9:tmpI;
+                var colorLevel = Earth.Color.fromCssColorString(gradient[tmpI]);
 
 
                 const polygon = new Earth.Entity({
@@ -647,7 +658,8 @@ function refreshMapRiverShow() {
                     layer: 'riverSectionLayer',
                     // zIndex: 5,
                     // waterDepth: tmpRiverSectionWaterDepth, 暂时没有需要
-                    colorNotation: colorNotation,
+                    colorDepth: colorDepth,
+                    colorLevel: colorLevel,
                     position: Earth.Cartesian3.fromDegrees(polygonCentroid[0], polygonCentroid[1]), //经度，纬度，高度
 
                     polygon: new Earth.Polygon({
@@ -655,7 +667,7 @@ function refreshMapRiverShow() {
                         hierarchy: Earth.Cartesian3.fromDegreesArray(tmpCoordinates),
                         // color: Earth.Color.fromBytes(0, 0, 255, 255),
                         // color: Earth.Color.BLUE,
-                        color: colorNotation,
+                        color: colorDepth,
                         heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
                         // height: -100,
                         outline: true, //好像暂时不支持
@@ -923,7 +935,7 @@ function centerOnMapAndAnim(lng, lat) {
     //             }
     //             else {
     //                 // pickObj.polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
-    //                 pickObj.polygon.color = pickObj.colorNotation;
+    //                 pickObj.polygon.color = pickObj.colorDepth;
     //             }
     //         }
 
@@ -1026,7 +1038,7 @@ $(document).ready(function () {
 			entityCollection._entities[i].labelBox.show = false;
 			if (entityCollection._entities[i].polygon) {
 				// entityCollection._entities[i].polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
-				entityCollection._entities[i].polygon.color = entityCollection._entities[i].colorNotation;
+				entityCollection._entities[i].polygon.color = entityCollection._entities[i].colorDepth;
 			}
 		}
         if (entity9){
