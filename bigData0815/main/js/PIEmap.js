@@ -6,6 +6,8 @@ let layer_nightmap;
 let objEntity;
 let entity9;
 
+let polygonCollection = [];
+
 createEarthModule().then(function () {
     viewer = new Earth.Viewer('mapContainer', {
 
@@ -199,7 +201,7 @@ createEarthModule().then(function () {
                                 var tmpSpeed = parseFloat(tmpObj.speed);
                                 var tmpaccuracy = parseFloat(tmpObj.accuracy);
 
-                                const entity = new Earth.Entity({
+                                let entity = new Earth.Entity({
                                     name: 'userGPS',
                                     show: true,
                                     layer: 'userGPSLayer',
@@ -282,7 +284,8 @@ createEarthModule().then(function () {
                                 // console.log(i)
                                 // console.log(tmpNickName)
 
-                                entityCollection.add(entity);
+                                entity = entityCollection.add(entity)
+                                entity._labelBox.show = false;
                             }
                         }
                     }
@@ -316,7 +319,7 @@ createEarthModule().then(function () {
                     var tmpStationType = tmpObj.FacilitiesType;
                     var tmpMsg = tmpObj.Info;
                     //1、创建贴地点
-                    const entity = new Earth.Entity({
+                    let entity = new Earth.Entity({
                         name: 'station',
                         show: true,
                         layer: 'stationLayer',
@@ -380,8 +383,8 @@ createEarthModule().then(function () {
                     // console.log(`entity.show:${entity.show}`)
                     // console.log(`entity.labelBox.show:${entity.labelBox.show}`)
                     //3、添加
-                    entityCollection.add(entity);
-                    // console.log(`entityCollection._entities[${i}].show:${entityCollection._entities[i].show}`)
+                    entity = entityCollection.add(entity)
+                    entity._labelBox.show = false;
                 }
             }
         }
@@ -427,7 +430,7 @@ createEarthModule().then(function () {
             if (pickObj.polygon) {
                 if (pickObj.labelBox.show) {
                     // pickObj.polygon.color = Earth.Color.fromBytes(255, 0, 0, 200);
-                    pickObj.polygon.color = Earth.Color.WHITE.withAlpha(0.8);
+                    pickObj.polygon.color = Earth.Color.WHITE.withAlpha(1);
                 }
                 else {
                     // pickObj.polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
@@ -453,7 +456,7 @@ createEarthModule().then(function () {
         // }
         // console.log('最初的clearLabelBox 2s')
         
-        $("#mapBottomControlBtnClearLabelBox").click() 
+        // $("#mapBottomControlBtnClearLabelBox").click() 
         // 初始化地图高度和视角
         $("#mapBottomControlBtnHome").click() 
         // $("#mapBottomControlBtnfullScreen").click() 
@@ -603,15 +606,16 @@ function colorToHex(rgb) {
     }
 }
 
-function refreshMapRiverShow(planID) {
-    RunWebServiceJSON(true, "getTSDBLeveldata", "/pms/Base", "/doreaddata/getdata",
-    "guid#timeindex", String(planID) + "#-1", function (data) {
+function refreshMapRiverShow() {
+    fetch('./riversection.geojson')
+        .then(response => response.json())
+        .then(data => {
             // console.log(data.features); // data为JSON对象
-            // var tmpObjs = data.features;
-            var jqueryObj = $(data);
-            var message = jqueryObj.children();
-            var text = message.text();
-            var tmpObjs = eval("(" + text + ")");
+            var tmpObjs = data.features;
+            // var jqueryObj = $(data);
+            // var message = jqueryObj.children();
+            // var text = message.text();
+            // var tmpObjs = eval("(" + text + ")");
             // 色带
             var gradient = gradientColor('#0000FF', '#FF0000', 10)
 
@@ -652,7 +656,7 @@ function refreshMapRiverShow(planID) {
                 var colorLevel = Earth.Color.fromCssColorString(gradient[tmpI]);
 
 
-                const polygon = new Earth.Entity({
+                let polygon = new Earth.Entity({
                     name: tmpNickName,
                     show: true,
                     layer: 'riverSectionLayer',
@@ -706,7 +710,9 @@ function refreshMapRiverShow(planID) {
                     },
 
                 });
-                entityCollection.add(polygon);
+                polygon = entityCollection.add(polygon);
+                polygon._labelBox.show = false;
+                polygonCollection.push(polygon)
             }
         });
 }
@@ -788,7 +794,7 @@ function addGYEventPoint(lng, lat, obj) {
     //     "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">发布人：</font>" + obj.UploadUserNickName + "</label><br/>" +
     //     "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">发布时间：</font>" + obj.UploadTime + "</label><br/>" +
     //     "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">事件描述：</font>" + obj.Content + "</label><br/>";
-    const entity = new Earth.Entity({
+    entity = new Earth.Entity({
         name: 'GYEvent',
         show: true,
         layer: 'GYEventLayer',
@@ -860,12 +866,10 @@ function addGYEventPoint(lng, lat, obj) {
         },
 
     })
-    // tmpFeature.set("ftype", "GYEventLayer", false);
-    // tmpFeature.set("feventtype", tmpEventType, false);
-    // tmpFeature.set("nickname", tmpNickName, false);
-    // tmpFeature.set("msg", tmpMsg, false);
-    entityCollection.add(entity)
-    // GYEventLayerVectorSource.addFeature(tmpFeature);
+    entity = entityCollection.add(entity)
+    entity._labelBox.show = false;
+                // polygonCollection.push(polygon)
+    
 }
 
 function centerOnMapAndAnim(lng, lat) {

@@ -1725,7 +1725,7 @@
                     var text = message.text();
                     var tmpObjs = eval("(" + text + ")");
                     if (tmpObjs != null && tmpObjs.length > 0) {
-                        var tmpPlanID = tmpObjs[0].planID;
+                        tmpPlanID = tmpObjs[0].planID;
                         //测试
                         // tmpPlanID = 28181
                         //if(tmpPlanID!=null)
@@ -1768,7 +1768,7 @@
 
                         m_RiverSectionVDataArray = [tmpArray, tmpArray2, tmpArray3, tmpArray4];
 
-                        refreshMapRiverShow(planID);
+                        refreshMapRiverShow();
                     }
                 });
         }
