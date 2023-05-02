@@ -7,6 +7,7 @@ let objEntity;
 let entity9;
 
 let polygonCollection = [];
+let pointCollection = [];
 let m_Layer_River_ShowMode = 0;
 
 createEarthModule().then(function () {
@@ -285,8 +286,10 @@ createEarthModule().then(function () {
                                 // console.log(i)
                                 // console.log(tmpNickName)
 
-                                entity = entityCollection.add(entity)
-                                entity._labelBox.show = false;
+                                var point = entityCollection.add(entity)
+                                point._labelBox.show = false;
+                                pointCollection.push(point);
+                                
                             }
                         }
                     }
@@ -384,8 +387,9 @@ createEarthModule().then(function () {
                     // console.log(`entity.show:${entity.show}`)
                     // console.log(`entity.labelBox.show:${entity.labelBox.show}`)
                     //3、添加
-                    entity = entityCollection.add(entity)
-                    entity._labelBox.show = false;
+                    var point = entityCollection.add(entity)
+                    point._labelBox.show = false;
+                    pointCollection.push(point);
                 }
             }
         }
@@ -449,7 +453,7 @@ createEarthModule().then(function () {
     refreshPlanIDData()
     refreshUserGPSInfo()
     // refreshSectionElvData(28181)
-    refreshMapRiverShow(m_Layer_River_ShowMode);
+    // refreshMapRiverShow(m_Layer_River_ShowMode);
     MyrefreshGYEventsInfo()
 
     
@@ -466,10 +470,10 @@ createEarthModule().then(function () {
         // $("#mapBottomControlBtnfullScreen").click() 
       }, 2000);
 
-    // setInterval(function() {
-    //     refreshMapRiverShow(m_Layer_River_ShowMode);
-    //     console.log(entityCollection._entities)
-    // },3000)
+    setInterval(function() {
+        // refreshMapRiverShow(m_Layer_River_ShowMode);
+        console.log(entityCollection._entities)
+    },3000)
 
 
 });// createEarthModule结束 new Earth
@@ -694,11 +698,25 @@ function refreshMapRiverShow(m_Layer_River_ShowMode) {
                 return 0;
             }
             // 重新画riverSection，要检查是否删除之前的riverSection polygonCollection
-            polygonCollection.forEach(function(polygon) {
-                // 在remove(polygon)之前要设置false，要不然删除后，就再也找不到怎么删除的选项了 小bug
-                polygon._labelBox.show = false; 
-                entityCollection.remove(polygon)
-              });
+            // if (polygonCollection.length >= 57) {
+            $("#mapBottomControlBtnClearLabelBox").click()
+            entityCollection.removeAll()
+            // polygonCollection.forEach(polygon => {
+            //     // 在remove(polygon)之前要设置false，要不然删除后，就再也找不到怎么删除的选项了 小bug
+            //     polygon._labelBox.show = false; 
+            //     entityCollection.remove(polygon)
+            //   });
+            pointCollection.forEach(point =>{
+                entityCollection.add(point)
+            })
+            polygonCollection = [];
+            // }
+            // for (var i in polygonCollection){
+            //     polygonCollection[i]._labelBox.show = false; 
+            //     entityCollection.removeById(polygonCollection[i].id)
+            // }
+            // polygonCollection = [];
+
             // console.log(data.features); // data为JSON对象
             var tmpObjs = data.features;
             // var jqueryObj = $(data);
@@ -955,9 +973,9 @@ function addGYEventPoint(lng, lat, obj) {
         },
 
     })
-    entity = entityCollection.add(entity)
-    entity._labelBox.show = false;
-                // polygonCollection.push(polygon)
+    var point = entityCollection.add(entity)
+    point._labelBox.show = false;
+    pointCollection.push(point);
     
 }
 
@@ -1144,7 +1162,7 @@ $(document).ready(function () {
 	var m_Layer_User_Vis = true;
 	$("#mapBottomControlBtnUser").click(function () {
 		if (m_Layer_User_Vis) {
-			$("#mapBottomControlBtnreaUser").attr("src", "images/layer_user_off.png");
+			$("#mapBottomControlBtnUser").attr("src", "images/layer_user_off.png");
 			m_Layer_User_Vis = false;
 			// clearGPSTrackLayers();
 		}
