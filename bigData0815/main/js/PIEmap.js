@@ -7,6 +7,7 @@ let objEntity;
 let entity9;
 
 let polygonCollection = [];
+let m_Layer_River_ShowMode = 0;
 
 createEarthModule().then(function () {
     viewer = new Earth.Viewer('mapContainer', {
@@ -312,7 +313,7 @@ createEarthModule().then(function () {
                     tmpObj = tmpObjs[i];
                     var tmpX = parseFloat(tmpObj.X),
                         tmpY = parseFloat(tmpObj.Y);
-                    // tmpXY = translate.translatePoint([114.191, 22.592]);
+                    // tmpXY = translate.translatePoint([114.191, 22.592i]);
                     // tmpX = tmpXY[0]
                     // tmpY = tmpXY[1]
                     var tmpNickName = tmpObj.Name;
@@ -434,7 +435,8 @@ createEarthModule().then(function () {
                 }
                 else {
                     // pickObj.polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
-                    pickObj.polygon.color = pickObj.colorDepth;
+                    let tmpcolor = m_Layer_River_ShowMode?pickObj.colorLevel:pickObj.colorDepth;
+                    pickObj.polygon.color = tmpcolor;
                 }
             }
 
@@ -444,11 +446,13 @@ createEarthModule().then(function () {
 
 
     // 一些更新地图的函数的调用
+    refreshPlanIDData()
     refreshUserGPSInfo()
     // refreshSectionElvData(28181)
-    // refreshMapRiverShow();
+    refreshMapRiverShow(m_Layer_River_ShowMode);
     MyrefreshGYEventsInfo()
 
+    
     setTimeout(function() {
         // 解决labelBox.show false的初始化bug
         // for (var i in entityCollection._entities) {
@@ -461,6 +465,11 @@ createEarthModule().then(function () {
         $("#mapBottomControlBtnHome").click() 
         // $("#mapBottomControlBtnfullScreen").click() 
       }, 2000);
+
+    // setInterval(function() {
+    //     refreshMapRiverShow(m_Layer_River_ShowMode);
+    //     console.log(entityCollection._entities)
+    // },3000)
 
 
 });// createEarthModule结束 new Earth
@@ -606,10 +615,90 @@ function colorToHex(rgb) {
     }
 }
 
-function refreshMapRiverShow() {
+
+var m_LastQueryTime = '';
+
+function refreshPlanIDData() { //加载横沥口数据
+    var now = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3);
+    // now.setFullYear('2019') //新加入
+    if (now.getMinutes() < 7)
+        now = new Date(now.getTime() - 30 * 60 * 1000);
+    var queryDataTime = now.Format("yyyy/MM/dd HH:00:00");
+    if (m_LastQueryTime == queryDataTime)
+        return;
+
+    RunWebServiceJSON(true, "getTSDBLevelAutodata",
+        "/pms/Base", "/doreaddata/getdata",
+        "timeindex", queryDataTime, function (data) {
+            var jqueryObj = $(data);
+            var message = jqueryObj.children();
+            var text = message.text();
+            var tmpObjs = eval("(" + text + ")");
+            if (tmpObjs != null && tmpObjs.length > 0) {
+                var tmpPlanID = tmpObjs[0].planID;
+                //测试
+                // tmpPlanID = 28181
+                //if(tmpPlanID!=null)
+                //{
+                m_LastQueryTime = (new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3)).Format("yyyy/MM/dd HH:00:00");
+                refreshSectionElvData(tmpPlanID); 
+                // refreshWaterReportData(tmpPlanID);
+                //}							
+            }
+            else
+                m_LastQueryTime = "";
+
+        });
+}
+
+
+
+var m_RiverSectionVDataArray = [];
+/**
+ * 刷新断面的高程及水面高程数据 自己重新修改的
+ * @param {Object} planID
+ */
+function refreshSectionElvData(planID) {
+    RunWebServiceJSON(true, "getTSDBLeveldata", "/pms/Base", "/doreaddata/getdata",
+        "guid#timeindex", String(planID) + "#-1", function (data) {
+            var jqueryObj = $(data);
+            var message = jqueryObj.children();
+            var text = message.text();
+            var tmpObjs = eval("(" + text + ")");
+            if (tmpObjs != null && tmpObjs.length > 0) {
+                var tmpArray = [], tmpArray2 = [], tmpArray3 = [], tmpArray4 = [];
+                for (var i in tmpObjs) {
+                    var tmpObj = tmpObjs[i];
+                    tmpArray[i] = parseFloat(tmpObj.V);
+                    tmpArray2[i] = parseFloat(tmpObj.MAXV);
+                    tmpArray3[i] = parseFloat(tmpObj.MINV);
+                    tmpArray4[i] = tmpArray[i] - tmpArray2[i];
+                    if (tmpArray4[i] < 0)
+                        tmpArray4[i] = 0;
+                }
+                initialSectionChartControl([tmpArray,tmpArray2,tmpArray3]);	
+
+                m_RiverSectionVDataArray = [tmpArray, tmpArray2, tmpArray3, tmpArray4];
+
+                refreshMapRiverShow(m_Layer_River_ShowMode)
+            }
+        });
+}
+
+
+function refreshMapRiverShow(m_Layer_River_ShowMode) {
     fetch('./riversection.geojson')
         .then(response => response.json())
         .then(data => {
+            if (m_RiverSectionVDataArray.length == 0){
+                return 0;
+            }
+            // 重新画riverSection，要检查是否删除之前的riverSection polygonCollection
+            polygonCollection.forEach(function(polygon) {
+                // 在remove(polygon)之前要设置false，要不然删除后，就再也找不到怎么删除的选项了 小bug
+                polygon._labelBox.show = false; 
+                entityCollection.remove(polygon)
+              });
             // console.log(data.features); // data为JSON对象
             var tmpObjs = data.features;
             // var jqueryObj = $(data);
@@ -671,7 +760,7 @@ function refreshMapRiverShow() {
                         hierarchy: Earth.Cartesian3.fromDegreesArray(tmpCoordinates),
                         // color: Earth.Color.fromBytes(0, 0, 255, 255),
                         // color: Earth.Color.BLUE,
-                        color: colorDepth,
+                        color: m_Layer_River_ShowMode?colorLevel:colorDepth,
                         heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
                         // height: -100,
                         outline: true, //好像暂时不支持
@@ -794,7 +883,7 @@ function addGYEventPoint(lng, lat, obj) {
     //     "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">发布人：</font>" + obj.UploadUserNickName + "</label><br/>" +
     //     "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">发布时间：</font>" + obj.UploadTime + "</label><br/>" +
     //     "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">事件描述：</font>" + obj.Content + "</label><br/>";
-    entity = new Earth.Entity({
+    let entity = new Earth.Entity({
         name: 'GYEvent',
         show: true,
         layer: 'GYEventLayer',
@@ -1042,7 +1131,8 @@ $(document).ready(function () {
 			entityCollection._entities[i].labelBox.show = false;
 			if (entityCollection._entities[i].polygon) {
 				// entityCollection._entities[i].polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
-				entityCollection._entities[i].polygon.color = entityCollection._entities[i].colorDepth;
+                let tmpcolor = m_Layer_River_ShowMode?entityCollection._entities[i].colorLevel:entityCollection._entities[i].colorDepth;
+				entityCollection._entities[i].polygon.color = tmpcolor;
 			}
 		}
         if (entity9){
@@ -1054,7 +1144,7 @@ $(document).ready(function () {
 	var m_Layer_User_Vis = true;
 	$("#mapBottomControlBtnUser").click(function () {
 		if (m_Layer_User_Vis) {
-			$("#mapBottomControlBtnUser").attr("src", "images/layer_user_off.png");
+			$("#mapBottomControlBtnreaUser").attr("src", "images/layer_user_off.png");
 			m_Layer_User_Vis = false;
 			// clearGPSTrackLayers();
 		}
@@ -1127,7 +1217,7 @@ $(document).ready(function () {
 		}
 	});
 
-	var m_Layer_River_ShowMode = 0;
+	// var m_Layer_River_ShowMode = 0; 已经定义为全局变量了
 	$("#mapBottomControlBtnRiver").click(function () {
 		if (m_Layer_River_ShowMode == 0) {
 			$("#mapBottomControlBtnRiver").attr("src", "images/layer_river_off.png");
@@ -1137,7 +1227,7 @@ $(document).ready(function () {
 			$("#mapBottomControlBtnRiver").attr("src", "images/layer_river_on.png");
 			m_Layer_River_ShowMode = 0;
 		}
-		// refreshMapRiverShow();
+		refreshMapRiverShow(m_Layer_River_ShowMode);
 	});
 
 	// var m_Layer_Radar_Vis = true;
