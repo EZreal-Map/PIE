@@ -1,593 +1,385 @@
+<!-- 添加Label -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="stylesheet" type="text/css" href="css/style_home.css">
-  <title>PIE Earth Demo</title>
-  <style>
-    html,
-    body {
-      margin: 0;
-      width: 100%;
-      height: 100%;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta http-equiv="origin-trial"
+        content="AguxL8gUQtVnjaKBJ+cg8sDcaMQ2PEqJuTSmja7AA8Gv7b3Oo4Kpru2YsC7Owk3P5YXviYGFHcarBWIn8dqMdAEAAAB9eyJvcmlnaW4iOiJodHRwczovL2Nsb3VkdGVzdC5waWVzYXQuY246NDQzIiwiZmVhdHVyZSI6IlVucmVzdHJpY3RlZFNoYXJlZEFycmF5QnVmZmVyIiwiZXhwaXJ5IjoxNjU4ODc5OTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZX0=" />
+    <title>labelBox</title>
+    <link rel="stylesheet" href="earth.css" />
+    <style>
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-    #globe {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      position: relative;
-    }
+        #globe {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
 
-    /* #mapContainer {
-      width: 500px !important;
-      height: 800px !important;
-    } */
+        #earthContainer {
+            width: 100%;
+            height: 100%;
+        }
 
-    .left-top-tools {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-    }
+        #btn {
+            position: absolute;
+            top: 20px;
+            left: 5px;
+        }
 
-    .right-top-tools {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
-
-    .left-bottom-tools {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-    }
-
-    button {
-      height: 40px;
-      font-size: 20px;
-      padding: 0 12px;
-      line-height: 38px;
-      margin-right: 10px;
-      cursor: pointer;
-      border-radius: 10px;
-      border: #ffffff 2px solid;
-      /* background-color: white; */
-    }
-
-    .zoomIn,
-    .zoomOut {
-      display: block;
-      width: 40px;
-      margin-bottom: 10px;
-    }
-
-    .zoomIn {
-      background: url(./images/zoom-in.png) no-repeat center #efefef;
-      background-size: 80% 80%;
-    }
-
-    .zoomOut {
-      background: url(./images/zoom-out.png) no-repeat center #efefef;
-      background-size: 80% 80%;
-    }
-
-
-    .stationPop {
-      width: 202px;
-      background-color: #00000000;
-      padding: 10px;
-      border: 2px solid white;
-      border-radius: 10px;
-    }
-
-    .stationPopHeader {
-      text-align: center;
-      width: 190px;
-      margin: 0 auto;
-      Font: 18px 微软雅黑;
-      margin-bottom: 5px;
-      color: #6FFF6F;
-    }
-
-    .stationPopBody {
-      margin: 0 auto;
-      Font: 15px 微软雅黑;
-      width: 190px;
-      color: white;
-    }
-
-    .stationPopBody .stationPopFirstColTd {
-      width: 70px;
-      vertical-align: top;
-      font-weight: 700;
-    }
-
-    .stationPopBody table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .stationPopBody td {
-      word-break: break-all;
-      /* 当单词过长时，强制换行 */
-      white-space: normal;
-      /* 不强制将空格合并成一个 */
-      width: auto;
-      padding: 5px;
-      /* vertical-align: middle; */
-    }
-
-    /*断面弹窗的样式 */
-    .riverSectionPop {
-      width: 142px;
-      background-color: #00000000;
-      padding: 10px;
-      border: 2px solid white;
-      border-radius: 10px;
-    }
-
-    .riverSectionPopHeader {
-      text-align: center;
-      width: 120px;
-      margin: 0 auto;
-      Font: 20px 微软雅黑;
-      margin-bottom: 5px;
-      color: yellow;
-    }
-
-    .riverSectionPopBody {
-      margin: 0 auto;
-      Font: 18px 微软雅黑;
-      width: 120px;
-      color: white;
-    }
-
-    .riverSectionPopBody .riverSectionPopFirstColTd {
-      width: 50px;
-      vertical-align: top;
-      font-weight: 700;
-    }
-
-    .riverSectionPopBody table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .riverSectionPopBody td {
-      word-break: break-all;
-      /* 当单词过长时，强制换行 */
-      white-space: normal;
-      /* 不强制将空格合并成一个 */
-      width: auto;
-      padding: 5px;
-      /* vertical-align: middle; */
-    }
-  </style>
+        #btn-del {
+            position: absolute;
+            top: 20px;
+            left: 80px;
+        }
+    </style>
 </head>
 
 <body>
-  <div id="globe">
-    <div class="left-top-tools">
-      <button type="button" class="tool" onclick="fullScreen()">fullScreen</button>
-      <button type="button" class="tool" onclick="clearLabelBox()">clearLabelBox</button>
-      <button type="button" class="tool" onclick="stationLayerShow()">stationLayer</button>
-      <button type="button" class="tool" onclick="riverSectionLayerShow()">riverSectionLayer</button>
-      <button type="button" class="tool" onclick="FlyTargetLocation()">聚焦研究区域</button>
-      <button type="button" class="tool" onclick="ChangeSceneMode()">2D/3D（功能废除）</button>
+    <div id="globe">
+        <canvas id="earthContainer" oncontextmenu="return false"></canvas>
+        <div id="btn">
+            <button onclick="handleSwitch()">显隐</button>
+            <button onclick="changePosition()">修改位置</button>
+        </div>
     </div>
-    <div class="right-top-tools">
-      <button class="zoomIn"></button>
-      <button class="zoomOut"></button>
-    </div>
-    <canvas id="mapContainer" oncontextmenu="return false"></canvas>
-  </div>
-  <div class="left-bottom-tools">
-    <button class="measureLength">测距</button>
-    <button class="clearMeasureLength" style="display: none;">清除测距</button>
-  </div>
-  <script type="text/javascript" src="PIEWrapperWeb.js"></script>
-  <script type="text/javascript" src="Earth.js"></script>
-  <script>
-    createEarthModule().then(function () {
-      const viewer = new Earth.Viewer('mapContainer', {
-
-        sceneMode: Earth.SceneMode.SCENE2D, //Earth.SceneMode.SCENE2D
-        center: [114.187336, 22.595030], //初始中心点
-        zoom: 16, //初始层级
-        cameraSmooth: false, //是否开启相机缓冲效果
-        // projection: new Earth.Projection.WebMercator(),
-        imageryProvider: new Earth.ArcGisMapServerImageryProvider({
-          url: 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer'
-        }),
-        // new Earth.TileMapServiceImageryProvider({
-        // url: 'http://cache1.arcgisonline.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/%d/%d/%d',
-        // url: 'https://tile.openstreetmap.bzh/br/{z}/{x}/{y}.png',
-        // url: 'http://cache1.arcgisonline.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer'
-        // url: 'http://map.geoq.cn/arcgis/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'
-        // url: 'https://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}'
-        // tilingScheme: new Earth.WebMercatorTilingScheme(),
-        // tilingScheme: new Earth.EPSG3857TilingScheme(),
-        // tilingScheme: tilingScheme,
-        // tilingScheme: new PIE.WebMercatorTilingScheme(),
-      });
-      // 创建一个 Three.js 场景
-      // const scene = viewer.scene;
-      // const threeLayer = new ThreeLayer(viewer.scene, scene.renderer);
-
-      // 创建 EntityCollection 并传入 camera 和 ThreeLayer
-      // new Cesium.EntityCollection(viewer.camera, new Cesium.ThreeLayer(viewer.scene));
-      // const threeLayer = new ThreeLayer(viewer.scene)
-      // console.log(threeLayer)
-      // const StationEntityCollection = new Earth.EntityCollection(viewer.camera, undefined); 失败，暂时不支持
-      // var StationEntityCollection = new Earth.EntityCollection(viewer.camera, viewer._threeViewer)
-
-
-      const entityCollection = viewer.entities;
-
-      // console.log()
-      // viewer.entityCollection.removeAll();
-
-      // let translate = new Earth.ReferenceTranslator();
-      // let srcSpatialReference = viewer.scene.globe.spatialReference.fromEpsg(4326); //创建4546空间参考系对象
-      // let destSpatialReference = viewer.scene.globe.spatialReference.fromEpsg(3857); //创建4326空间参考系对象
-      // translate.setCoordSysSrc(srcSpatialReference); //设置源空间参考系 成功返回 ture
-      // translate.setCoordSysDes(destSpatialReference); //设置目标空间参考系
-      // console.log(translate.translatePoint([114.191, 22.592]))
-
-      // let tmsImageryProvider_nightmap = new Earth.TileMapServiceImageryProvider({
-      //   url: 'tiles/nightmap/{z}/{x}/{y}.png'
-      // })
-      // const layer_nightmap = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_nightmap);
-
-      const tmsImageryProvider_basemap = new Earth.TileMapServiceImageryProvider({
-        url: 'tiles/basemap/L{z}/{y}-{x}.png',
-        layer: 'webMercatorLayer',
-      });
-      const tmsImageryProvider_basemapTxt = new Earth.TileMapServiceImageryProvider({
-        url: 'tiles/basemapTxt/L{z}/{y}-{x}.png',
-        layer: 'webMercatorLayer',
-      })
-      const layer_basemap = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemap);
-      const layer_basemapTxt = viewer.imageryLayers.addImageryProvider(tmsImageryProvider_basemapTxt);
-
-
-      clearLabelBox = function () {
-        for (var i in entityCollection._entities) {
-          entityCollection._entities[i].labelBox.show = false;
-        }
-      }
-
-      stationLayerShow = function () {
-        for (var i in entityCollection._entities) {
-          // console.log(i)
-          if (entityCollection._entities[i].layer === 'stationLayer') {
-            entityCollection._entities[i].show = !entityCollection._entities[i].show;
-            entityCollection._entities[i].labelBox.show = false;
-
-          }
-        }
-      }
-      riverSectionLayerShow = function () {
-        for (var i in entityCollection._entities) {
-          console.log(entityCollection._entities[i].layer)
-          if (entityCollection._entities[i].layer === 'riverSectionLayer') {
-            entityCollection._entities[i].show = !entityCollection._entities[i].show;
-            entityCollection._entities[i].labelBox.show = false;
-
-          }
-        }
-      }
-
-      FlyTargetLocation = function () {
-        viewer.camera.flyTo({
-          destination: Earth.Cartesian3.fromDegrees(114.187336, 22.595030, 3000.0),
-
-          orientation: {
-            heading: Earth.Math.toRadians(0),
-            pitch: Earth.Math.toRadians(0),
-            roll: 0.0,
-          },
-          duration: 3,
-          complete: () => {
-            console.log('complete');
-          },
+</body>
+<script type="text/javascript" src="PIEWrapperWeb.js"></script>
+<script type="text/javascript" src="Earth.js"></script>
+<script>
+    var entity13;
+    createEarthModule().then(function (module) {
+        const viewer = new Earth.Viewer('earthContainer', {
+            center: [101.0, 41.0], //初始中心点
+            zoom: 5, //初始层级
         });
-      }
+        // const entity = new Earth.Entity({
+        //     name: 'label',
+        //     position: Earth.Cartesian3.fromDegrees(121.2219, 23.5161, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        //     show: true,
+        //     labelBox: {
+        //         type: Earth.LabelBoxType.box0,
+        //         scale: 1,
+        //         style: {
+        //             text: '测试位置',
+        //         },
+        //     },
+        // });
+        const entityCollection = viewer.entities;
+        // entityCollection.add(entity);
 
-      ChangeSceneMode = function () {
-        if (viewer.scene.mode === 3) {
-          viewer.scene.mode = 2;
-        } else {
-          viewer.scene.mode = 3;
-        }
-      }
+        // const entity1 = new Earth.Entity({
+        //     name: 'label',
+        //     position: Earth.Cartesian3.fromDegrees(119, 40, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        //     show: true,
+        //     point: {
+        //         // show: true,
+        //         pixelSize: 16,
+        //         color: Earth.Color.BLUE.withAlpha(1),
+        //         outlineColor: undefined, //不支持
+        //         outlineWidth: undefined, //不支持
+        //         distanceDisplayCondition: undefined, //暂不支持
+        //     },
+        //     labelBox: {
+        //         type: Earth.LabelBoxType.box1,
+        //         scale: 0.5,
+        //         style: {
+        //             theme: 'red', //支持四种格式 'red','blue','yellow' 'green'
+        //             title: '大厦',
+        //             items1: [
+        //                 {
+        //                     label: '车位数',
+        //                     num: 2499,
+        //                     unit: '位',
+        //                 },
+        //                 {
+        //                     label: '当前空余',
+        //                     num: 126,
+        //                     unit: '位',
+        //                 },
+        //             ],
+        //             items2: [
+        //                 {
+        //                     label: '车库状态',
+        //                     status1: '1号',
+        //                     status2: '2号',
+        //                 },
+        //                 {
+        //                     label: '车库入口',
+        //                     status1: '1号',
+        //                     status2: '2号',
+        //                 },
+        //             ],
+        //         },
+        //     },
+        // });
+        // entityCollection.add(entity1);
 
+        // const entity2 = new Earth.Entity({
+        //     name: 'label',
+        //     position: Earth.Cartesian3.fromDegrees(100, 40, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        //     show: true,
+        //     labelBox: {
+        //         type: Earth.LabelBoxType.box2,
+        //         scale: 1.0,
+        //         offset: { x: -35, y: -35 },
+        //         style: {
+        //             text: '测试位置',
+        //             fontSize: 14,
+        //             fontFamily: 'PingFang-SC-Medium',
+        //             color: '#FFFFFF',
+        //             // backgroundColor: "rgba(30,111,255,.1)",
+        //             backgroundColor: 'red',
+        //             boderColor: '#ff0000f0',
 
-      document.querySelector('.zoomIn').addEventListener('click', () => viewer.camera.zoomIn());
-      document.querySelector('.zoomOut').addEventListener('click', () => viewer.camera.zoomOut());
+        //         },
+        //     },
+        //     point: {
+        //         // show: true,
+        //         pixelSize: 16,
+        //         color: Earth.Color.BLUE.withAlpha(1),
+        //     },
+        // });
+        // entityCollection.add(entity2);
 
-      const measureLength = document.querySelector('.measureLength');
-      const clearMeasureLength = document.querySelector('.clearMeasureLength');
+        // const entity3 = new Earth.Entity({
+        //     name: 'label',
+        //     position: Earth.Cartesian3.fromDegrees(110, 40, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        //     show: true,
+        //     labelBox: {
+        //         type: Earth.LabelBoxType.box3,
+        //         scale: 0.8,
+        //         offset: { x: -3, y: -6 },
+        //         style: {
+        //             text: '测试位置',
+        //         },
+        //     },
+        //     point: {
+        //         // show: true,
+        //         pixelSize: 16,
+        //         color: Earth.Color.BLUE.withAlpha(1),
+        //     },
+        // });
+        // entityCollection.add(entity3);
 
-      measureLength.addEventListener('click', function () {
-        viewer.scene.globe.setGlobeTool(Earth.GlobeToolType.MeasureLength);
-        const measureTool = viewer.scene.globe.getGlobeTool();
-        console.log(measureTool);
-        measureLength.innerHTML = '测距中... （鼠标左键增加节点，鼠标右键结束测距）';
-        measureTool.getResultEvent().addEventListener(() => {
-          measureLength.innerHTML = '重新测距';
-          clearMeasureLength.style.display = 'inline-block';
-        });
+        // const entity4 = new Earth.Entity({
+        //     name: 'label',
+        //     position: Earth.Cartesian3.fromDegrees(100, 50, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        //     show: true,
+        //     labelBox: {
+        //         type: Earth.LabelBoxType.box4,
+        //         scale: 0.8,
+        //         offset: { x: -9, y: -6 },
+        //         style: {
+        //             text: '蓝色文本标牌',
+        //         },
+        //     },
+        //     point: {
+        //         // show: true,
+        //         pixelSize: 16,
+        //         color: Earth.Color.BLUE.withAlpha(1),
+        //     },
+        // });
+        // entityCollection.add(entity4);
 
-        clearMeasureLength.addEventListener('click', () => {
-          viewer.scene.globe.setGlobeTool(Earth.GlobeToolType.Pan);
-          measureLength.innerHTML = '测距';
-          clearMeasureLength.style.display = 'none';
-        });
-      })
-      function loadData(callback) {
-        fetch('data.json')
-          .then(response => response.json())
-          .then(jsonData => {
-            callback(jsonData);
-          })
-      }
-      // const entityCollectionStation = new viewer.EntityCollection();
+        // const entity5 = new Earth.Entity({
+        //     name: 'label',
+        //     position: Earth.Cartesian3.fromDegrees(90, 30, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        //     show: true,
+        //     labelBox: {
+        //         type: Earth.LabelBoxType.box5,
+        //         scale: 0.2,
+        //         offset: { x: -9, y: -13 },
+        //         style: {
+        //             url: '../../images/tf.gif',
 
-      // console.log(entityCollection)
-      // entityCollection.removeAll();
+        //         },
+        //     },
+        //     point: {
+        //         // show: true,
+        //         pixelSize: 16,
+        //         color: Earth.Color.BLUE.withAlpha(1)
+        //     },
 
-      loadData(data => {
-        // console.log(data);
-        // 在这里处理数据
-        //2、获取entityCollection
-        // var tmpObjs = joResult.data;
-        var tmpObjs = data;
+        // });
+        // entityCollection.add(entity5);
 
-        for (var i in tmpObjs) {
-          tmpObj = tmpObjs[i];
-          var tmpX = parseFloat(tmpObj.X),
-            tmpY = parseFloat(tmpObj.Y);
-          // tmpXY = translate.translatePoint([114.191, 22.592]);
-          // tmpX = tmpXY[0]
-          // tmpY = tmpXY[1]
-          var tmpNickName = tmpObj.Name;
-          var tmpStationType = tmpObj.FacilitiesType;
-          var tmpMsg = tmpObj.Info;
-          //1、创建贴地点
-          const entity = new Earth.Entity({
-            name: tmpStationType,
-            layer: 'stationLayer',
+        // const entity5_1 = new Earth.Entity({
+        //     name: 'label',
+        //     position: Earth.Cartesian3.fromDegrees(90, 50, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        //     show: true,
+        //     labelBox: {
+        //         type: Earth.LabelBoxType.box5,
+        //         scale: 0.5,
+        //         offset: { x: -18, y: -30 },
+        //         style: {
+        //             url: '../../images/symbol2.png',
+        //         },
+        //     },
+        //     point: {
+        //         // show: true,
+        //         pixelSize: 16,
+        //         color: Earth.Color.BLUE.withAlpha(1),
+        //         outlineColor: undefined, //不支持
+        //         outlineWidth: undefined, //不支持
+        //         distanceDisplayCondition: undefined, //暂不支持
+        //     },
+        // });
+        // // entityCollection.add(entity5_1);
+
+        // const entity5_2 = new Earth.Entity({
+        //     name: 'label',
+        //     position: Earth.Cartesian3.fromDegrees(104, 30, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        //     show: true,
+        //     labelBox: {
+        //         type: Earth.LabelBoxType.box5,
+        //         scale: 1.0,
+        //         offset: { x: -16, y: -28 },
+        //         style: {
+        //             url: '../../images/paizhang.png',
+        //             text: '标牌',
+        //             textColor: 'red',
+        //         },
+        //     },
+        //     point: {
+        //         // show: true,
+        //         pixelSize: 16,
+        //         color: Earth.Color.BLUE.withAlpha(1),
+        //         outlineColor: undefined, //不支持
+        //         outlineWidth: undefined, //不支持
+        //         distanceDisplayCondition: undefined, //暂不支持
+        //     },
+        // });
+        // entityCollection.add(entity5_2);
+
+        // const entity6 = new Earth.Entity({
+        //     name: 'label',
+        //     position: Earth.Cartesian3.fromDegrees(90, 40, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        //     show: true,
+        //     labelBox: {
+        //         type: Earth.LabelBoxType.box6,
+        //         scale: 0.8,
+        //         offset: { x: 2, y: -2 },
+        //         style: {
+        //             text: '这是box6',
+        //         },
+        //     },
+        //     point: {
+        //         // show: true,
+        //         pixelSize: 16,
+        //         color: Earth.Color.BLUE.withAlpha(1),
+
+        //     },
+        // });
+        // entityCollection.add(entity6);
+
+        // const entity7 = new Earth.Entity({
+        //     name: 'label',
+        //     position: Earth.Cartesian3.fromDegrees(120, 30, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        //     show: true,
+        //     labelBox: {
+        //         type: Earth.LabelBoxType.box7,
+        //         scale: 0.8,
+        //         offset: { x: 0, y: -5 },
+        //         style: {
+        //             url: '../../images/camera.svg',
+        //         },
+        //     },
+        //     point: {
+        //         // show: true,
+        //         pixelSize: 16,
+        //         color: Earth.Color.BLUE.withAlpha(1),
+
+        //     },
+        // });
+        // entityCollection.add(entity7);
+
+        // const entity8 = new Earth.Entity({
+        //     name: 'label',
+        //     position: Earth.Cartesian3.fromDegrees(70, 50, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        //     show: true,
+        //     labelBox: {
+        //         type: Earth.LabelBoxType.box8,
+        //         scale: 0.8,
+        //         style: {
+        //             text: '我是竖立文本',
+        //         },
+        //     },
+        //     point: {
+        //         // show: true,
+        //         pixelSize: 16,
+        //         color: Earth.Color.BLUE.withAlpha(1),
+        //         outlineColor: undefined, //不支持
+        //         outlineWidth: undefined, //不支持
+        //         distanceDisplayCondition: undefined, //暂不支持
+        //     },
+        // });
+        // entityCollection.add(entity8);
+
+        const entity9 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(60, 50, 0), //Cartesian3类型，用于指定框的经度，维度和高度
             show: true,
-            // zIndex: 10,
-            position: Earth.Cartesian3.fromDegrees(tmpX, tmpY), //经度，纬度，高度
-            point: new Earth.Point({
-              show: false,
-              pixelSize: 1,
-              color: Earth.Color.BLUE.withAlpha(1),
-              heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
-              outlineColor: undefined, //不支持
-              outlineWidth: undefined, //不支持
-              distanceDisplayCondition: undefined, //暂不支持
-            }),
-            billboard: {
-              show: true,
-              image: 'images/' + tmpStationType + '.png',
-              scale: 1,
-              horizontalOrigin: Earth.HorizontalOrigin.CENTER,
-              verticalOrigin: Earth.VerticalOrigin.CENTER
-            },
-            // label: {
-            //   show: true,
-            //   text: viewer.camera.zoom < 10 ? "" : tmpNickName,
-            //   fillColor: Earth.Color.BLUE.withAlpha(0.8),//可设置透明度
-            // },
             labelBox: {
-              show: false,
-              type: Earth.LabelBoxType.box10,
-              scale: 0.8,
-              offset: { x: -85, y: 25 },
-              maxHeight: 20000000,
-              style: {
-                html: `
-                        <div class="stationPop">
-                            <div class="stationPopHeader">
-                                <font>【${tmpNickName}】</font>
-                            </div>
-                            <div class="stationPopBody">
-                                <table>
-                                    <tr>
-                                        <td class="stationPopFirstColTd">设备类型 :</td>
-                                        <td>${tmpStationType}</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="stationPopFirstColTd">设施信息 :</td>
-                                        <td>${tmpMsg}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>`,
-                color: 'black',
-                backgroundColor: '#0000004D'
-              },
+                type: Earth.LabelBoxType.box9,
+                scale: 0.8,
+                offset: { x: 0, y: -2 },
+                style: {
+                    color: 'red',
+                },
             },
-          });
-          // console.log(`设置labelBox.show为false之前,labelBox的值${entity.labelBox.show}`)
-          // entity.labelBox.show = false
-          // console.log(`entity.show:${entity.show}`)
-          // console.log(`entity.labelBox.show:${entity.labelBox.show}`)
-          //3、添加
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1),
 
-          entityCollection.add(entity);
-          // console.log(`entityCollection._entities[${i}].show:${entityCollection._entities[i].show}`)
-        }
+            },
+        });
+        entityCollection.add(entity9);
 
-      });
-
-
-
-
-      // 加载geojson数据
-      const line = viewer.dataSources.add(
-        Earth.GeoJsonDataSource.load('./riverzone.geojson', {
-          stroke: Earth.Color.RED,
-          strokeWidth: 2,
-          fill: Earth.Color.BLACK.withAlpha(0.2),
-          // fill: "rgba(0, 128, 128, 0.2)",
-        })
-      );
-      console.log(line.entities)
-
-      // const riversection = viewer.dataSources.add(
-      //   Earth.GeoJsonDataSource.load('./riversection.geojson', {
-      //     stroke: Earth.Color.RED,
-      //     strokeWidth: 1,
-      //     fill: Earth.Color.BLACK.withAlpha(0.2),
-      //     // fill: "rgba(0, 128, 128, 0.2)",
-      //   })
-      // );
-      // console.log(riversection.entities)
-
-      fetch('riversection.geojson')
-        .then(response => response.json())
-        .then(data => {
-          // console.log(data.features); // data为JSON对象
-          var tmpObjs = data.features;
-
-          for (var i in tmpObjs) {
-            tmpObj = tmpObjs[i];
-            // console.log(tmpObj)
-            tmpNickName = tmpObj.properties.name;
-            var tmpCoordinates = [];
-            tmpCoordinatesbigArray = tmpObj.geometry.coordinates[0];
-            tmpCoordinatesbigArray.forEach(function (arr) {
-              tmpCoordinates = tmpCoordinates.concat(arr);
-            });
-
-            // 通过自己定义的函数 getPolygonCentroid获取polygon的重心点
-            polygonCentroid = getPolygonCentroid(tmpCoordinatesbigArray)
-            // console.log(polygonCentroid);
-
-            // 80写死了，待处理
-            var tmpRiverSectionWaterLevel = 80;
-            var tmpRiverSectionWaterDepth = 20;
-
-
-
-            const polygon = new Earth.Entity({
-              name: tmpNickName,
-              show: true,
-              layer: 'riverSectionLayer',
-              // zIndex: 5,
-              position: Earth.Cartesian3.fromDegrees(polygonCentroid[0], polygonCentroid[1]), //经度，纬度，高度
-
-              polygon: new Earth.Polygon({
-                show: true,
-                hierarchy: Earth.Cartesian3.fromDegreesArray(tmpCoordinates),
-                color: Earth.Color.fromBytes(0, 0, 255, 200),
-                heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
-                outline: true, //好像暂时不支持
-                outlineColor: Earth.Color.RED, //好像暂时不支持
-              }),
-              // label: {
-              //     show: true,
-              //     text: viewer.camera.zoom < 10 ? "" : tmpNickName,
-              //     fillColor: Earth.Color.BLUE.withAlpha(0.8),//可设置透明度
-              // }
-
-              labelBox: {
-                show: false,
+        entity13 = new Earth.Entity({
+            name: 'label',
+            position: Earth.Cartesian3.fromDegrees(100, 30, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+            show: true,
+            labelBox: {
                 type: Earth.LabelBoxType.box10,
                 scale: 0.8,
-                offset: { x: -85, y: 25 },
+                offset: { x: -35, y: -50 },
                 maxHeight: 20000000,
                 style: {
-                  html: `
-                      <div class="riverSectionPop">
-                          <div class="riverSectionPopHeader">
-                              <font>【${tmpNickName}】</font>
-                          </div>
-                          <div class="riverSectionPopBody">
-                              <table>
-                                  <tr>
-                                      <td class="riverSectionPopFirstColTd">水位:</td>
-                                      <td>${tmpRiverSectionWaterLevel}m</td>
-                                  </tr>
-                                  <tr>
-                                      <td class="riverSectionPopFirstColTd">水深:</td>
-                                      <td>${tmpRiverSectionWaterDepth}m</td>
-                                  </tr>
-                              </table>
-                          </div>
-                      </div>`,
-                  color: 'black',
-                  backgroundColor: '#0000004D'
+                    html: '自定义文本',
+                    color: 'black',
+                    backgroundColor: 'white'
                 },
-              },
-
-            });
-
-            entityCollection.add(polygon);
-          }
+            },
+            point: {
+                // show: true,
+                pixelSize: 16,
+                color: Earth.Color.BLUE.withAlpha(1),
+            },
         });
-
-      const handler = new Earth.ScreenSpaceEventHandler(viewer.scene.canvas);
-      handler.setInputAction(function (movement) {
-        const pickObj = viewer.scene.pick(movement.position);
-        // pickObj && alert('拾取成功：' + pickObj.name);
-        if (pickObj) {
-          // console.log(pickObj.labelBox.show)
-          pickObj.labelBox.show = !pickObj.labelBox.show;
-          if (pickObj.polygon) {
-            if (pickObj.labelBox.show) {
-              pickObj.polygon.color = Earth.Color.fromBytes(255, 0, 0, 200);
-            }
-            else {
-              pickObj.polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
-            }
-          }
-
-
-        }
-      }, Earth.ScreenSpaceEventType.LEFT_CLICK);
-
-      // // 监听缩放等级
-      // viewer.camera.moveEnd.addEventListener(function () {
-      //   var zoomLevel = viewer.camera.zoom;
-      //   console.log(zoomLevel)
-
-      // })
-      viewer.scene.backgroundColor = Earth.Color.RED;
+        entityCollection.add(entity13);
     });
+    // function handleSwitch() {
+    //     if (entity13) {
+    //         entity13.labelBox.show = !entity13.labelBox.show;
+    //     }
+    // }
 
-
-
-
-
-    function getPolygonCentroid(points) {
-      let sumX = 0;
-      let sumY = 0;
-      let sumArea = 0;
-      for (let i = 0; i < points.length; i++) {
-        let point1 = points[i];
-        let point2 = i === points.length - 1 ? points[0] : points[i + 1];
-        let area = point1[0] * point2[1] - point2[0] * point1[1];
-        sumX += (point1[0] + point2[0]) * area;
-        sumY += (point1[1] + point2[1]) * area;
-        sumArea += area;
-      }
-      let x = sumX / (3 * sumArea);
-      let y = sumY / (3 * sumArea);
-      return [x, y];
-    }
-
-
-
-  </script>
-
-</body>
+    // function changePosition() {
+    //     if (entity13) {
+    //         entity13.position = Earth.Cartesian3.fromDegrees(80, 20);
+    //     }
+    // }
+</script>
 
 </html>

@@ -203,7 +203,7 @@ createEarthModule().then(function () {
                                     position: Earth.Cartesian3.fromDegrees(tmpX, tmpY),
                                     point: new Earth.Point({
                                         show: false,
-                                        pixelSize: 1,
+                                        pixelSize: 10,
                                         color: Earth.Color.BLUE.withAlpha(1),
                                         // heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
                                         outlineColor: undefined, //不支持
@@ -321,7 +321,7 @@ createEarthModule().then(function () {
                         position: Earth.Cartesian3.fromDegrees(tmpX, tmpY), //经度，纬度，高度
                         point: new Earth.Point({
                             show: false,
-                            pixelSize: 1,
+                            pixelSize: 10,
                             color: Earth.Color.BLUE.withAlpha(1),
                             // heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
                             outlineColor: undefined, //不支持
@@ -511,6 +511,12 @@ function getPolygonCentroid(points) {
 //             }
 //         });
 // }
+
+  // 颜色渐变函数 gradientColor(startColor, endColor, step)，用于生成从 startColor 到 endColor 的颜色渐变过程，分成了 step 步
+    // 1、 将 startColor 和 endColor 两个颜色值转换成 rgb 数组格式，方便后续计算。
+    // 2、计算每一步颜色的 rgb 值，将其转换成十六进制表示。
+    // 3、将每一步的十六进制颜色值保存到数组 colorArr 中。
+    // 4、返回 colorArr 数组。
 function gradientColor(startColor, endColor, step) {
     startRGB = colorToRgb(startColor); //转换为rgb数组模式
     startR = startRGB[0];
@@ -774,7 +780,7 @@ function addGYEventPoint(lng, lat, obj) {
         position: Earth.Cartesian3.fromDegrees(tmpX, tmpY),
         point: new Earth.Point({
             show: false,
-            pixelSize: 1,
+            pixelSize: 10,
             color: Earth.Color.BLUE.withAlpha(1),
             // heightReference: Earth.HeightReference.CLAMP_TO_GROUND, //贴地
             outlineColor: undefined, //不支持
@@ -847,6 +853,65 @@ function addGYEventPoint(lng, lat, obj) {
     // GYEventLayerVectorSource.addFeature(tmpFeature);
 }
 
+function centerOnMapAndAnim(lng, lat) {
+    var tmpLng = parseFloat(lng);
+    var tmpLat = parseFloat(lat);
+    viewer.camera.flyTo({
+        destination: Earth.Cartesian3.fromDegrees(tmpLng, tmpLat, 50),
+
+        orientation: {
+            heading: Earth.Math.toRadians(0),
+            pitch: Earth.Math.toRadians(0),
+            roll: 0.0,
+        },
+        duration: 1,
+        // complete: () => {
+        // 	console.log('complete');
+        // },
+    });
+    const entity9 = new Earth.Entity({
+        name: 'label',
+        position: Earth.Cartesian3.fromDegrees(tmpLng, tmpLat, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        show: true,
+        labelBox: {
+            type: Earth.LabelBoxType.box9,
+            scale: 0.1,
+            offset: { x: 0, y: -2 },
+            style: {
+                color: 'green',
+            },
+        },
+        point: {
+            show: true,
+            pixelSize: 10,
+            color: Earth.Color.BLUE.withAlpha(1),
+
+        },
+    });
+    entityCollection.add(entity9);
+
+    // var tmpPoint = ol.proj.transform([tmpLng, tmpLat], 'EPSG:4326', 'EPSG:3857');
+    // mapView.setCenter(tmpPoint);
+    // mapView.setZoom(19);
+
+    // if(m_FocusPointOverlay_Red == null) {
+    //     var point_div = document.createElement('div');
+    //     point_div.className = "css_map_focusAnimation";
+    //     m_FocusPointOverlay_Red = new ol.Overlay({
+    //         element: point_div,
+    //         positioning: 'center-center'
+    //     });
+        
+    //     point_div.onclick = function() {
+    //         m_FocusPointOverlay_Red.setPosition(undefined);	
+    //         return true;
+    //     }
+    //     M_map.addOverlay(m_FocusPointOverlay_Red);
+        
+    // }
+    // m_FocusPointOverlay_Red.setPosition(tmpPoint);
+}
+
 
 
 // 控制按钮的函数
@@ -887,9 +952,9 @@ $(document).ready(function () {
 				roll: 0.0,
 			},
 			duration: 1,
-			complete: () => {
-				console.log('complete');
-			},
+			// complete: () => {
+			// 	console.log('complete');
+			// },
 		});
 	});
 
@@ -1047,12 +1112,10 @@ $(document).ready(function () {
 
 
 
-    // 颜色渐变函数 gradientColor(startColor, endColor, step)，用于生成从 startColor 到 endColor 的颜色渐变过程，分成了 step 步
-    // 1、 将 startColor 和 endColor 两个颜色值转换成 rgb 数组格式，方便后续计算。
-    // 2、计算每一步颜色的 rgb 值，将其转换成十六进制表示。
-    // 3、将每一步的十六进制颜色值保存到数组 colorArr 中。
-    // 4、返回 colorArr 数组。
+  
 
+    
+   
     
 
 

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>河道管养智慧流域管控决策平台</title>
+    <link rel="stylesheet" href="earth.css" />
     <!-- RunWebServiceJSON等函数的定义 -->
     <script type="text/javascript" src="js/CommonJS.js"></script>
     <script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
@@ -748,7 +749,7 @@
 
         var m_sectionID = [1, 17, 25, 51, 57];
         /**查询的日期*/
-        var m_CurrentQueryData = dateToString(new Date());
+        var m_CurrentQueryData = dateToString(new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 3)));
 
         //refreshSchedulingPlan(m_CurrentQueryData);
 
@@ -1243,7 +1244,7 @@
          */
         function refreshWeatherReportData() {
             // 增加 获取当前时间格式的不同拼接 作为筛选条件
-            var dateTime = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 30);
+            var dateTime = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 7);
             // dateTime = new Date(dateTime.getTime() - 2 * 60 * 60 * 1000 )
             // var hour = dateTime.getHours();
             // // if (hour == 24)
@@ -1837,7 +1838,7 @@
 
                         initialDispChart([tmpDispX, tmpDispY]);
 
-                        var now = new Date();
+                        var now = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 3));
                         //tmpDispX = Math.random();
                         tmpSSSSSSS++;
                         if (tmpSSSSSSS > 10) {
@@ -1878,7 +1879,7 @@
          * 刷新河道管养的事件与工单数量
          */
         function refreshGuanYangCountData() {
-            var now = new Date();
+            var now = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 3));
             var tmpMonth = now.getMonth() + 1;
             var tmpMonthStr = "" + tmpMonth;
             if (tmpMonth < 10)
@@ -1960,7 +1961,7 @@
          * 获取最近的事件
          */
         function refreshLastGYEventsInfo() {
-            m_LastGYEventQueryTimeStr = (new Date()).Format("yyyy/MM/dd HH:mm:ss");
+            m_LastGYEventQueryTimeStr = (new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 3))).Format("yyyy/MM/dd HH:mm:ss");
             var dataObj = {
                 method: "geteventslastinfo",
                 projectid: CurrentProjectID,
@@ -2010,7 +2011,7 @@
          * 获取最近的事件
          */
         function refreshGYEventsInfoByTime() {
-            var tmpCurrentTime = (new Date()).Format("yyyy/MM/dd HH:mm:ss");
+            var tmpCurrentTime = (new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 3))).Format("yyyy/MM/dd HH:mm:ss");
             var dataObj = {
                 method: "geteventsinfobytime",
                 prjectid: CurrentProjectID,
@@ -2100,10 +2101,10 @@
                             $('#patrolListDiv').html(tmpTotalHTML);
                             patrolListAnimation();
                             //地图缩放到第一个事件
-                            {
-                                var tmpObj01 = tmpObjs[0];
-                                centerOnMapAndAnim(tmpObj01.lng, tmpObj01.lat);
-                            }
+                            // {
+                            //     var tmpObj01 = tmpObjs[0];
+                            //     centerOnMapAndAnim(tmpObj01.lng, tmpObj01.lat);
+                            // }
                         }
                     }
                 },
@@ -2383,13 +2384,13 @@
         // // 	}
         // // }
 
-        var m_StartTime = new Date();
-        var m_EndTime = new Date();
+        var m_StartTime = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 3));
+        var m_EndTime = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 3));
         m_StartTime = new Date(m_EndTime.getTime() - 60 * 60 * 1000); //1小时前
 
         function refreshCameraEventData() {
             if (m_Layer_Camera_Vis) {
-                m_EndTime = new Date();
+                m_EndTime = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 3));
                 var tmpRequestURL = ServerURL + "/ServiceHandler/CameraHandler.ashx?requestkey=ABCDEFG09823AD&method=queryevents&starttime="
                     + m_StartTime.Format('yyyy-MM-dd HH:mm:ss') + "&endtime=" + m_EndTime.Format('yyyy-MM-dd HH:mm:ss');
                 $.ajax({
