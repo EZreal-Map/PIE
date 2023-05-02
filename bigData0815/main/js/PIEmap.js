@@ -3,6 +3,9 @@ let viewer;
 // let layer_basemapTxt;
 let layer_nightmap;
 
+let objEntity;
+let entity9;
+
 createEarthModule().then(function () {
     viewer = new Earth.Viewer('mapContainer', {
 
@@ -221,7 +224,7 @@ createEarthModule().then(function () {
                                         show: true,
                                         text: tmpNickName,
                                         font: '20px',
-                                        fillColor: Earth.Color.RED.withAlpha(1),//可设置透明度
+                                        fillColor: Earth.Color.WHITE.withAlpha(1),//可设置透明度
                                         pixelOffset: { x: 0, y: 35 },
                                         backgroundColor: Earth.Color.RED,
                                     },
@@ -229,7 +232,7 @@ createEarthModule().then(function () {
                                         show: false,
                                         type: Earth.LabelBoxType.box10,
                                         scale: 0.8,
-                                        offset: { x: -75, y: 35 },
+                                        offset: { x: -106, y: 12 },
                                         maxHeight: 20000000,
                                         style: {
                                             html: `
@@ -345,7 +348,7 @@ createEarthModule().then(function () {
                             show: false,
                             type: Earth.LabelBoxType.box10,
                             scale: 0.8,
-                            offset: { x: -75, y: 25 },
+                            offset: { x: -100, y: 12 },
                             maxHeight: 20000000,
                             style: {
                                 html: `
@@ -664,7 +667,7 @@ function refreshMapRiverShow() {
                         show: false,
                         type: Earth.LabelBoxType.box10,
                         scale: 0.8,
-                        offset: { x: -85, y: 25 },
+                        offset: { x: -90, y: -46 },
                         maxHeight: 20000000,
                         style: {
                             html: `
@@ -767,12 +770,12 @@ function addGYEventPoint(lng, lat, obj) {
     else if (obj.EventType == "涉河工程")
         tmpEventType = 3;
 
-    var tmpMsg = "<div style=\"margin:0 auto;text-align:center;\"><label style=\"font-size:16px;\"><font color=\"#6FFF6F\">【" + tmpNickName + "】</font></label><br/></div>" +
-        "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">事件类型：</font>" + obj.EventType + "</label><br/>" +
-        "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">紧急程度：</font>" + obj.EmergencyType + "</label><br/>" +
-        "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">发布人：</font>" + obj.UploadUserNickName + "</label><br/>" +
-        "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">发布时间：</font>" + obj.UploadTime + "</label><br/>" +
-        "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">事件描述：</font>" + obj.Content + "</label><br/>";
+    // var tmpMsg = "<div style=\"margin:0 auto;text-align:center;\"><label style=\"font-size:16px;\"><font color=\"#6FFF6F\">【" + tmpNickName + "】</font></label><br/></div>" +
+    //     "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">事件类型：</font>" + obj.EventType + "</label><br/>" +
+    //     "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">紧急程度：</font>" + obj.EmergencyType + "</label><br/>" +
+    //     "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">发布人：</font>" + obj.UploadUserNickName + "</label><br/>" +
+    //     "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">发布时间：</font>" + obj.UploadTime + "</label><br/>" +
+    //     "<label style=\"font-size:16px;\"><font color=\"#01FFFF\">事件描述：</font>" + obj.Content + "</label><br/>";
     const entity = new Earth.Entity({
         name: 'GYEvent',
         show: true,
@@ -806,7 +809,7 @@ function addGYEventPoint(lng, lat, obj) {
             show: false,
             type: Earth.LabelBoxType.box10,
             scale: 0.8,
-            offset: { x: -75, y: 35 },
+            offset: { x: -110, y: 12},
             maxHeight: 20000000,
             style: {
                 html: `
@@ -856,6 +859,7 @@ function addGYEventPoint(lng, lat, obj) {
 function centerOnMapAndAnim(lng, lat) {
     var tmpLng = parseFloat(lng);
     var tmpLat = parseFloat(lat);
+    objEntity = getClosestEntityToLocation(tmpLng, tmpLat) 
     viewer.camera.flyTo({
         destination: Earth.Cartesian3.fromDegrees(tmpLng, tmpLat, 50),
 
@@ -865,13 +869,18 @@ function centerOnMapAndAnim(lng, lat) {
             roll: 0.0,
         },
         duration: 1,
-        // complete: () => {
-        // 	console.log('complete');
-        // },
+        complete: () => {
+        	objEntity._labelBox.show = true;
+        },
     });
-    const entity9 = new Earth.Entity({
+    if (entity9){
+        entityCollection.remove(entity9);
+        objEntity._labelBox.show = false;
+    }
+    
+    entity9 = new Earth.Entity({
         name: 'label',
-        position: Earth.Cartesian3.fromDegrees(tmpLng, tmpLat, 0), //Cartesian3类型，用于指定框的经度，维度和高度
+        position: Earth.Cartesian3.fromDegrees(tmpLng, tmpLat, 1), //Cartesian3类型，用于指定框的经度，维度和高度
         show: true,
         labelBox: {
             type: Earth.LabelBoxType.box9,
@@ -890,6 +899,34 @@ function centerOnMapAndAnim(lng, lat) {
     });
     entityCollection.add(entity9);
 
+
+    // const position = Earth.Cartographic.fromDegrees(tmpLng, tmpLat)
+    // // 获取屏幕坐标
+    // // var canvasPosition = new Earth.Cartesian2();
+    // // viewer.scene.cartesianToCanvasCoordinates(position, canvasPosition);
+    // // const canvasPosition = viewer.scene.project(position);
+    // const pickObj = viewer.scene.pick(position);
+    //     // console.log(pickObj.id)
+    //     // 还没有drillPick函数
+    //     // const pickObjs = viewer.scene.drillPick(movement.position);
+
+    //     // pickObj && alert('拾取成功：' + pickObj.name);
+    //     if (pickObj && pickObj.show) {
+    //         // console.log(pickObj.labelBox.show)
+    //         pickObj.labelBox.show = !pickObj.labelBox.show;
+    //         if (pickObj.polygon) {
+    //             if (pickObj.labelBox.show) {
+    //                 // pickObj.polygon.color = Earth.Color.fromBytes(255, 0, 0, 200);
+    //                 pickObj.polygon.color = Earth.Color.WHITE.withAlpha(0.8);
+    //             }
+    //             else {
+    //                 // pickObj.polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
+    //                 pickObj.polygon.color = pickObj.colorNotation;
+    //             }
+    //         }
+
+
+    //     }
     // var tmpPoint = ol.proj.transform([tmpLng, tmpLat], 'EPSG:4326', 'EPSG:3857');
     // mapView.setCenter(tmpPoint);
     // mapView.setZoom(19);
@@ -912,7 +949,27 @@ function centerOnMapAndAnim(lng, lat) {
     // m_FocusPointOverlay_Red.setPosition(tmpPoint);
 }
 
-
+function getClosestEntityToLocation(longitude, latitude) {
+    let closestEntity = null;
+    let minDistance = Number.MAX_VALUE;
+  
+    const firstPoint = Earth.Cartesian3.fromDegrees(longitude, latitude);
+    const entities = viewer.entities.values;
+  
+    for (let i = 0; i < entities.length; i++) {
+      const entity = entities[i];
+      const secondPoint = entity.position;
+      if (!secondPoint) continue;
+  
+      const distance = Earth.Cartesian3.distance(firstPoint, secondPoint);
+      if (distance < minDistance) {
+        closestEntity = entity;
+        minDistance = distance;
+      }
+    }
+  
+    return closestEntity;
+  }
 
 // 控制按钮的函数
 $(document).ready(function () {
@@ -968,9 +1025,12 @@ $(document).ready(function () {
 			if (entityCollection._entities[i].polygon) {
 				// entityCollection._entities[i].polygon.color = Earth.Color.fromBytes(0, 0, 255, 200);
 				entityCollection._entities[i].polygon.color = entityCollection._entities[i].colorNotation;
-
 			}
 		}
+        if (entity9){
+            entityCollection.remove(entity9);
+            // objEntity._labelBox.show = false;
+        }
 	});
 
 	var m_Layer_User_Vis = true;

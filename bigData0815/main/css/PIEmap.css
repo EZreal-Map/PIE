@@ -286,3 +286,15 @@ button {
     padding: 5px;
     /* vertical-align: middle; */
 }
+
+
+/* 消除labelBox的边框  */
+.pie3d-popup-content {
+    margin: 0px;
+}
+
+/* 消除labelBox的下面的小箭头（小尾巴）  */
+.pie3d-popup-tip-container {
+height: 0px;
+width: 0px;
+}
