@@ -470,10 +470,10 @@ createEarthModule().then(function () {
         // $("#mapBottomControlBtnfullScreen").click() 
       }, 2000);
 
-    setInterval(function() {
-        // refreshMapRiverShow(m_Layer_River_ShowMode);
-        console.log(entityCollection._entities)
-    },3000)
+    // setInterval(function() {
+    //     // refreshMapRiverShow(m_Layer_River_ShowMode);
+    //     console.log(entityCollection._entities)
+    // },3000)
 
 
 });// createEarthModule结束 new Earth
@@ -680,7 +680,13 @@ function refreshSectionElvData(planID) {
                     if (tmpArray4[i] < 0)
                         tmpArray4[i] = 0;
                 }
-                initialSectionChartControl([tmpArray,tmpArray2,tmpArray3]);	
+                
+                try {
+                    initialSectionChartControl([tmpArray,tmpArray2,tmpArray3]);	
+                } catch (error) {
+                    // pass
+                }
+                
 
                 m_RiverSectionVDataArray = [tmpArray, tmpArray2, tmpArray3, tmpArray4];
 

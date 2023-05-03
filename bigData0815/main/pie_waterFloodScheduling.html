@@ -460,6 +460,7 @@
 		        }
 		        var currentdate = year + seperator1 + month + seperator1 + strDate;
 				document.getElementById("lblTime").value=currentdate;
+				$("#show_riqi").text(document.getElementById("lblTime").value);
 
 
              $("#lblTime").bind("input propertychange change", function(event) {
@@ -759,6 +760,7 @@
 								tmpDataArray2 = [];
 							var tmpDataArray3 = [],
 								tmpDataArray4 = [];
+								tmpDataArray5 = []
 							var tmpTid = 0,
 								tmpTid2 = 0;
 							var tmpTimInt = -1;
@@ -770,13 +772,14 @@
 								tmpDataArray2[tmpTid2] = parseFloat(tmpObj1.V);
 								tmpDataArray3[tmpTid2] = parseFloat(tmpObj1.MAXV);
 								tmpDataArray4[tmpTid2] = parseFloat(tmpObj1.MINV);
+								tmpDataArray5[tmpTid2] = tmpDataArray2[tmpTid2] - tmpDataArray3[tmpTid2] > 0 ? tmpDataArray2[tmpTid2] - tmpDataArray3[tmpTid2] : 0;
 								tmpTid2++;
 							}
 							tmpDataArray[tmpTid++] = tmpDataArray2; //水位
 							tmpDataArray[tmpTid++] = tmpDataArray3; //河底高程
 							tmpDataArray[tmpTid++] = tmpDataArray4; //河堤高程
 							
-							
+							m_RiverSectionVDataArray = [tmpDataArray2, tmpDataArray3, tmpDataArray4, tmpDataArray5];
 							
 							shuiqin_de_shuiwei=tmpDataArray2;
 							var shiwei1 = shuiqin_de_shuiwei.slice(17,18);
@@ -827,6 +830,9 @@
 								initialWaterQCurverChartControlByPlan(tmpDataArray);
 								$('#myRange').val(0);
 								circleChartChange();
+							
+								if(m_RiverSectionVDataArray.length != 0) 
+									{refreshMapRiverShow(m_Layer_River_ShowMode)}
 								
 //								m_CurrentSchedulingIndex = 0;
 //								if(m_AutoloopIntervalID != undefined)
@@ -1029,7 +1035,7 @@ min:25,
 			//时间可以切换
 			refreshSchedulingPlan(dateToString(new Date()));
 
-			exeSchedulingPlan(undefined, "28181");
+			// exeSchedulingPlan(undefined, "28181");
 		</script>
 		
 		<script>
@@ -1168,74 +1174,74 @@ min:25,
 
 			        // shuiqing.HTML新添加的
 					var m_RiverSectionVDataArray = [];
-        /**
-         * 刷新断面的高程及水面高程数据 自己重新修改的
-         * @param {Object} planID
-         */
-        function refreshSectionElvData(planID) {
-            RunWebServiceJSON(true, "getTSDBLeveldata", "/pms/Base", "/doreaddata/getdata",
-                "guid#timeindex", String(planID) + "#-1", function (data) {
-                    // 						 // 将获取到的数据data转换成JSON字符串
-                    //   var jsonData = JSON.stringify(data);
+        // /**
+        //  * 刷新断面的高程及水面高程数据 自己重新修改的
+        //  * @param {Object} planID
+        //  */
+        // function refreshSectionElvData(planID) {
+        //     RunWebServiceJSON(true, "getTSDBLeveldata", "/pms/Base", "/doreaddata/getdata",
+        //         "guid#timeindex", String(planID) + "#-1", function (data) {
+        //             // 						 // 将获取到的数据data转换成JSON字符串
+        //             //   var jsonData = JSON.stringify(data);
 
-                    //   // 创建一个Blob对象，表示二进制数据
-                    //   var blob = new Blob([jsonData], {type: "application/json"});
+        //             //   // 创建一个Blob对象，表示二进制数据
+        //             //   var blob = new Blob([jsonData], {type: "application/json"});
 
-                    //   // 创建一个a标签，设置download属性为data_riverSection.json
-                    //   var a = document.createElement("a");
-                    //   a.download = "data_riverSection.json";
+        //             //   // 创建一个a标签，设置download属性为data_riverSection.json
+        //             //   var a = document.createElement("a");
+        //             //   a.download = "data_riverSection.json";
 
-                    //   // 将Blob对象转换成URL
-                    //   var url = URL.createObjectURL(blob);
+        //             //   // 将Blob对象转换成URL
+        //             //   var url = URL.createObjectURL(blob);
 
-                    //   // 设置a标签的href属性为Blob URL
-                    //   a.href = url;
+        //             //   // 设置a标签的href属性为Blob URL
+        //             //   a.href = url;
 
-                    //   // 模拟点击a标签进行下载
-                    //   a.click();
+        //             //   // 模拟点击a标签进行下载
+        //             //   a.click();
 
-                    //   // 释放Blob URL
-                    //   URL.revokeObjectURL(url);
+        //             //   // 释放Blob URL
+        //             //   URL.revokeObjectURL(url);
 
 
-                    var jqueryObj = $(data);
-                    var message = jqueryObj.children();
-                    var text = message.text();
-                    var tmpObjs = eval("(" + text + ")");
-                    if (tmpObjs != null && tmpObjs.length > 0) {
-                        var tmpArray = [], tmpArray2 = [], tmpArray3 = [], tmpArray4 = [];
-                        for (var i in tmpObjs) {
-                            var tmpObj = tmpObjs[i];
-                            tmpArray[i] = parseFloat(tmpObj.V);
-                            tmpArray2[i] = parseFloat(tmpObj.MAXV);
-                            tmpArray3[i] = parseFloat(tmpObj.MINV);
-                            tmpArray4[i] = tmpArray[i] - tmpArray2[i];
-                            if (tmpArray4[i] < 0)
-                                tmpArray4[i] = 0;
-                        }
-                        // initialSectionChartControl([tmpArray,tmpArray2,tmpArray3]);	在shuiqing.html中不需要
+        //             var jqueryObj = $(data);
+        //             var message = jqueryObj.children();
+        //             var text = message.text();
+        //             var tmpObjs = eval("(" + text + ")");
+        //             if (tmpObjs != null && tmpObjs.length > 0) {
+        //                 var tmpArray = [], tmpArray2 = [], tmpArray3 = [], tmpArray4 = [];
+        //                 for (var i in tmpObjs) {
+        //                     var tmpObj = tmpObjs[i];
+        //                     tmpArray[i] = parseFloat(tmpObj.V);
+        //                     tmpArray2[i] = parseFloat(tmpObj.MAXV);
+        //                     tmpArray3[i] = parseFloat(tmpObj.MINV);
+        //                     tmpArray4[i] = tmpArray[i] - tmpArray2[i];
+        //                     if (tmpArray4[i] < 0)
+        //                         tmpArray4[i] = 0;
+        //                 }
+        //                 // initialSectionChartControl([tmpArray,tmpArray2,tmpArray3]);	在shuiqing.html中不需要
 
-                        m_RiverSectionVDataArray = [tmpArray, tmpArray2, tmpArray3, tmpArray4];
+        //                 m_RiverSectionVDataArray = [tmpArray, tmpArray2, tmpArray3, tmpArray4];
 
-                        // 		           // 下载保存数据为JSON文件
-                        // 				   var jsonData = JSON.stringify(m_RiverSectionVDataArray);
-                        // var blob = new Blob([jsonData], {type: "application/json"});
-                        // var fileName = "data_RiverSectionVArray.json";
-                        // if (window.navigator.msSaveOrOpenBlob) {
-                        //     window.navigator.msSaveBlob(blob, fileName);
-                        // } else {
-                        //     var elem = window.document.createElement('a');
-                        //     elem.href = window.URL.createObjectURL(blob);
-                        //     elem.download = fileName;
-                        //     document.body.appendChild(elem);
-                        //     elem.click();
-                        //     document.body.removeChild(elem);
-                        // }
+        //                 // 		           // 下载保存数据为JSON文件
+        //                 // 				   var jsonData = JSON.stringify(m_RiverSectionVDataArray);
+        //                 // var blob = new Blob([jsonData], {type: "application/json"});
+        //                 // var fileName = "data_RiverSectionVArray.json";
+        //                 // if (window.navigator.msSaveOrOpenBlob) {
+        //                 //     window.navigator.msSaveBlob(blob, fileName);
+        //                 // } else {
+        //                 //     var elem = window.document.createElement('a');
+        //                 //     elem.href = window.URL.createObjectURL(blob);
+        //                 //     elem.download = fileName;
+        //                 //     document.body.appendChild(elem);
+        //                 //     elem.click();
+        //                 //     document.body.removeChild(elem);
+        //                 // }
 
-                        refreshMapRiverShow();
-                    }
-                });
-        }
+        //                 refreshMapRiverShow();
+        //             }
+        //         });
+        // }
 
         // shuiqing.html要去除userGPSLayer  GYEventLayer  basemapTxtLayer
         setTimeout(function () {
