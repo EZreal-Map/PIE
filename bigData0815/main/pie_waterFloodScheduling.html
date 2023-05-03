@@ -465,7 +465,7 @@
 
              $("#lblTime").bind("input propertychange change", function(event) {
 					$("#show_riqi").text(document.getElementById("lblTime").value)
-					refreshSchedulingPlan(new Date(event.timeStamp));
+					refreshSchedulingPlan();
 				});
 			
 			function initialWaterQCurverChartControl() {
@@ -602,7 +602,7 @@
 				return dateTime;
 			}
 
-			function refreshSchedulingPlan(queryDataTime) {		
+			function refreshSchedulingPlan() {		
 				queryDataTime=$("#lblTime").val();
 				var time = queryDataTime;
 				time = parseInt(time.slice(0,4))-3 + time.slice(4);
@@ -622,7 +622,7 @@
 						var text = message.text();
 						var tmpObjs = eval("(" + text + ")");
 
-                    var tmpDTUTBHTML = '<tbody>'
+                    	var tmpDTUTBHTML = '<tbody>'
                         	+'<tr class="aaa" align="center">';
                         //列头
                         tmpDTUTBHTML+='<td style="color: #00fcff; font-size: 18px; font-weight:bold;padding: 5px 0;width:100px;background-color:#0b122E;">水情指标</td>';
@@ -660,60 +660,60 @@
 			            	tmpTTTid++;
 			            	if(tmpTTTid >= 5)
 			            		break;
-			            }
-			            $("#planTable").html(tmpDTUTBHTML);
-//						$("#lblTime").val(queryDataTime);
+			           	 	}
+			            	$("#planTable").html(tmpDTUTBHTML);
+							// $("#lblTime").val(queryDataTime);
 						
-						//var tmpTimeStr01 = "";
-						//var tmpTotalHTML = "";
-						try{
-							for(var tmpI in tmpObjs) {
-							var tmpObj = tmpObjs[tmpI];
-							
-							//0
-							
-							
-							if(tmpI == 0) 
-								{hlk_yuling=tmpObj.calcvalue;}
+								//var tmpTimeStr01 = "";
+								//var tmpTotalHTML = "";
+								try{
+									for(var tmpI in tmpObjs) {
+									var tmpObj = tmpObjs[tmpI];
+									
+									//0
+									
 								
-							if(tmpI == 1) 
+								if(tmpI == 0) 
+									{hlk_yuling=tmpObj.calcvalue;}
+									
+								if(tmpI == 1) 
+									{
+										hlk_weilai=tmpObj.calcvalue;
+										hlk_weilai = Number(hlk_weilai.toString().match(/^\d+(?:\.\d{0,2})?/));
+									}
+								
+								if(tmpI == 2) 
+									
 								{
-									hlk_weilai=tmpObj.calcvalue;
-									hlk_weilai = Number(hlk_weilai.toString().match(/^\d+(?:\.\d{0,2})?/));
+								hlk_ruku=tmpObj.calcvalue;
+								hlk_ruku = Number(hlk_ruku.toString().match(/^\d+(?:\.\d{0,3})?/));
 								}
-							
-							if(tmpI == 2) 
+								if(tmpI == 3) 
+									{hlk_chuku=tmpObj.calcvalue;
+									hlk_chuku = Number(hlk_chuku.toString().match(/^\d+(?:\.\d{0,3})?/));
+									}
 								
-							{
-							hlk_ruku=tmpObj.calcvalue;
-							hlk_ruku = Number(hlk_ruku.toString().match(/^\d+(?:\.\d{0,3})?/));
+								
+							if(tmpI == 4) 
+									{
+										hlk_shuiwei=tmpObj.calcvalue;
+										hlk_shuiwei = Number(hlk_shuiwei.toString().match(/^\d+(?:\.\d{0,2})?/));
+									}
 							}
-							if(tmpI == 3) 
-								{hlk_chuku=tmpObj.calcvalue;
-								hlk_chuku = Number(hlk_chuku.toString().match(/^\d+(?:\.\d{0,3})?/));
-								}
-							
-							
-						if(tmpI == 4) 
-								{
-									hlk_shuiwei=tmpObj.calcvalue;
-									hlk_shuiwei = Number(hlk_shuiwei.toString().match(/^\d+(?:\.\d{0,2})?/));
-								}
-                         }
-						$("#shuiqin_yuling").text(hlk_yuling);
-						$("#shuiqin_hlk_shuiwei").text(hlk_shuiwei);
-						$("#shuiqin_hlk_weilai").text(hlk_weilai);
-						$("#shuiqin_hlk_ruku").text(hlk_ruku);
-						$("#shuiqin_hlk_chuku").text(hlk_chuku);
-						}catch(e){
-							//TODO handle the exception
-						}
-						//circleChartChange();
+							$("#shuiqin_yuling").text(hlk_yuling);
+							$("#shuiqin_hlk_shuiwei").text(hlk_shuiwei);
+							$("#shuiqin_hlk_weilai").text(hlk_weilai);
+							$("#shuiqin_hlk_ruku").text(hlk_ruku);
+							$("#shuiqin_hlk_chuku").text(hlk_chuku);
+							}catch(e){
+								//TODO handle the exception
+							}
+						// circleChartChange();
 						//$("#top_right_div").html(tmpTotalHTML);
                         //测试
                         // tmpPlanID=28181
 						if(tmpPlanID!='')
-			            	exeSchedulingPlan(document.getElementById(tmpDefaultBtnID), tmpPlanID);
+			            	exeSchedulingPlan(tmpPlanID);
 
 					});
 			}
@@ -726,41 +726,41 @@
 			 * 执行方案
 			 * @param {Object} planID 方案编号
 			 */
-			function exeSchedulingPlan(btn, planID) {
+			function exeSchedulingPlan(planID) {
 				//circleChartChange();
 
-				$(".b1").addClass("b2");
-				$(".b1").text('执行');
-				$(".b1").removeClass("b1");
-				if(btn != undefined) {
-					$(btn).removeClass("b2");
-					$(btn).addClass("b1");
-					$(btn).text('执行中');
-				}
+				// $(".b1").addClass("b2");
+				// $(".b1").text('执行');
+				// $(".b1").removeClass("b1");
+				// if(btn != undefined) {
+				// 	$(btn).removeClass("b2");
+				// 	$(btn).addClass("b1");
+				// 	$(btn).text('执行中');
+				// }
 
 				m_SchedulingPlanDataArray = [];
-				m_SchedulingPlanTimeArray = [];
-				for(var i = 0; i < 26; i++) {
-					m_SchedulingPlanDataArray[i] = null;
-					m_SchedulingPlanTimeArray[i] = '';
-				}
-				if(m_AutoloopIntervalID != undefined)
-					clearInterval(m_AutoloopIntervalID);
+				// m_SchedulingPlanTimeArray = [];
+				// for(var i = 0; i < 26; i++) {
+				// 	m_SchedulingPlanDataArray[i] = null;
+				// 	m_SchedulingPlanTimeArray[i] = '';
+				// }
+				// if(m_AutoloopIntervalID != undefined)
+				// 	clearInterval(m_AutoloopIntervalID);
 				//水力学计算结果只有1组数据
 				for(var i0 = 0; i0 < 1; i0++) {
 					RunWebServiceJSON(true, "getTSDBLeveldata", "/pms/Base", "/doreaddata/getdata",
 						"guid#timeindex", String(planID) + "#-1",
 						function(data) {
-							//m_SchedulingPlanDataArray[i0-1] = null;			        	
+							m_SchedulingPlanDataArray[i0-1] = null;			        	
 							var jqueryObj = $(data);
 							var message1 = jqueryObj.children();
 							var text = message1.text();
 							var tmpObjs1 = eval("(" + text + ")");
 							var tmpDataArray = [],
-								tmpDataArray2 = [];
-							var tmpDataArray3 = [],
-								tmpDataArray4 = [];
-								tmpDataArray5 = []
+								tmpDataArray2 = [],
+								tmpDataArray3 = [],
+								tmpDataArray4 = [],
+								tmpDataArray5 = [];
 							var tmpTid = 0,
 								tmpTid2 = 0;
 							var tmpTimInt = -1;
@@ -828,11 +828,13 @@
 							//m_SchedulingPlanTimeArray[tmpTimInt] = '';//时刻
 							if(tmpTimInt == 0) {
 								initialWaterQCurverChartControlByPlan(tmpDataArray);
-								$('#myRange').val(0);
+								// $('#myRange').val(0);
 								circleChartChange();
 							
-								if(m_RiverSectionVDataArray.length != 0) 
-									{refreshMapRiverShow(m_Layer_River_ShowMode)}
+								
+								// 就此处要修改
+									// {refreshMapRiverShow(m_Layer_River_ShowMode)} 
+								refreshMapRiverSection()
 								
 //								m_CurrentSchedulingIndex = 0;
 //								if(m_AutoloopIntervalID != undefined)
@@ -898,7 +900,7 @@
 					},
 					yAxis: {
 						type: 'value',
-min:25,
+						min:25,
 						splitLine: {
 							show: false
 						},
@@ -1033,7 +1035,7 @@ min:25,
 
 			var m_sectionID = [1, 12, 18, 52, 57];
 			//时间可以切换
-			refreshSchedulingPlan(dateToString(new Date()));
+			refreshSchedulingPlan();
 
 			// exeSchedulingPlan(undefined, "28181");
 		</script>
@@ -1075,7 +1077,7 @@ min:25,
 					dataV_max=29.50;
 					 dataV_min=28.83;
 				}
-				circleChartChange();
+				// circleChartChange();
 			});
 			
 			
@@ -1173,7 +1175,7 @@ min:25,
 			}); 
 
 			        // shuiqing.HTML新添加的
-					var m_RiverSectionVDataArray = [];
+					// var m_RiverSectionVDataArray = [];
         // /**
         //  * 刷新断面的高程及水面高程数据 自己重新修改的
         //  * @param {Object} planID

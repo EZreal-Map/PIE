@@ -1706,40 +1706,40 @@
             m_SectionChart = myChart;
         }
 
-        var m_LastQueryTime = '';
+        // var m_LastQueryTime = '';
 
-        function refreshPlanIDData() { //加载横沥口数据
-            var now = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3);
-            // now.setFullYear('2019') //新加入
-            if (now.getMinutes() < 7)
-                now = new Date(now.getTime() - 30 * 60 * 1000);
-            var queryDataTime = now.Format("yyyy/MM/dd HH:00:00");
-            if (m_LastQueryTime == queryDataTime)
-                return;
+        // function refreshPlanIDData() { //加载横沥口数据
+        //     var now = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3);
+        //     // now.setFullYear('2019') //新加入
+        //     if (now.getMinutes() < 7)
+        //         now = new Date(now.getTime() - 30 * 60 * 1000);
+        //     var queryDataTime = now.Format("yyyy/MM/dd HH:00:00");
+        //     if (m_LastQueryTime == queryDataTime)
+        //         return;
 
-            RunWebServiceJSON(true, "getTSDBLevelAutodata",
-                "/pms/Base", "/doreaddata/getdata",
-                "timeindex", queryDataTime, function (data) {
-                    var jqueryObj = $(data);
-                    var message = jqueryObj.children();
-                    var text = message.text();
-                    var tmpObjs = eval("(" + text + ")");
-                    if (tmpObjs != null && tmpObjs.length > 0) {
-                        var tmpPlanID = tmpObjs[0].planID;
-                        //测试
-                        // tmpPlanID = 28181
-                        //if(tmpPlanID!=null)
-                        //{
-                        m_LastQueryTime = (new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3)).Format("yyyy/MM/dd HH:00:00");
-                        refreshSectionElvData(tmpPlanID); 
-                        refreshWaterReportData(tmpPlanID);
-                        //}							
-                    }
-                    else
-                        m_LastQueryTime = "";
+        //     RunWebServiceJSON(true, "getTSDBLevelAutodata",
+        //         "/pms/Base", "/doreaddata/getdata",
+        //         "timeindex", queryDataTime, function (data) {
+        //             var jqueryObj = $(data);
+        //             var message = jqueryObj.children();
+        //             var text = message.text();
+        //             var tmpObjs = eval("(" + text + ")");
+        //             if (tmpObjs != null && tmpObjs.length > 0) {
+        //                 var tmpPlanID = tmpObjs[0].planID;
+        //                 //测试
+        //                 // tmpPlanID = 28181
+        //                 //if(tmpPlanID!=null)
+        //                 //{
+        //                 m_LastQueryTime = (new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3)).Format("yyyy/MM/dd HH:00:00");
+        //                 refreshSectionElvData(tmpPlanID); 
+        //                 refreshWaterReportData(tmpPlanID);
+        //                 //}							
+        //             }
+        //             else
+        //                 m_LastQueryTime = "";
 
-                });
-        }
+        //         });
+        // }
 
         // var m_RiverSectionVDataArray = [];  移到PIEmap.js中
         // /** 
@@ -2448,7 +2448,7 @@
         WeatherReportListAnimation();
         setInterval(refreshWeatherReportData, 60000);//气象预报数据
 
-        refreshPlanIDData();
+        // refreshPlanIDData();
         WaterReportListAnimation();
         setInterval(refreshPlanIDData, 60000);//河道断面、水文预报
 
