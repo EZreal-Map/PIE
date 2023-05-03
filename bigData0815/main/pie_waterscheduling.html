@@ -1311,6 +1311,7 @@
 		function gotoSchedulingIndex()
 		{
 			var tmpI = $('#myRange').val();
+			// 具体到某一个时间的4个水质指标58个断面水质数据
 			var tmpArray = m_SchedulingPlanDataArray[tmpI];
 			if(tmpArray!=null)
 			{
@@ -1324,7 +1325,19 @@
 				else if(m_CurrentSelectMonitorPara == "COD")
 					tmpIndex = 3;					
 				// setRiverSectionsValue(tmpArray[tmpIndex]);//设置河道断面监测值
-				circleChartChange();				
+				circleChartChange();
+				
+				// colorRange
+				// 色带
+				// 具体到某一个时间的某个水质指标58个断面水质数据
+				tmpArray = tmpArray[tmpIndex]; 
+				var gradient = gradientColor('#0000FF', '#FF0000', 5)
+				var gradientIndex;
+				
+				polygonCollection.forEach((entity,index) => {
+					gradientIndex = getWaterQLevelBySingleFactor(tmpIndex, tmpArray[index+1]) - 2;
+					entity.polygon.color = Earth.Color.fromCssColorString(gradient[gradientIndex]);
+				})
 			}
 		}
 		/**
@@ -1363,10 +1376,10 @@
 		 */
 		function refreshWaterQLevelLabel(TN,TP,N3,COD)
 		{
-			var tmpL01 = getWaterQLevelBySingleFactor(41, TP);//总磷
-			var tmpL02 = getWaterQLevelBySingleFactor(42, COD);//化学需氧量
-			var tmpL03 = getWaterQLevelBySingleFactor(43, N3);//氨氮
-			var tmpL04 = getWaterQLevelBySingleFactor(44, TN);//总氮
+			var tmpL01 = getWaterQLevelBySingleFactor(0, TP);//总磷
+			var tmpL02 = getWaterQLevelBySingleFactor(3, COD);//化学需氧量
+			var tmpL03 = getWaterQLevelBySingleFactor(2, N3);//氨氮
+			var tmpL04 = getWaterQLevelBySingleFactor(1, TN);//总氮
 			var tmpL00 = tmpL01;
 			if(tmpL00 < tmpL02)
 				tmpL00 = tmpL02;
@@ -1419,7 +1432,7 @@
             var ret = 0;
             switch (Foctor)
 	        {
-                case 41://总磷
+                case 0://总磷
                     {
                         //0.02	0.1	0.2	0.3	0.4
                         if (V <= 0.1)
@@ -1434,7 +1447,7 @@
                             ret= 6;
                         break;
                     }
-                case 42://化学需氧量
+                case 3://化学需氧量
                     {
                         //15	15	20	30	40
                         if (V <= 15)
@@ -1449,7 +1462,7 @@
                             ret = 6;
                         break;
                     }
-                case 43://氨氮
+                case 2://氨氮
                     {
                         //0.15	0.5	1	1.5	2
                         if (V <= 0.5)
@@ -1464,7 +1477,7 @@
                             ret = 6;
                         break;
                     }
-                case 44://总氮
+                case 1://总氮
                     {
                         //0.2	0.5	1	1.5	2
                         if (V <= 0.5)
