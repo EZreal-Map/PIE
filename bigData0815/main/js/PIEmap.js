@@ -1,6 +1,6 @@
 let entityCollection;
 let viewer;
-// let layer_basemapTxt;
+let layer_basemapTxt;
 let layer_nightmap;
 
 let objEntity;
@@ -1415,6 +1415,22 @@ $(document).ready(function () {
         layer_nightmap.show = m_Layer_Sal_Vis;
 	});
 
+    var m_Layer_basemapTxt = true;
+	$("#mapBottomControlBtnClearText").click(function () {
+		if (m_Layer_basemapTxt) {
+			$("#mapBottomControlBtnClearText").attr("src", "images/text_off.png");
+			m_Layer_basemapTxt = false;
+			// viewer.imageryLayers.remove(layer_nightmap)
+            
+		}
+		else {
+			$("#mapBottomControlBtnClearText").attr("src", "images/text_on.png");
+			m_Layer_basemapTxt = true;
+			// layer_basemapTxt = viewer.imageryLayers.addImageryProvider(ImageryProvider_nightmap);
+		}
+		// TianDitu_Val_Layer.setVisible(m_Layer_basemapTxt);
+        layer_basemapTxt.show = m_Layer_basemapTxt;
+	});
 	// 暂时没有使用 riverSection颜色
 	// function refreshMapRiverShow()
 	// {

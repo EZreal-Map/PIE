@@ -394,15 +394,15 @@ to {transform: rotate(359deg);}
     font-size: 12pt!important;
     color: #fff;
     position: absolute;
-    top: 26px;
-    left: 80px;
+    top: 10px;
+    left: 63px;
 }
 .t_mbox span{
     font-size: 12pt;
     color: #fff;
     position: absolute;
-    top: 18px;
-    left: 60px;
+    top: 4px;
+    left: 53px;
 }
 #gy_Label02 {
     left: 85px;
