@@ -1292,7 +1292,7 @@
 		function waterQIndexChange()
 		{
 			gotoSchedulingIndex();
-			var tmpI = $('#myRange').val();
+			var tmpI = parseInt($('#myRange').val());
 			m_CurrentSchedulingIndex = tmpI;
 		}
 		
@@ -1312,7 +1312,7 @@
 		
 		function gotoSchedulingIndex()
 		{
-			var tmpI = $('#myRange').val();
+			var tmpI = parseInt($('#myRange').val());
 			// 具体到某一个时间的4个水质指标58个断面水质数据
 			var tmpArray = m_SchedulingPlanDataArray[tmpI];
 			if(tmpArray!=null)
@@ -1625,10 +1625,10 @@
             // }
             $(mapBottomControlBtnUser).click()
             $(mapBottomControlBtnEvent).click()
-            // $(mapBottomControlBtnSalMap).click()
+            $(mapBottomControlBtnClearText).click()
 
 			viewer.camera.flyTo({
-                destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 2800.0),
+                destination: Earth.Cartesian3.fromDegrees(114.181236, 22.598030, 1800.0),
 
                 orientation: {
                     heading: Earth.Math.toRadians(0),

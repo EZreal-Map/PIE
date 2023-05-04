@@ -30,8 +30,8 @@
 
 #localtime.fullscreen {
     position: fixed!important;
-    top: 10px!important;
-    left: 50px!important;
+    top: 18px!important;
+    left: 80px!important;
     z-index: 9999!important;
     font-size: 17px!important;
 }
