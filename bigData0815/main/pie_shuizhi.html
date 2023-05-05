@@ -498,7 +498,7 @@
     .xuanzhe_riqi {
         width: 50px;
         height: 50px;
-        margin-left: 310px;
+        margin-left: 320px;
         margin-top: -50px;
         position: absolute;
         /*background-color: navy;*/
@@ -531,7 +531,7 @@
 <body>
     <header>
         <div scrolling="no" allowtransparency="true"
-            style="font-size:14px; position: absolute; left: 50px; top:-5px;width:600px;height: 50px; display:inline;z-index: 9999;">
+            style="font-size:14px; position: absolute; left: 50px; top:-5px;width:600px;height: 50px; display:inline;z-index: 9990;">
             <img src="images/pie.png" style="width: 100px; height: 50px;" />
         </div>
         <div class="masked1" style="font-weight: bold;">水 质 预 警</div>
@@ -989,8 +989,8 @@
         function getNow(s) {
             return s < 10 ? '0' + s : s;
         }
-        var myDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3);
-        var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 365 * 3)
+        var myDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 3 - 3));
+        var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 3 - 3))
         var oldyear = oldDate.getFullYear(); //获取当前年
         var year = myDate.getFullYear(); //获取当前年
         // var oldmonth = oldDate.getMonth() + 1; //获取当前月

@@ -53,6 +53,7 @@ function showLocale2(objD){
 function tick(){
 var today;
 today = new Date();
+// today = new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 3);
 // today.setFullYear('2019');
 document.getElementById("localtime").innerHTML = showLocale(today);
 document.getElementById("localtime2").innerHTML = showLocale2(today);

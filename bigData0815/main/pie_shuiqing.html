@@ -938,8 +938,8 @@
             return s < 10 ? '0' + s : s;
         }
 
-        var myDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
-        var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
+        var myDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -2));
+        var oldDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -2));
         var oldyear = oldDate.getFullYear(); //获取当前年
         var year = myDate.getFullYear(); //获取当前年
         var oldmonth = oldDate.getMonth() + 1; //获取当前月

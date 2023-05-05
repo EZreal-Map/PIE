@@ -402,7 +402,7 @@
 						var tmpTotalUsersCount = tmpObjs.length;
 						var tmpOnlineUsersCount = 0;
 						var tmpTid001 = 0;
-						var dateNow = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
+						var dateNow = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 +1));
 						for(var i in tmpObjs) {
 							var tmpObj = tmpObjs[i];
 							var tmpX = parseFloat(tmpObj.longitude),
@@ -764,7 +764,7 @@
 	     */
 	    function refreshJobGroupInfo()
 	    {
-			var now = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
+			var now = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 +1));
 			var tmpMonth = now.getMonth()+1;
 			var tmpMonthStr = ""+tmpMonth;
 			if(tmpMonth<10)
@@ -827,7 +827,7 @@
 		 */
 		function refreshLastJobsInfo()
 		{
-			var newDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
+			var newDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 +1));
 			var todayTime =(new Date(newDate.getFullYear(),newDate.getMonth(),newDate.getDate()));
 			newDate = new Date(todayTime.getTime() + 24*60*60*1000);//明天凌晨
 			
@@ -847,7 +847,7 @@
 					if(joResult.success == true) {						
 						var tmpObjs = joResult.data;
 						var tmpTotalHTML = '<ul class="clearfix">';
-						var dateNow = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
+						var dateNow = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 +1));
 						for(var tmpI in tmpObjs)
 						{
 							var tmpObj = tmpObjs[tmpI];
@@ -978,7 +978,7 @@
 		
 		function refreshEventGroupChartData()
 		{
-			var now = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 -1));
+			var now = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * (365 * 4 +1));
 			var tmpMonth = now.getMonth()+1;
 			var tmpMonthStr = ""+tmpMonth;
 			if(tmpMonth<10)
