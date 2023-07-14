@@ -712,9 +712,6 @@
 
     <script type="text/javascript" src="js/CommonJS.js"></script>
 
-    <!--调用op库-->
-    <link rel="stylesheet" href="css/ol.css" type="text/css">
-    <script src="js/ol.js" type="text/javascript" charset="utf-8"></script>
 
     <!-- <link rel="stylesheet" type="text/css" href="overlay/popupoverlay.css" />
     <script type="text/javascript" src="overlay/popupoverlay.js"></script> -->
@@ -746,15 +743,6 @@
             return dateTime;
         }
 
-        /**点击地图可缩放*/
-        $("#switchMapZoomID").click(function () {
-            var draw = new ol.interaction.MouseWheelZoom();
-            M_map.addInteraction(draw);
-            $("#switchMapZoomID").unbind("click");
-
-            //m_CurrentGYEventInfoStr = "0/1";
-            //m_LastGYEventQueryTimeStr = '2019-05-09 20:00:00';
-        });
 
         var m_sectionID = [1, 17, 25, 51, 57];
         /**查询的日期*/

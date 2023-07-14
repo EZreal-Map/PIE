@@ -946,18 +946,18 @@
         // var oldmonth = oldDate.getMonth(); //获取当前月
         var month = myDate.getMonth() + 1; //获取当前月
         var date = myDate.getDate(); //获取当前日
-        var olddate = oldDate.getDate(); //获取当前日
+        var olddate = oldDate.getDate() - 1; //获取当前日
 
         var h = myDate.getHours(); //获取当前小时数(0-23)
         var m = myDate.getMinutes(); //获取当前分钟数(0-59)
         var s = myDate.getSeconds();
 
         var oldh = oldDate.getHours(); //获取当前小时数(0-23)
-        oldh = 0;
+        // oldh = 0;
         var oldm = oldDate.getMinutes(); //获取当前分钟数(0-59)
-        oldm = 0;
+        // oldm = 0;
         var olds = oldDate.getSeconds();
-        olds = 0;
+        // olds = 0;
         var old = oldyear + '-' + getNow(oldmonth) + "-" + getNow(olddate) + " " + getNow(oldh) + ':' + getNow(oldm) + ":" + getNow(olds);
         var now = year + '-' + getNow(month) + "-" + getNow(date) + " " + getNow(h) + ':' + getNow(m) + ":" + getNow(s);
 
